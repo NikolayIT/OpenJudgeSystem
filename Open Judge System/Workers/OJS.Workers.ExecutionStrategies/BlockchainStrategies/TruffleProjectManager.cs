@@ -32,7 +32,6 @@
         private readonly int port;
         private readonly string contractsDirectoryPath;
         private readonly string testsDirectoryPath;
-        private readonly string migrationsDirectoryPath;
         private readonly string contractsBuildDirectory;
 
         private readonly string contractBuildTemplate = $@"
@@ -85,11 +84,10 @@
             this.directoryPath = directoryPath;
             this.port = port;
 
-            var(migrationsDir, contractsDir, testsDir, contractsBuildDir) = this.CreateProjectStructure();
+            var(contractsDir, testsDir, contractsBuildDir) = this.CreateProjectStructure();
 
             this.contractsDirectoryPath = contractsDir;
             this.testsDirectoryPath = testsDir;
-            this.migrationsDirectoryPath = migrationsDir;
             this.contractsBuildDirectory = contractsBuildDir;
         }
 
@@ -133,8 +131,18 @@
                 new[] { Environment.NewLine },
                 StringSplitOptions.RemoveEmptyEntries);
 
+            if (parts.Length < 5)
+            {
+                return;
+            }
+
             var byteCode = parts[2];
             var abi = parts[4];
+
+            if (File.Exists(migrationsContractPath))
+            {
+                File.Delete(migrationsContractPath);
+            }
 
             this.CreateBuildForContract(MigrationsContractName, abi, byteCode);
         }
@@ -149,19 +157,6 @@
                     Path.Combine(this.testsDirectoryPath, testName + JavaScriptFileExtension),
                     test.Input);
             }
-        }
-
-        public string ImportSingleContract(string contractName, string sourceCode)
-        {
-            var contractPath = Path.Combine(this.contractsDirectoryPath, contractName + SolidityFileExtension);
-
-            File.WriteAllText(contractPath, sourceCode);
-
-            File.WriteAllText(
-                Path.Combine(this.migrationsDirectoryPath, ContractsDeployerFileName + JavaScriptFileExtension),
-                this.GetDeployerForContracts(new[] { contractName }));
-
-            return contractPath;
         }
 
         public void CreateBuildForContract(
@@ -199,9 +194,9 @@
                 .Replace(ContractsToDeployTemplate, string.Join(Environment.NewLine, deploys));
         }
 
-        private(string migrationsDir, string contractsDir, string testsDir, string contractsBuildDir) CreateProjectStructure()
+        private(string contractsDir, string testsDir, string contractsBuildDir) CreateProjectStructure()
         {
-            var migrationsDir = Directory.CreateDirectory(Path.Combine(this.directoryPath, MigrationsFolderName));
+            Directory.CreateDirectory(Path.Combine(this.directoryPath, MigrationsFolderName));
             var contractsDir = Directory.CreateDirectory(Path.Combine(this.directoryPath, ContractsFoldername));
             var testsDir = Directory.CreateDirectory(Path.Combine(this.directoryPath, TestsFolderName));
             var contractsBuildDir =
@@ -215,11 +210,11 @@
                 Path.Combine(contractsDir.FullName, MigrationsFileName),
                 this.migrationsContract);
 
-            File.WriteAllText(
-                Path.Combine(migrationsDir.FullName, InitialMigrationFileName + JavaScriptFileExtension),
-                this.GetDeployerForContracts(new[] { MigrationsContractName }));
+            //File.WriteAllText(
+            //    Path.Combine(migrationsDir.FullName, InitialMigrationFileName + JavaScriptFileExtension),
+            //    this.GetDeployerForContracts(new[] { MigrationsContractName }));
 
-            return (migrationsDir.FullName, contractsDir.FullName, testsDir.FullName, contractsBuildDir.FullName);
+            return (contractsDir.FullName, testsDir.FullName, contractsBuildDir.FullName);
         }
     }
 }

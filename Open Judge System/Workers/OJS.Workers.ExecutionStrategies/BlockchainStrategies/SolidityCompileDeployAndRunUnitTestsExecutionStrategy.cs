@@ -8,7 +8,6 @@
     using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Workers.Common;
-    using OJS.Workers.Compilers;
     using OJS.Workers.ExecutionStrategies;
     using OJS.Workers.Executors;
 
@@ -75,31 +74,18 @@
                 throw new ArgumentException("No valid contract is found");
             }
 
-            var truffleProject = new TruffleProjectManager(this.WorkingDirectory, this.portNumber);
-
-            var contractPath = truffleProject.ImportSingleContract(contractName, executionContext.Code);
-
             // Compile the file
-            var compilerPath = this.GetCompilerPathFunc(executionContext.CompilerType);
-            var compiler = Compiler.CreateCompiler(executionContext.CompilerType);
-
-            var compilerResult = compiler.Compile(
-                compilerPath,
-                contractPath,
-                executionContext.AdditionalCompilerArguments);
-
-            result.CompilerComment = compilerResult.CompilerComment;
-            result.IsCompiledSuccessfully = compilerResult.IsCompiledSuccessfully;
-
-            if (!result.IsCompiledSuccessfully)
+            var compilerResult = this.ExecuteCompiling(executionContext, this.GetCompilerPathFunc, result);
+            if (!compilerResult.IsCompiledSuccessfully)
             {
                 return result;
             }
 
             var(byteCode, abi) = GetByteCodeAndAbi(compilerResult.OutputFile);
 
-            truffleProject.InitializeMigration(compilerPath);
+            var truffleProject = new TruffleProjectManager(this.WorkingDirectory, this.portNumber);
 
+            truffleProject.InitializeMigration(this.GetCompilerPathFunc(executionContext.CompilerType));
             truffleProject.CreateBuildForContract(contractName, abi, byteCode);
             truffleProject.ImportJsUnitTests(executionContext.Tests);
 
@@ -116,6 +102,8 @@
                     executionContext.MemoryLimit,
                     new[] { "test" },
                     this.WorkingDirectory);
+
+                processExecutionResult.RemoveColorEncodingsFromReceivedOutput();
             }
 
             throw new NotImplementedException();

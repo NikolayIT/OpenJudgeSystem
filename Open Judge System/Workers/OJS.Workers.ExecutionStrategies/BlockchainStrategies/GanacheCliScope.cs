@@ -22,7 +22,7 @@
             string nodeJsExecutablePath,
             string ganacheNodeCliPath,
             int portNumber,
-            int accountsCount = 1)
+            int accountsCount = 10)
         {
             this.nodeJsExecutablePath = nodeJsExecutablePath;
             this.ganacheNodeCliPath = ganacheNodeCliPath;
@@ -88,6 +88,7 @@
                     if (!canReadLine)
                     {
                         errorMessage = "ganache-cli is unresponsive";
+                        break;
                     }
 
                     var outputLine = task.Result;
