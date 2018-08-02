@@ -15,6 +15,7 @@
     {
         private const string AbiFileSearchPattern = "*.abi";
         private const string ContractNameRegexPattern = @"^\s*contract\s+([A-Za-z]\w*)\s*\{";
+        private const string TestsCountRegexPattern = @"^\s*(\d+)\s{1}passing\s\(\d+\w+\)\s*((\d+)\sfailing\s*$)*";
         private readonly string nodeJsExecutablePath;
         private readonly string ganacheNodeCliPath;
         private readonly string truffleExecutablePath;
@@ -89,22 +90,31 @@
             truffleProject.CreateBuildForContract(contractName, abi, byteCode);
             truffleProject.ImportJsUnitTests(executionContext.Tests);
 
+            IExecutor executor = new StandardProcessExecutor(this.BaseTimeUsed, this.BaseMemoryUsed);
+            ProcessExecutionResult processExecutionResult;
+
             // Run in the Ethereum Virtual Machine scope
             using (new GanacheCliScope(this.nodeJsExecutablePath, this.ganacheNodeCliPath, this.portNumber))
             {
-                IExecutor executor = new StandardProcessExecutor(this.BaseTimeUsed, this.BaseMemoryUsed);
-
-                // Run tests
-                var processExecutionResult = executor.Execute(
+                // Execute tests
+                processExecutionResult = executor.Execute(
                     this.truffleExecutablePath,
                     string.Empty,
                     executionContext.TimeLimit,
                     executionContext.MemoryLimit,
                     new[] { "test" },
                     this.WorkingDirectory);
-
-                processExecutionResult.RemoveColorEncodingsFromReceivedOutput();
             }
+
+            if (!string.IsNullOrWhiteSpace(processExecutionResult.ErrorOutput))
+            {
+                throw new ArgumentException(processExecutionResult.ErrorOutput);
+            }
+
+            processExecutionResult.RemoveColorEncodingsFromReceivedOutput();
+
+            var(totalTestsCount, failingTestsCount) =
+                ExtractFailingTestsCount(processExecutionResult.ReceivedOutput);
 
             throw new NotImplementedException();
         }
@@ -122,6 +132,28 @@
             var abi = File.ReadAllText(abiFile);
 
             return (byteCode, abi);
+        }
+
+        private static(int totalTestsCount, int failingTestsCount) ExtractFailingTestsCount(string receivedOutput)
+        {
+            int totalTestsCount;
+            int failingTestsCount;
+
+            var match = Regex.Match(receivedOutput, TestsCountRegexPattern, RegexOptions.Multiline);
+
+            if (match.Success)
+            {
+                var passingTests = int.Parse(match.Groups[1].Value);
+                int.TryParse(match.Groups[3]?.Value, out failingTestsCount);
+
+                totalTestsCount = passingTests + failingTestsCount;
+            }
+            else
+            {
+                throw new ArgumentException("The process did not produce any output!");
+            }
+
+            return (totalTestsCount, failingTestsCount);
         }
     }
 }
