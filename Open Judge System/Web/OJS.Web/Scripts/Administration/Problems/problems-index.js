@@ -73,7 +73,7 @@ function initializeGrid(contestId) {
                         '<a href="/Administration/Problems/Retest/#= Id #" class="btn btn-sm btn-primary">Ретест</a>&nbsp;' +
                         '<a href="/Administration/Problems/Edit/#= Id #" class="btn btn-sm btn-primary">Промяна</a>&nbsp;' +
                         '<a href="/Administration/Problems/Delete/#= Id #" class="btn btn-sm btn-primary">Изтриване</a>&nbsp;' +
-                        '<a data-role="button" onclick="prepareCopyWindow(#=Id#, \'#=Name#\')" class="btn btn-sm btn-primary">Копиране</a></div>'
+                        '<a data-role="button" onclick="prepareCopyWindow(#=Id#, \'#=escapeSpecialSymbols(Name)#\')" class="btn btn-sm btn-primary">Копиране</a></div>'
                     }
                 ],
                 detailInit: detailInit
