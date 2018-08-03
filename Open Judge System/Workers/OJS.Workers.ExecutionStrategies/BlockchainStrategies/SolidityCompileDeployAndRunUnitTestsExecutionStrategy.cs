@@ -1,12 +1,14 @@
 ﻿namespace OJS.Workers.ExecutionStrategies.BlockchainStrategies
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
 
     using OJS.Common.Extensions;
     using OJS.Common.Models;
+    using OJS.Workers.Checkers;
     using OJS.Workers.Common;
     using OJS.Workers.ExecutionStrategies;
     using OJS.Workers.Executors;
@@ -16,6 +18,10 @@
         private const string AbiFileSearchPattern = "*.abi";
         private const string ContractNameRegexPattern = @"^\s*contract\s+([A-Za-z]\w*)\s*\{";
         private const string TestsCountRegexPattern = @"^\s*(\d+)\s{1}passing\s\(\d+\w+\)\s*((\d+)\sfailing\s*$)*";
+        private const string TestCasesIndexPattern = @"(^\s*√)|^(\s*\d+\))";
+        private const string FailingTestsSearchPattern =
+            @"^[^\r?\n]\s*(\d+)\)\sContract:\s(.+)\r?\n(.*\s*.*):\s+([^:]+):(.*\s*.*)";
+
         private readonly string nodeJsExecutablePath;
         private readonly string ganacheNodeCliPath;
         private readonly string truffleExecutablePath;
@@ -116,7 +122,76 @@
             var(totalTestsCount, failingTestsCount) =
                 ExtractFailingTestsCount(processExecutionResult.ReceivedOutput);
 
-            throw new NotImplementedException();
+            if (totalTestsCount != executionContext.Tests.Count())
+            {
+                throw new ArgumentException("Some of the imported tests contains more than one test per test case");
+            }
+
+            var errorsByTestCases = GetErrorsByTestCases(processExecutionResult.ReceivedOutput);
+
+            if (errorsByTestCases.Count != failingTestsCount)
+            {
+                throw new ArgumentException("Failing tests not captured properly, please contact an administrator");
+            }
+
+            var checker = Checker.CreateChecker(
+                executionContext.CheckerAssemblyName,
+                executionContext.CheckerTypeName,
+                executionContext.CheckerParameter);
+
+            var testCounter = 1;
+            foreach (var test in executionContext.Tests)
+            {
+                var message = "Test Passed!";
+                var testNumber = testCounter++;
+                if (errorsByTestCases.ContainsKey(testNumber))
+                {
+                    message = errorsByTestCases[testNumber];
+                }
+
+                var testResult = this.ExecuteAndCheckTest(test, processExecutionResult, checker, message);
+                result.TestResults.Add(testResult);
+            }
+
+            return result;
+        }
+
+        private static Dictionary<int, string> GetErrorsByTestCases(string receivedOutput)
+        {
+            var errorsByTestNumber = new Dictionary<int, string>();
+            var errorRegex = new Regex(FailingTestsSearchPattern, RegexOptions.Multiline);
+            var errorMessasges = errorRegex.Matches(receivedOutput)
+                .Cast<Match>()
+                .Select(error =>
+                {
+                    var failedAssert = error.Groups[3].Value;
+                    var cause = error.Groups[5].Value;
+                    return $"{failedAssert} : {cause}".ToSingleLine();
+                })
+                .ToArray();
+
+            var allTestsPart = Regex.Split(receivedOutput, TestsCountRegexPattern, RegexOptions.Multiline)[0];
+            var allTestOutputs = Regex.Matches(allTestsPart, TestCasesIndexPattern, RegexOptions.Multiline);
+
+            var testNumber = 1;
+            foreach (Match match in allTestOutputs)
+            {
+                if (!string.IsNullOrWhiteSpace(match.Groups[2].Value))
+                {
+                    // Is failing test
+                    errorsByTestNumber.Add(testNumber, string.Empty);
+                }
+
+                testNumber++;
+            }
+
+            var counter = 0;
+            foreach (var key in errorsByTestNumber.Keys.ToList())
+            {
+                errorsByTestNumber[key] = errorMessasges[counter++];
+            }
+
+            return errorsByTestNumber;
         }
 
         private static(string byteCode, string abi) GetByteCodeAndAbi(string compilerResultOutputFile)
