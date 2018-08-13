@@ -18,9 +18,8 @@
         private const string AbiFileSearchPattern = "*.abi";
         private const string ContractNameRegexPattern = @"^\s*contract\s+([A-Za-z]\w*)\s*\{";
         private const string TestsCountRegexPattern = @"^\s*(\d+)\s{1}passing\s\(\d+\w+\)\s*((\d+)\sfailing\s*$)*";
-        private const string TestCasesIndexPattern = @"(^\s*√)|^(\s*\d+\))";
-        private const string FailingTestsSearchPattern =
-            @"^[^\r?\n]\s*(\d+)\)\sContract:\s(.+)\r?\n(.*\s*.*):\s+([^:]+):(.*\s*.*)";
+        private const string TestNamesSearchPattern = @"it\((""|')(.+)(?:\1)(?=\s*,)";
+        private const string FailingTestsSearchPattern = @"^[^\r?\n]\s*\d+\)\sContract:\s[^\s]+\r?\n";
 
         private readonly string nodeJsExecutablePath;
         private readonly string ganacheNodeCliPath;
@@ -67,14 +66,17 @@
 
         protected Func<CompilerType, string> GetCompilerPathFunc { get; }
 
+        private IList<string> TestNames { get; } = new List<string>();
+
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {
             var result = new ExecutionResult();
 
+            this.ExtractTestNames(executionContext.Tests);
+
             var contractName = Regex
                 .Match(executionContext.Code, ContractNameRegexPattern, RegexOptions.Multiline)
-                ?.Groups[1]
-                ?.Value;
+                ?.Groups[1]?.Value;
 
             if (string.IsNullOrEmpty(contractName))
             {
@@ -124,14 +126,15 @@
 
             if (totalTestsCount != executionContext.Tests.Count())
             {
-                throw new ArgumentException("Some of the imported tests contains more than one test per test case");
+                throw new ArgumentException(
+                    "Some of the tests contain more than one test per test case. Plase contact an administrator");
             }
 
-            var errorsByTestCases = GetErrorsByTestCases(processExecutionResult.ReceivedOutput);
+            var errorsByTestNames = this.GetErrorsByTestNames(processExecutionResult.ReceivedOutput);
 
-            if (errorsByTestCases.Count != failingTestsCount)
+            if (errorsByTestNames.Count != failingTestsCount)
             {
-                throw new ArgumentException("Failing tests not captured properly, please contact an administrator");
+                throw new ArgumentException("Failing tests not captured properly. Please contact an administrator");
             }
 
             var checker = Checker.CreateChecker(
@@ -139,14 +142,14 @@
                 executionContext.CheckerTypeName,
                 executionContext.CheckerParameter);
 
-            var testCounter = 1;
+            var testsCounter = 0;
             foreach (var test in executionContext.Tests)
             {
                 var message = "Test Passed!";
-                var testNumber = testCounter++;
-                if (errorsByTestCases.ContainsKey(testNumber))
+                var testName = this.TestNames[testsCounter++];
+                if (errorsByTestNames.ContainsKey(testName))
                 {
-                    message = errorsByTestCases[testNumber];
+                    message = errorsByTestNames[testName];
                 }
 
                 var testResult = this.ExecuteAndCheckTest(test, processExecutionResult, checker, message);
@@ -154,44 +157,6 @@
             }
 
             return result;
-        }
-
-        private static Dictionary<int, string> GetErrorsByTestCases(string receivedOutput)
-        {
-            var errorsByTestNumber = new Dictionary<int, string>();
-            var errorRegex = new Regex(FailingTestsSearchPattern, RegexOptions.Multiline);
-            var errorMessasges = errorRegex.Matches(receivedOutput)
-                .Cast<Match>()
-                .Select(error =>
-                {
-                    var failedAssert = error.Groups[3].Value;
-                    var cause = error.Groups[5].Value;
-                    return $"{failedAssert} : {cause}".ToSingleLine();
-                })
-                .ToArray();
-
-            var allTestsPart = Regex.Split(receivedOutput, TestsCountRegexPattern, RegexOptions.Multiline)[0];
-            var allTestOutputs = Regex.Matches(allTestsPart, TestCasesIndexPattern, RegexOptions.Multiline);
-
-            var testNumber = 1;
-            foreach (Match match in allTestOutputs)
-            {
-                if (!string.IsNullOrWhiteSpace(match.Groups[2].Value))
-                {
-                    // Is failing test
-                    errorsByTestNumber.Add(testNumber, string.Empty);
-                }
-
-                testNumber++;
-            }
-
-            var counter = 0;
-            foreach (var key in errorsByTestNumber.Keys.ToList())
-            {
-                errorsByTestNumber[key] = errorMessasges[counter++];
-            }
-
-            return errorsByTestNumber;
         }
 
         private static(string byteCode, string abi) GetByteCodeAndAbi(string compilerResultOutputFile)
@@ -229,6 +194,57 @@
             }
 
             return (totalTestsCount, failingTestsCount);
+        }
+
+        private Dictionary<string, string> GetErrorsByTestNames(string receivedOutput)
+        {
+            var errorsByTestNames = new Dictionary<string, string>();
+
+            var errorMessages = Regex
+                .Split(receivedOutput, FailingTestsSearchPattern, RegexOptions.Multiline)
+                .Skip(1);
+
+            foreach (var errorMessage in errorMessages)
+            {
+                foreach (var testName in this.TestNames)
+                {
+                    if (!errorMessage.Contains(testName))
+                    {
+                        continue;
+                    }
+
+                    if (errorsByTestNames.ContainsKey(testName))
+                    {
+                        throw new ArgumentException("Tests with the same name found. Plase contact an administrator.");
+                    }
+
+                    var message = errorMessage
+                        .Substring(errorMessage.IndexOf(testName, StringComparison.Ordinal))
+                        .RemoveMultipleSpaces()
+                        .ToSingleLine();
+
+                    errorsByTestNames.Add(testName, message);
+                    break;
+                }
+            }
+
+            return errorsByTestNames;
+        }
+
+        private void ExtractTestNames(IEnumerable<TestContext> tests)
+        {
+            foreach (var test in tests)
+            {
+                var testNameMatch = Regex.Match(test.Input, TestNamesSearchPattern);
+                var testName = testNameMatch.Groups[2]?.Value;
+
+                if (!testNameMatch.Success || string.IsNullOrWhiteSpace(testName))
+                {
+                    throw new ArgumentException($"Test with Id: {test.Id} is invalid. Plase contact an administrator");
+                }
+
+                this.TestNames.Add(testName);
+            }
         }
     }
 }
