@@ -106,6 +106,15 @@ namespace Resources.Areas.Contests.Views.Partials {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Max result for every problem group.
+        /// </summary>
+        public static string Max_result_for_problem_group {
+            get {
+                return ResourceManager.GetString("Max_result_for_problem_group", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Max result for every task.
         /// </summary>
         public static string Max_result_for_task {
