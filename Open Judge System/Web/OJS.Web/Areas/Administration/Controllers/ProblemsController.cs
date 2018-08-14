@@ -239,7 +239,7 @@
                     {
                         new SystemMessage
                         {
-                            Content = ex.Message,
+                            Content = string.Format(GlobalResource.Tests_cannot_be_improrted, ex.Message),
                             Type = SystemMessageType.Error,
                             Importance = 0
                         }
