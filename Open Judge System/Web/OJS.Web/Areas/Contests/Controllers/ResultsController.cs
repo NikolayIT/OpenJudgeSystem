@@ -345,7 +345,7 @@
 
             var contestResults = this.GetContestResults(contest, official, true, true);
 
-            var maxResult = contestResults.Problems.Sum(p => p.MaximumPoints);
+            var maxResult = this.contestsData.GetMaxPointsById(contest.Id);
 
             var participantsCount = contestResults.Results.Count();
             var statsModel = new ContestStatsViewModel
@@ -384,6 +384,11 @@
                 else
                 {
                     toPoints += problem.MaximumPoints;
+                }
+
+                if (toPoints > maxResult)
+                {
+                    continue;
                 }
 
                 var participantsInPointsRange = contestResults.Results.Count(r => r.Total >= fromPoints && r.Total <= toPoints);
