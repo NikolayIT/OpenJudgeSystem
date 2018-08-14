@@ -34,6 +34,7 @@
     using OJS.Web.Areas.Contests.ViewModels.Participants;
     using OJS.Web.Areas.Contests.ViewModels.Results;
     using OJS.Web.Areas.Contests.ViewModels.Submissions;
+    using OJS.Web.Common.Attributes;
     using OJS.Web.Common.Extensions;
     using OJS.Web.Controllers;
 
@@ -155,6 +156,7 @@
         /// Users only.
         /// </summary>
         [Authorize]
+        [DisableCache]
         public ActionResult Index(int id, bool official, bool? hasConfirmed)
         {
             var contest = this.contestsData.GetById(id);

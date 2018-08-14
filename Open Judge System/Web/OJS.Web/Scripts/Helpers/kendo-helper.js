@@ -1,5 +1,8 @@
 ﻿function escapeSpecialSymbols(text) {
-    return text.replace('#', '\\#');
+    return text
+        .replace(/#/g, '\\#')
+        .replace(/'/g, '\\\'')
+        .replace(/"/g, '&quot;');
 }
 
 function encodeSpecialSymbols(text) {
