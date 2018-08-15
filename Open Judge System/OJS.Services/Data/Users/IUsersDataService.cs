@@ -7,11 +7,11 @@
 
     public interface IUsersDataService : IService
     {
-        UserProfile GetByIdIncludingDeleted(string userId);
-
         UserProfile GetById(string userId);
 
         IQueryable<UserProfile> GetAll();
+
+        IQueryable<UserProfile> GetAllWithDeleted();
 
         void DeleteById(string id);
     }

@@ -15,8 +15,7 @@
 <div class="administration-container">
     <h1>@ViewBag.Title</h1>
 
-    @(Html.Kendo()
-        .Grid<OJS.Web.Areas.Administration.ViewModels.Contest.ContestAdministrationViewModel>()
+    @(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.Contest.ContestAdministrationViewModel>()
         .Name("DataGrid")
         .Columns(columns =>
         {

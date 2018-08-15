@@ -1763,6 +1763,7 @@
     <Compile Include="Areas\Administration\ViewModels\Contest\IpAdministrationViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Contest\TransferParticipantsViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\ExamGroups\ExamGroupAdministrationViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\ExamGroups\BulkAddUsersToExamGroupViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\LecturersInContestCategories\LecturerInContestCategoryShortViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Lecturers\LecturerGridViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\LecturersInContests\LecturerInContestShortViewModel.cs" />
@@ -2382,6 +2383,7 @@
     <Content Include="Scripts\Administration\Contests\contest-search.js" />
     <Content Include="Scripts\Administration\Contests\contests-helper.js" />
     <Content Include="Scripts\Administration\Contests\contests-index.js" />
+    <Content Include="Scripts\Administration\ExamGroups\exam-groups-index.js" />
     <Content Include="Scripts\Administration\ProblemGroups\problem-groups-index.js" />
     <Content Include="Scripts\Administration\Problems\problems-create.js" />
     <Content Include="Scripts\Administration\Problems\problems-edit.js" />
@@ -2520,6 +2522,7 @@
     <Content Include="Content\PublicFiles\SoftUni-Judge-System-Guidelines-en.pdf" />
     <Content Include="Areas\Administration\Views\Shared\_CopyProblemToAnotherContest.cshtml" />
     <Content Include="Areas\Administration\Views\Problems\EditorTemplates\ProblemGroupsCascadeDropDown.cshtml" />
+    <Content Include="Areas\Administration\Views\ExamGroups\_BulkAddUsersToExamGroup.cshtml" />
     <None Include="Properties\PublishProfiles\Dev Suls Judge System.pubxml" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Properties\PublishProfiles\Suls Judge System.pubxml" />

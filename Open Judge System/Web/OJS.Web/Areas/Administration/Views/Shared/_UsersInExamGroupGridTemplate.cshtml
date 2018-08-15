@@ -6,9 +6,7 @@
 }
 
 <script type="text/x-kendo-template" id="_UsersInExamGroupGridTemplate">
-    @(Html
-        .Kendo()
-        .Grid<OJS.Web.Areas.Administration.ViewModels.User.UserProfileSimpleAdministrationViewModel>()
+    @(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.User.UserProfileSimpleAdministrationViewModel>()
         .Name("UsersInExamGroup_#=Id#")
         .Columns(columns =>
         {
@@ -21,6 +19,10 @@
         .ToolBar(toolbar =>
         {
             toolbar.Create().Text(Resource.Add_user);
+            toolbar.Custom()
+                .Text("<span class='k-icon k-add'></span>" + Resource.Bulk_add_users)
+                .Url("javascript:bulkAddUsersManager.init(#=Id#)")
+                .Name("bulk-add-users-buton");
         })
         .Editable(editable =>
         {
@@ -45,5 +47,19 @@
                 .Events(ev => ev.Error("validateModelStateErrors"));
         })
         .Events(ev => ev.DataBound("onDetailDataBound"))
-        .ToClientTemplate())
+        .ToClientTemplate()
+    )
+    
+    @(Html.Kendo().Window()
+        .Name("BulkAddUsersPopUpWindow_#=Id#")
+        .Title(Resource.Bulk_add_users)
+        .Draggable()
+        .Resizable()
+        .Modal(true)
+        .Width(640)
+        .LoadContentFrom("/Administration/ExamGroups/BulkAddUsersPartial/#=Id#?name=#=encodeSpecialSymbols(Name)#")
+        .Visible(false)
+        .Actions(actions => actions.Close())
+        .ToClientTemplate()
+    )
 </script>

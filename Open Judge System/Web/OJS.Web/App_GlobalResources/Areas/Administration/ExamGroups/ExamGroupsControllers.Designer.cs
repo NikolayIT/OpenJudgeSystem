@@ -96,5 +96,14 @@ namespace Resources.Areas.Administration.ExamGroups {
                 return ResourceManager.GetString("Cannot_remove_users", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Users were added successfully to the exam group..
+        /// </summary>
+        public static string Users_added {
+            get {
+                return ResourceManager.GetString("Users_added", resourceCulture);
+            }
+        }
     }
 }

@@ -9,23 +9,23 @@
 @(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.SubmissionType.SubmissionTypeAdministrationViewModel>()
     .Name("DataGrid")
     .Columns(columns =>
-        {
-                    columns.Bound(col => col.Id);
-                    columns.Bound(col => col.Name);
-                    columns.Bound(col => col.IsSelectedByDefault).Hidden();
-                    columns.Bound(col => col.ExecutionStrategyType);
-                    columns.Bound(col => col.CompilerType);
-                    columns.Bound(col => col.AdditionalCompilerArguments).Hidden();
-                    columns.Bound(col => col.Description).Hidden();
-                    columns.Bound(col => col.AllowBinaryFilesUpload).Hidden();
-                    columns.Bound(col => col.AllowedFileExtensions).Hidden();
-            columns.Command(command => command.Edit().Text(" ").UpdateText(GeneralResource.Change).CancelText(GeneralResource.Cancel)).Width(80);
-            columns.Command(command => command.Destroy().Text(" ")).Width(80);
-        })
+    {
+        columns.Bound(col => col.Id);
+        columns.Bound(col => col.Name);
+        columns.Bound(col => col.IsSelectedByDefault).Hidden();
+        columns.Bound(col => col.ExecutionStrategyType);
+        columns.Bound(col => col.CompilerType);
+        columns.Bound(col => col.AdditionalCompilerArguments).Hidden();
+        columns.Bound(col => col.Description).Hidden();
+        columns.Bound(col => col.AllowBinaryFilesUpload).Hidden();
+        columns.Bound(col => col.AllowedFileExtensions).Hidden();
+        columns.Command(command => command.Edit().Text(" ").UpdateText(GeneralResource.Change).CancelText(GeneralResource.Cancel)).Width(80);
+        columns.Command(command => command.Destroy().Text(" ")).Width(80);
+    })
     .ToolBar(toolbar =>
     {
         toolbar.Create().Text(GeneralResource.Create);
-        toolbar.Custom().Text(GeneralResource.Back_to_navigation).Action("Navigation", "Administration", new { Area = "" }).Name("custom-toolbar-button");
+        toolbar.Custom().Text(GeneralResource.Back_to_navigation).Action("Index", "Navigation", new { Area = GlobalConstants.AdministrationAreaName }).Name("custom-toolbar-button");
         toolbar.Custom().Text(GeneralResource.Export_to_excel).Name("custom-toolbar-button").HtmlAttributes(new { id = "export" }).Url(Url.Action("ExportToExcel", ControllerName, new { page = 1, pageSize = "~", filter = "!!", sort = "~" }));
     })
     .Editable(editable =>
