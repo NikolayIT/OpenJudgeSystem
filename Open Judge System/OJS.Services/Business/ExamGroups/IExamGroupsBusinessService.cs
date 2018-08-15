@@ -6,8 +6,12 @@
     {
         void AddUsersByIdAndUserIds(int id, IEnumerable<string> userIds);
 
+        void AddUsersByIdAndUsernames(int id, IEnumerable<string> usernames);
+
         void RemoveUsersByIdAndUserIds(int id, IEnumerable<string> userIds);
 
-        void AddExternalUserByIdAndUser(int id, string userId);
+        void AddExternalUsersByIdAndUserIds(int id, IEnumerable<string> userIds);
+
+        void AddExternalUsersByIdAndUsernames(int id, IEnumerable<string> usernames);
     }
 }

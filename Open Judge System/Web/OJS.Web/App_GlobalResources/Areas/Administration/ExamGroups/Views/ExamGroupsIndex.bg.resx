@@ -117,8 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Add_external_users_delay_message" xml:space="preserve">
+    <value>Потребители, които са регистрирани само в &lt;a href="{0}" target="_blank"&gt;платформата на СофтУни&lt;/a&gt;, ще бъдат добавени със забавяне</value>
+  </data>
   <data name="Add_user" xml:space="preserve">
     <value>Добави потребител</value>
+  </data>
+  <data name="Add_users_description" xml:space="preserve">
+    <value>Въведете имената на потребителите, които искате да добавите, разделени със запетая, празно място или нов ред</value>
+  </data>
+  <data name="Bulk_add_users" xml:space="preserve">
+    <value>Добави множество потребители</value>
   </data>
   <data name="Cannot_manipulate_users" xml:space="preserve">
     <value>Не може да добавяте или премахвате потребители от група, която няма състезание</value>

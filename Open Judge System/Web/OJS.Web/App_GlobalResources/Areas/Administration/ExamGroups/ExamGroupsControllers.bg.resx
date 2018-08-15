@@ -129,4 +129,7 @@
   <data name="Cannot_remove_users" xml:space="preserve">
     <value>Не може да премахвате потребители от група за изпит, която не е прикачена към състезание.</value>
   </data>
+  <data name="Users_added" xml:space="preserve">
+    <value>Потребителите бяха добавени успешно в групата за изпит.</value>
+  </data>
 </root>

@@ -1,19 +1,25 @@
 ﻿namespace OJS.Web.Areas.Administration.Controllers
 {
+    using System;
     using System.Collections;
     using System.Data.Entity;
     using System.Linq;
+    using System.Text.RegularExpressions;
     using System.Web.Mvc;
 
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
 
+    using OJS.Common;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Services.Business.ExamGroups;
     using OJS.Services.Data.Contests;
     using OJS.Services.Data.ExamGroups;
     using OJS.Services.Data.Users;
     using OJS.Web.Areas.Administration.Controllers.Common;
+    using OJS.Web.Areas.Administration.ViewModels.ExamGroups;
+    using OJS.Web.Common.Attributes;
     using OJS.Web.Common.Extensions;
 
     using DetailModelType = OJS.Web.Areas.Administration.ViewModels.User.UserProfileSimpleAdministrationViewModel;
@@ -26,17 +32,20 @@
         private readonly IExamGroupsDataService examGroupsData;
         private readonly IUsersDataService usersData;
         private readonly IContestsDataService contestsData;
+        private readonly IExamGroupsBusinessService examGroupsBusiness;
 
         public ExamGroupsController(
             IOjsData data,
             IExamGroupsDataService examGroupsData,
             IUsersDataService usersData,
-            IContestsDataService contestsData)
+            IContestsDataService contestsData,
+            IExamGroupsBusinessService examGroupsBusiness)
             : base(data)
         {
             this.examGroupsData = examGroupsData;
             this.usersData = usersData;
             this.contestsData = contestsData;
+            this.examGroupsBusiness = examGroupsBusiness;
         }
 
         public ActionResult Index() => this.View();
@@ -205,6 +214,35 @@
             };
 
             return this.Json(new[] { result }.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+        }
+
+        [AjaxOnly]
+        public ActionResult BulkAddUsersPartial(int id, string name) =>
+            this.PartialView("_BulkAddUsersToExamGroup", new BulkAddUsersToExamGroupViewModel(id, name));
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult BulkAddUsersToExamGroup(BulkAddUsersToExamGroupViewModel model)
+        {
+            var contestId = this.examGroupsData.GetContestIdById(model.ExamGroupId);
+
+            if (!contestId.HasValue)
+            {
+                return this.JsonError(Resource.Cannot_add_users);
+            }
+
+            if (!this.UserHasContestRights(contestId.Value))
+            {
+                return this.JsonError(GeneralResource.No_privileges_message);
+            }
+
+            var usernames = (model.UserNamesText ?? string.Empty)
+                .Split(new[] { ",", " ", Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
+                .Where(username => Regex.IsMatch(username, GlobalConstants.UsernameRegEx));
+
+            this.examGroupsBusiness.AddUsersByIdAndUsernames(model.ExamGroupId, usernames);
+
+            return this.JsonSuccess(Resource.Users_added);
         }
 
         public override string GetEntityKeyName() => this.GetEntityKeyNameByType(typeof(ExamGroup));

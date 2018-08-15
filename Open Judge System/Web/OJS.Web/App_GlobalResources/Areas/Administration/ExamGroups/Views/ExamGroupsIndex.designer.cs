@@ -62,6 +62,15 @@ namespace Resources.Areas.Administration.ExamGroups.Views {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Users which are registered only in the &lt;a href=&quot;{0}&quot; target=&quot;_blank&quot;&gt;SoftUni platform&lt;/a&gt;, will be added with delay.
+        /// </summary>
+        public static string Add_external_users_delay_message {
+            get {
+                return ResourceManager.GetString("Add_external_users_delay_message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add user.
         /// </summary>
         public static string Add_user {
@@ -71,7 +80,25 @@ namespace Resources.Areas.Administration.ExamGroups.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You cannot add ot remove users from exam group that does not have a contest.
+        ///   Looks up a localized string similar to Enter the usernames of the users you want to add, separated by comma, space or new line.
+        /// </summary>
+        public static string Add_users_description {
+            get {
+                return ResourceManager.GetString("Add_users_description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add multiple users.
+        /// </summary>
+        public static string Bulk_add_users {
+            get {
+                return ResourceManager.GetString("Bulk_add_users", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You cannot add or remove users from exam group that does not have a contest.
         /// </summary>
         public static string Cannot_manipulate_users {
             get {

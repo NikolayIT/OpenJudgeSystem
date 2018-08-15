@@ -35,7 +35,7 @@
     using OJS.Web.Common;
     using OJS.Web.Common.Extensions;
     using OJS.Web.Common.ZippedTestManipulator;
-
+    using static OJS.Web.Common.WebConstants;
     using GeneralResource = Resources.Areas.Administration.AdministrationGeneral;
     using Resource = Resources.Areas.Administration.Tests.TestsControllers;
 
@@ -659,24 +659,28 @@
 
                 foreach (var test in tests)
                 {
+                    var inputTestName = $"test.{testCounter:D3}{TestInputTxtFileExtension}";
+                    var outputTestName = $"test.{testCounter:D3}{TestOutputTxtFileExtension}";
+
                     if (test.IsTrialTest)
                     {
-                        zipFile.AddEntry($"test.000.{trialTestCounter:D3}.in.txt", test.InputDataAsString, Encoding.UTF8);
-                        zipFile.AddEntry($"test.000.{trialTestCounter:D3}.out.txt", test.OutputDataAsString, Encoding.UTF8);
+                        inputTestName = $"test{ZeroTestStandardSignature}{trialTestCounter:D3}{TestInputTxtFileExtension}";
+                        outputTestName = $"test{ZeroTestStandardSignature}{trialTestCounter:D3}{TestOutputTxtFileExtension}";
                         trialTestCounter++;
                     }
                     else if (test.IsOpenTest)
                     {
-                        zipFile.AddEntry($"test.open.{openTestCounter:D3}.in.txt", test.InputDataAsString, Encoding.UTF8);
-                        zipFile.AddEntry($"test.open.{openTestCounter:D3}.out.txt", test.OutputDataAsString, Encoding.UTF8);
+                        inputTestName = $"test{OpenTestStandardSignature}{openTestCounter:D3}{TestInputTxtFileExtension}";
+                        outputTestName = $"test{OpenTestStandardSignature}{openTestCounter:D3}{TestOutputTxtFileExtension}";
                         openTestCounter++;
                     }
                     else
                     {
-                        zipFile.AddEntry($"test.{testCounter:D3}.in.txt", test.InputDataAsString, Encoding.UTF8);
-                        zipFile.AddEntry($"test.{testCounter:D3}.out.txt", test.OutputDataAsString, Encoding.UTF8);
                         testCounter++;
                     }
+
+                    zipFile.AddEntry(inputTestName, test.InputDataAsString, Encoding.UTF8);
+                    zipFile.AddEntry(outputTestName, test.OutputDataAsString, Encoding.UTF8);
                 }
             }
 

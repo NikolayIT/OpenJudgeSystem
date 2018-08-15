@@ -87,6 +87,10 @@
         public const string ZipFileExtension = ".zip";
         public const string ExecutableFileExtension = ".exe";
         public const string ClassLibraryFileExtension = ".dll";
+        public const string TxtFileExtension = ".txt";
+        public const string SolFileExtension = ".sol";
+        public const string InputFileExtension = ".in";
+        public const string OutputFileExtension = ".out";
         public const string SolidityFileExtension = ".sol";
         public const string JavaScriptFileExtension = ".js";
         public const string JsonFileExtension = ".json";

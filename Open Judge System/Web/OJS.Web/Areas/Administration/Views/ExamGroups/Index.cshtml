@@ -9,15 +9,13 @@
 }
 
 @section Styles{
-    @Styles.Render("~/Content/css/administration/administration-styles.css")
+    @Styles.Render("~/Content/administration/examGroups/index")
 }
 
 <div class="administration-container">
     <h1>@ViewBag.Title</h1>
 
-    @(Html
-        .Kendo()
-        .Grid<OJS.Web.Areas.Administration.ViewModels.ExamGroups.ExamGroupAdministrationViewModel>()
+    @(Html.Kendo().Grid<OJS.Web.Areas.Administration.ViewModels.ExamGroups.ExamGroupAdministrationViewModel>()
         .Name("DataGrid")
         .Columns(columns =>
         {
@@ -32,7 +30,7 @@
         .ToolBar(toolbar =>
         {
             toolbar.Create().Text(GeneralResource.Create);
-            toolbar.Custom().Text(GeneralResource.Back_to_navigation).Action("Index", "Navigation", new { area = "Administration" }).Name("custom-toolbar-button");
+            toolbar.Custom().Text(GeneralResource.Back_to_navigation).Action("Index", "Navigation", new { area = GlobalConstants.AdministrationAreaName }).Name("custom-toolbar-button");
         })
         .Editable(editable =>
         {
@@ -70,16 +68,6 @@
 </div>
 
 <script type="text/javascript">
-    function onEdit() {
-        $('.k-edit-form-container').css('width', '100%');
-        $('.editor-label').css('width', '10%');
-        $('.editor-field').css('width', '80%');
-
-        $('#ContestId').change(function () {
-            $('#ContestName').val($('#ContestId_option_selected').text()).change();
-        });
-    }
-
     function onDetailExpand(e) {
         var contestName = $(e.masterRow[0].cells)
             .filter(function(i, cell) {
@@ -90,36 +78,20 @@
             .text();
 
         if (contestName === '') {
-            var addButton = $(e.detailRow).find('.k-grid-add').last();
-            disabableKendoButtons(addButton);
+            var addButtons = $(e.detailRow).find($('.k-grid-bulk-add-users-buton, .k-grid-add'));
+            disableKendoButtons(addButtons);
 
             var message = $(e.detailRow).find('.cannot-add-remove-users');
             if (message.length) {
                 message.show();
             } else {
-                addButton.after('<span class="cannot-add-remove-users">' +
+                addButtons.last().after('<span class="cannot-add-remove-users">' +
                     '<span class="glyphicon glyphicon-exclamation-sign"></span> @Resource.Cannot_manipulate_users</span>');
             }
         }
     }
-
-    function onDetailDataBound() {
-        var detailsGrid = $('#' + this.element.attr("id"));
-        var isAddButtonDisabled = detailsGrid.find('.k-grid-add.k-state-disabled').length >= 1;
-        if (isAddButtonDisabled) {
-            var deleteButtons = $('#' + this.element.attr("id")).find('.k-button.k-grid-delete');
-            disabableKendoButtons(deleteButtons);
-        }
-    }
-
-    function disabableKendoButtons(buttons) {
-        buttons.kendoButton({
-            enable: false
-        });
-
-        buttons.css({
-            'pointer-events': 'none',
-            cursor: 'default'
-        });
-    }
 </script>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/exam-groups-index")
+}

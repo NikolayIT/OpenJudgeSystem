@@ -63,6 +63,10 @@
                 "~/Scripts/Administration/Contests/contests-index.js",
                 "~/Scripts/Administration/Contests/contests-helper.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/exam-groups-index").Include(
+                "~/Scripts/Administration/ExamGroups/exam-groups-index.js",
+                "~/Scripts/Helpers/kendo-helper.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/list-categories").Include(
                 "~/Scripts/Contests/list-categories-page.js"));
         }
@@ -107,6 +111,10 @@
 
             bundles.Add(new StyleBundle("~/Content/administration/problems/index").Include(
                 "~/Content/css/administration/problems/problems-index.css"));
+
+            bundles.Add(new StyleBundle("~/Content/administration/examGroups/index").Include(
+                "~/Content/css/administration/administration-styles.css",
+                "~/Content/css/common/loading-mask.css"));
         }
     }
 }

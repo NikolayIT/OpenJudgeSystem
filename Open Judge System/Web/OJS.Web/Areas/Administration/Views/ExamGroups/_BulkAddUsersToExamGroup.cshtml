@@ -1,0 +1,43 @@
+﻿@using OJS.Web
+@using OJS.Web.Areas.Administration.Controllers
+@using OJS.Web.Areas.Administration.ViewModels.ExamGroups
+
+@using Resource = Resources.Areas.Administration.ExamGroups.Views.ExamGroupsIndex
+@using GeneralResource = Resources.Areas.Administration.AdministrationGeneral
+
+@model BulkAddUsersToExamGroupViewModel
+
+<h4>@Model.ExamGroupName</h4>
+
+@using (Ajax.BeginForm<ExamGroupsController>(
+    c => c.BulkAddUsersToExamGroup((BulkAddUsersToExamGroupViewModel)null),
+    FormMethod.Post,
+    new AjaxOptions
+    {
+        OnSuccess = "bulkAddUsersManager.onFormSuccess",
+        OnFailure = "bulkAddUsersManager.onFormFailure"
+    }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.ExamGroupId)
+
+    <div class="form-group">
+        @Html.Label(Resource.Add_users_description)
+        <div>
+            @Html.TextAreaFor(m => m.UserNamesText, new { rows = 20, cols = 75 })
+        </div>
+    </div>
+
+    <div>
+        <button  class="k-button"><span class="k-icon k-update"></span>@GeneralResource.Add</button>
+        <a href="#" class="k-button kendo-window-cancel-btn"><span class="k-icon k-cancel"></span>@GeneralResource.Cancel</a>
+    </div>
+
+    <hr />
+    <p class="text-center">
+        <span class="glyphicon glyphicon-info-sign"></span>
+        @Html.Raw(string.Format(Resource.Add_external_users_delay_message, Settings.SulsPlatformBaseUrl))
+    </p>
+}
+
+@Html.Partial("_LoadingMask", "bulk-add-users-loading-mask")
