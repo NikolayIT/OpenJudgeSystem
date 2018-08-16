@@ -272,11 +272,11 @@
                     executionStrategy = new SolidityCompileDeployAndRunUnitTestsExecutionStrategy(
                         GetCompilerPath,
                         Settings.NodeJsExecutablePath,
-                        Settings.GanacheNodeCliPath,
-                        Settings.TruffleCliExecutablePath,
+                        Settings.GanacheCliNodeExecutablePath,
+                        Settings.TruffleCliNodeExecutablePath,
                         portNumber,
-                        default(int),
-                        default(int));
+                        Settings.SolidityBaseTimeUsedInMilliseconds,
+                        Settings.SolidityBaseMemoryUsedInBytes);
                     break;
                 case ExecutionStrategyType.SqlServerLocalDbPrepareDatabaseAndRunQueries:
                     executionStrategy = new SqlServerLocalDbPrepareDatabaseAndRunQueriesExecutionStrategy(

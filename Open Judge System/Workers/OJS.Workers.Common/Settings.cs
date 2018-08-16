@@ -83,9 +83,9 @@
 
         public static string PhpCliExecutablePath => GetSetting("PhpCliExecutablePath");
 
-        public static string GanacheNodeCliPath => GetSetting("GanacheNodeCliPath");
+        public static string GanacheCliNodeExecutablePath => GetSetting("GanacheCliNodeExecutablePath");
 
-        public static string TruffleCliExecutablePath => GetSetting("TruffleCliExecutablePath");
+        public static string TruffleCliNodeExecutablePath => GetSetting("TruffleCliNodeExecutablePath");
 
         public static string SqlServerLocalDbMasterDbConnectionString => GetSetting("SqlServerLocalDbMasterDbConnectionString");
 
@@ -143,6 +143,10 @@
         public static int PythonBaseTimeUsedInMilliseconds => GetSettingOrDefault("PythonBaseTimeUsedInMilliseconds", 0);
 
         public static int PythonBaseMemoryUsedInBytes => GetSettingOrDefault("PythonBaseMemoryUsedInBytes", 0);
+
+        public static int SolidityBaseTimeUsedInMilliseconds => GetSettingOrDefault("SolidityBaseTimeUsedInMilliseconds", 0);
+
+        public static int SolidityBaseMemoryUsedInBytes => GetSettingOrDefault("SolidityBaseMemoryUsedInBytes", 0);
 
         // Compiler exit time out multipliers
         public static int CPlusPlusCompilerProcessExitTimeOutMultiplier => GetSettingOrDefault("CPlusPlusCompilerProcessExitTimeOutMultiplier", 1);

@@ -16,21 +16,20 @@
 
     public class SolidityCompileDeployAndRunUnitTestsExecutionStrategy : ExecutionStrategy
     {
-        private const string ContractNameRegexPattern = @"^\s*contract\s+([A-Za-z]\w*)\s*\{";
         private const string TestsCountRegexPattern = @"^\s*(\d+)\s{1}passing\s\(\d+\w+\)\s*((\d+)\sfailing\s*$)*";
         private const string TestNamesSearchPattern = @"it\((""|')(.+)(?:\1)(?=\s*,)";
         private const string FailingTestsSearchPattern = @"^[^\r?\n]\s*\d+\)\sContract:\s[^\s]+\r?\n";
 
         private readonly string nodeJsExecutablePath;
-        private readonly string ganacheNodeCliPath;
-        private readonly string truffleExecutablePath;
+        private readonly string ganacheCliNodeExecutablePath;
+        private readonly string truffleCliNodeExecutablePath;
         private readonly int portNumber;
 
         public SolidityCompileDeployAndRunUnitTestsExecutionStrategy(
             Func<CompilerType, string> getCompilerPathFunc,
             string nodeJsExecutablePath,
-            string ganacheNodeCliPath,
-            string truffleExecutablePath,
+            string ganacheCliNodeExecutablePath,
+            string truffleCliNodeExecutablePath,
             int portNumber,
             int baseTimeUsed,
             int baseMemoryUsed)
@@ -43,23 +42,23 @@
                     nameof(nodeJsExecutablePath));
             }
 
-            if (!File.Exists(ganacheNodeCliPath))
+            if (!File.Exists(ganacheCliNodeExecutablePath))
             {
                 throw new ArgumentException(
-                    $"Ganache-cli not found in: {ganacheNodeCliPath}",
-                    nameof(ganacheNodeCliPath));
+                    $"Ganache-cli not found in: {ganacheCliNodeExecutablePath}",
+                    nameof(ganacheCliNodeExecutablePath));
             }
 
-            if (!File.Exists(truffleExecutablePath))
+            if (!File.Exists(truffleCliNodeExecutablePath))
             {
                 throw new ArgumentException(
-                    $"Truffle not found in: {truffleExecutablePath}",
-                    nameof(truffleExecutablePath));
+                    $"Truffle not found in: {truffleCliNodeExecutablePath}",
+                    nameof(truffleCliNodeExecutablePath));
             }
 
             this.nodeJsExecutablePath = nodeJsExecutablePath;
-            this.ganacheNodeCliPath = ganacheNodeCliPath;
-            this.truffleExecutablePath = truffleExecutablePath;
+            this.ganacheCliNodeExecutablePath = ganacheCliNodeExecutablePath;
+            this.truffleCliNodeExecutablePath = truffleCliNodeExecutablePath;
             this.portNumber = portNumber;
             this.GetCompilerPathFunc = getCompilerPathFunc;
         }
@@ -73,15 +72,6 @@
             var result = new ExecutionResult();
 
             this.ExtractTestNames(executionContext.Tests);
-
-            var contractName = Regex
-                .Match(executionContext.Code, ContractNameRegexPattern, RegexOptions.Multiline)
-                ?.Groups[1]?.Value;
-
-            if (string.IsNullOrEmpty(contractName))
-            {
-                throw new ArgumentException("No valid contract is found");
-            }
 
             // Compile the file
             var compilerResult = this.ExecuteCompiling(executionContext, this.GetCompilerPathFunc, result);
@@ -101,16 +91,15 @@
             IExecutor executor = new StandardProcessExecutor(this.BaseTimeUsed, this.BaseMemoryUsed);
             ProcessExecutionResult processExecutionResult;
 
-            // Run in the Ethereum Virtual Machine scope
-            using (new GanacheCliScope(this.nodeJsExecutablePath, this.ganacheNodeCliPath, this.portNumber))
+            // Run tests in the Ethereum Virtual Machine scope
+            using (new GanacheCliScope(this.nodeJsExecutablePath, this.ganacheCliNodeExecutablePath, this.portNumber))
             {
-                // Execute tests
                 processExecutionResult = executor.Execute(
-                    this.truffleExecutablePath,
+                    this.nodeJsExecutablePath,
                     string.Empty,
                     executionContext.TimeLimit,
                     executionContext.MemoryLimit,
-                    new[] { "test" },
+                    new[] { $"{this.truffleCliNodeExecutablePath} test" },
                     this.WorkingDirectory);
             }
 
