@@ -114,12 +114,12 @@
             processExecutionResult.RemoveColorEncodingsFromReceivedOutput();
 
             var(totalTestsCount, failingTestsCount) =
-                this.ExtractFailingTestsCount(processExecutionResult.ReceivedOutput);
+                ExtractFailingTestsCount(processExecutionResult.ReceivedOutput);
 
             if (totalTestsCount != executionContext.Tests.Count())
             {
                 throw new ArgumentException(
-                    "Some of the tests contain more than one test per test case. Plase contact an administrator");
+                    "Some of the tests contain more than one test per test case. Please contact an administrator");
             }
 
             var errorsByTestNames = this.GetErrorsByTestNames(processExecutionResult.ReceivedOutput);
@@ -191,7 +191,7 @@
             return contracts;
         }
 
-        private (int totalTestsCount, int failingTestsCount) ExtractFailingTestsCount(string receivedOutput)
+        private static(int totalTestsCount, int failingTestsCount) ExtractFailingTestsCount(string receivedOutput)
         {
             int totalTestsCount;
             int failingTestsCount;
@@ -201,15 +201,16 @@
             if (match.Success)
             {
                 var passingTests = int.Parse(match.Groups[1].Value);
-                int.TryParse(match.Groups[3]?.Value, out failingTestsCount);
+                int.TryParse(match.Groups[3].Value, out failingTestsCount);
 
                 totalTestsCount = passingTests + failingTestsCount;
             }
             else if (int.TryParse(
-                Regex.Match(receivedOutput, TestFileNameSearchPattern)?.Groups[1]?.Value,
+                Regex.Match(receivedOutput, TestFileNameSearchPattern).Groups[1].Value,
                 out var invalidTestNumber))
             {
-                throw new ArgumentException("Cannot read output. The problem might be in test " + invalidTestNumber);
+                throw new ArgumentException(
+                    $"Test {invalidTestNumber} might be invalid. Please contact an administrator.");
             }
             else
             {
@@ -231,18 +232,17 @@
             {
                 foreach (var testName in this.TestNames)
                 {
-                    if (!errorMessage.Contains(testName + ":"))
+                    if (errorMessage.Contains(testName + ":") ||
+                        errorMessage.Contains(testName + "\":"))
                     {
-                        continue;
+                        var message = errorMessage
+                            .Substring(errorMessage.IndexOf(testName, StringComparison.Ordinal))
+                            .RemoveMultipleSpaces()
+                            .ToSingleLine();
+
+                        errorsByTestNames.Add(testName, message);
+                        break;
                     }
-
-                    var message = errorMessage
-                        .Substring(errorMessage.IndexOf(testName, StringComparison.Ordinal))
-                        .RemoveMultipleSpaces()
-                        .ToSingleLine();
-
-                    errorsByTestNames.Add(testName, message);
-                    break;
                 }
             }
 
@@ -251,22 +251,24 @@
 
         private void ExtractTestNames(IEnumerable<TestContext> tests)
         {
+            var testNum = 1;
             foreach (var test in tests)
             {
                 var testNameMatch = Regex.Match(test.Input, TestNamesSearchPattern);
-                var testName = testNameMatch.Groups[2]?.Value;
+                var testName = testNameMatch.Groups[2].Value;
 
                 if (!testNameMatch.Success || string.IsNullOrWhiteSpace(testName))
                 {
-                    throw new ArgumentException($"Test with Id: {test.Id} is invalid.");
+                    throw new ArgumentException($"Test {testNum} (Id: {test.Id}) is invalid.");
                 }
 
                 if (this.TestNames.Contains(testName))
                 {
-                    throw new ArgumentException("Tests with the same name found.");
+                    throw new ArgumentException($"Two tests with the same name found. Name of Test {testNum}");
                 }
 
                 this.TestNames.Add(testName);
+                testNum++;
             }
         }
     }
