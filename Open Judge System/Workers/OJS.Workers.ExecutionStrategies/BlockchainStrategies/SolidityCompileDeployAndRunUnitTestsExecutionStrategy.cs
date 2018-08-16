@@ -65,6 +65,9 @@
 
         protected Func<CompilerType, string> GetCompilerPathFunc { get; }
 
+        private static string TestFileNameSearchPattern =>
+            $@"{TruffleProjectManager.TestFileNamePrefix}(\d+){GlobalConstants.JavaScriptFileExtension}";
+
         private IList<string> TestNames { get; } = new List<string>();
 
         public override ExecutionResult Execute(ExecutionContext executionContext)
@@ -111,7 +114,7 @@
             processExecutionResult.RemoveColorEncodingsFromReceivedOutput();
 
             var(totalTestsCount, failingTestsCount) =
-                ExtractFailingTestsCount(processExecutionResult.ReceivedOutput);
+                this.ExtractFailingTestsCount(processExecutionResult.ReceivedOutput);
 
             if (totalTestsCount != executionContext.Tests.Count())
             {
@@ -188,7 +191,7 @@
             return contracts;
         }
 
-        private static(int totalTestsCount, int failingTestsCount) ExtractFailingTestsCount(string receivedOutput)
+        private (int totalTestsCount, int failingTestsCount) ExtractFailingTestsCount(string receivedOutput)
         {
             int totalTestsCount;
             int failingTestsCount;
@@ -201,6 +204,12 @@
                 int.TryParse(match.Groups[3]?.Value, out failingTestsCount);
 
                 totalTestsCount = passingTests + failingTestsCount;
+            }
+            else if (int.TryParse(
+                Regex.Match(receivedOutput, TestFileNameSearchPattern)?.Groups[1]?.Value,
+                out var invalidTestNumber))
+            {
+                throw new ArgumentException("Cannot read output. The problem might be in test " + invalidTestNumber);
             }
             else
             {
@@ -222,14 +231,9 @@
             {
                 foreach (var testName in this.TestNames)
                 {
-                    if (!errorMessage.Contains(testName))
+                    if (!errorMessage.Contains(testName + ":"))
                     {
                         continue;
-                    }
-
-                    if (errorsByTestNames.ContainsKey(testName))
-                    {
-                        throw new ArgumentException("Tests with the same name found. Plase contact an administrator.");
                     }
 
                     var message = errorMessage
@@ -254,7 +258,12 @@
 
                 if (!testNameMatch.Success || string.IsNullOrWhiteSpace(testName))
                 {
-                    throw new ArgumentException($"Test with Id: {test.Id} is invalid. Plase contact an administrator");
+                    throw new ArgumentException($"Test with Id: {test.Id} is invalid.");
+                }
+
+                if (this.TestNames.Contains(testName))
+                {
+                    throw new ArgumentException("Tests with the same name found.");
                 }
 
                 this.TestNames.Add(testName);

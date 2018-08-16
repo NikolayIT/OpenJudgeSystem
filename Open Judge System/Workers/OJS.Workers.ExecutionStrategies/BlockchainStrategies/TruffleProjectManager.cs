@@ -12,6 +12,8 @@
 
     internal class TruffleProjectManager
     {
+        public const string TestFileNamePrefix = "Test";
+
         private const string MigrationsContractName = "Migrations";
         private const string MigrationsFileName = MigrationsContractName + SolidityFileExtension;
         private const string ConfigFileName = "truffle-config";
@@ -140,7 +142,7 @@
             var counter = 1;
             foreach (var test in tests)
             {
-                var testName = $"Test{counter++}";
+                var testName = $"{TestFileNamePrefix}{counter++}";
                 File.WriteAllText(
                     Path.Combine(this.testsDirectoryPath, testName + JavaScriptFileExtension),
                     test.Input);
