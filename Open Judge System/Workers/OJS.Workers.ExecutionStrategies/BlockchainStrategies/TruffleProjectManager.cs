@@ -14,16 +14,12 @@
     {
         private const string MigrationsContractName = "Migrations";
         private const string MigrationsFileName = MigrationsContractName + SolidityFileExtension;
-        private const string InitialMigrationFileName = "1_initial_migration";
-        private const string ContractsDeployerFileName = "2_deploy_contracts";
         private const string ConfigFileName = "truffle-config";
         private const string TestsFolderName = "test";
         private const string MigrationsFolderName = "migrations";
         private const string ContractsFoldername = "contracts";
         private const string BuildsFolderName = "build";
         private const string ContractNamePlaceholder = "#contractName#";
-        private const string ContractsToImportTemplate = "#contractsToImport#";
-        private const string ContractsToDeployTemplate = "#contractsToDeploy#";
         private const string AbiPlaceholder = "#abi#";
         private const string ByteCodePlaceholder = "#bytecode#";
         private const string UpdatedAtDatePlaceholder = "#updatedAt#";
@@ -67,17 +63,6 @@
                     upgraded.setCompleted(last_completed_migration);
                 }}
             }}";
-
-        private readonly string deployerTemplete = $@"
-            {ContractsToImportTemplate}
-            module.exports = function (deployer) {{
-                {ContractsToDeployTemplate}
-            }};";
-
-        private readonly string contractImportTemplate =
-            $@"const {ContractNamePlaceholder} = artifacts.require('./{ContractNamePlaceholder}{SolidityFileExtension}');";
-
-        private readonly string contractDeployTemplate = $@"deployer.deploy({ContractNamePlaceholder});";
 
         public TruffleProjectManager(string directoryPath, int port)
         {
@@ -144,7 +129,10 @@
                 File.Delete(migrationsContractPath);
             }
 
-            this.CreateBuildForContract(MigrationsContractName, abi, byteCode);
+            this.CreateJsonBuildForContracts(new Dictionary<string, (string byteCode, string abi)>
+            {
+                { MigrationsContractName, (byteCode, abi) }
+            });
         }
 
         public void ImportJsUnitTests(IEnumerable<TestContext> tests)
@@ -159,39 +147,27 @@
             }
         }
 
-        public void CreateBuildForContract(
-            string contractName,
-            string abi,
-            string bytecode)
+        public void CreateJsonBuildForContracts(Dictionary<string, (string byteCode, string abi)> compiledContracts)
         {
             var dateSettings = new JsonSerializerSettings { DateFormatString = "yyyy-MM-ddTH:mm:ss.fffZ" };
             var date = JsonConvert.SerializeObject(DateTime.Now, dateSettings);
 
-            var buildContent = this.contractBuildTemplate
-                .Replace(ContractNamePlaceholder, contractName)
-                .Replace(AbiPlaceholder, abi)
-                .Replace(ByteCodePlaceholder, bytecode)
-                .Replace(UpdatedAtDatePlaceholder, date);
-
-            File.WriteAllText(
-                Path.Combine(this.contractsBuildDirectory, contractName + JsonFileExtension),
-                buildContent);
-        }
-
-        private string GetDeployerForContracts(IEnumerable<string> contractNames)
-        {
-            var imports = new List<string>();
-            var deploys = new List<string>();
-
-            foreach (var contractName in contractNames)
+            foreach (var contract in compiledContracts)
             {
-                imports.Add(this.contractImportTemplate.Replace(ContractNamePlaceholder, contractName));
-                deploys.Add(this.contractDeployTemplate.Replace(ContractNamePlaceholder, contractName));
-            }
+                var contractName = contract.Key;
+                var byteCode = contract.Value.byteCode;
+                var abi = contract.Value.abi;
+                
+                var buildContent = this.contractBuildTemplate
+                    .Replace(ContractNamePlaceholder, contractName)
+                    .Replace(AbiPlaceholder, abi)
+                    .Replace(ByteCodePlaceholder, byteCode)
+                    .Replace(UpdatedAtDatePlaceholder, date);
 
-            return this.deployerTemplete
-                .Replace(ContractsToImportTemplate, string.Join(Environment.NewLine, imports))
-                .Replace(ContractsToDeployTemplate, string.Join(Environment.NewLine, deploys));
+                File.WriteAllText(
+                    Path.Combine(this.contractsBuildDirectory, contractName + JsonFileExtension),
+                    buildContent);
+            }
         }
 
         private(string contractsDir, string testsDir, string contractsBuildDir) CreateProjectStructure()
@@ -209,10 +185,6 @@
             File.WriteAllText(
                 Path.Combine(contractsDir.FullName, MigrationsFileName),
                 this.migrationsContract);
-
-            //File.WriteAllText(
-            //    Path.Combine(migrationsDir.FullName, InitialMigrationFileName + JavaScriptFileExtension),
-            //    this.GetDeployerForContracts(new[] { MigrationsContractName }));
 
             return (contractsDir.FullName, testsDir.FullName, contractsBuildDir.FullName);
         }

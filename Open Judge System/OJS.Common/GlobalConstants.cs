@@ -94,6 +94,8 @@
         public const string SolidityFileExtension = ".sol";
         public const string JavaScriptFileExtension = ".js";
         public const string JsonFileExtension = ".json";
+        public const string ByteCodeFileExtension = ".bin";
+        public const string AbiFileExtension = ".abi";
 
         // Folder names
         public const string ExecutionStrategiesFolderName = "ExecutionStrategies";

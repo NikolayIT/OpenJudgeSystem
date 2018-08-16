@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Text.RegularExpressions;
 
+    using OJS.Common;
     using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Workers.Checkers;
@@ -15,7 +16,6 @@
 
     public class SolidityCompileDeployAndRunUnitTestsExecutionStrategy : ExecutionStrategy
     {
-        private const string AbiFileSearchPattern = "*.abi";
         private const string ContractNameRegexPattern = @"^\s*contract\s+([A-Za-z]\w*)\s*\{";
         private const string TestsCountRegexPattern = @"^\s*(\d+)\s{1}passing\s\(\d+\w+\)\s*((\d+)\sfailing\s*$)*";
         private const string TestNamesSearchPattern = @"it\((""|')(.+)(?:\1)(?=\s*,)";
@@ -90,12 +90,12 @@
                 return result;
             }
 
-            var(byteCode, abi) = GetByteCodeAndAbi(compilerResult.OutputFile);
+            var compiledContracts = GetCompiledContracts(Path.GetDirectoryName(compilerResult.OutputFile));
 
             var truffleProject = new TruffleProjectManager(this.WorkingDirectory, this.portNumber);
 
             truffleProject.InitializeMigration(this.GetCompilerPathFunc(executionContext.CompilerType));
-            truffleProject.CreateBuildForContract(contractName, abi, byteCode);
+            truffleProject.CreateJsonBuildForContracts(compiledContracts);
             truffleProject.ImportJsUnitTests(executionContext.Tests);
 
             IExecutor executor = new StandardProcessExecutor(this.BaseTimeUsed, this.BaseMemoryUsed);
@@ -159,19 +159,44 @@
             return result;
         }
 
-        private static(string byteCode, string abi) GetByteCodeAndAbi(string compilerResultOutputFile)
+        private static Dictionary<string, (string byteCode, string abi)> GetCompiledContracts(
+            string compilationDirectoryPath)
         {
-            var fileName = Path.GetFileNameWithoutExtension(compilerResultOutputFile);
+            var contracts = new Dictionary<string, (string byteCode, string abi)>();
 
-            var byteCode = File.ReadAllText(compilerResultOutputFile);
+            var compilationDirectoryInfo = new DirectoryInfo(compilationDirectoryPath);
 
-            var abiFile = FileHelpers
-                .FindAllFilesMatchingPattern(Path.GetDirectoryName(compilerResultOutputFile), AbiFileSearchPattern)
-                .First(f => Path.GetFileNameWithoutExtension(f) == fileName);
+            foreach (var file in compilationDirectoryInfo.GetFiles())
+            {
+                var contractname = Path.GetFileNameWithoutExtension(file.FullName);
+                var fileContent = File.ReadAllText(file.FullName);
 
-            var abi = File.ReadAllText(abiFile);
+                string byteCode = null;
+                string abi = null;
 
-            return (byteCode, abi);
+                if (file.Extension == GlobalConstants.ByteCodeFileExtension)
+                {
+                    byteCode = fileContent;
+                }
+                else if (file.Extension == GlobalConstants.AbiFileExtension)
+                {
+                    abi = fileContent;
+                }
+
+                if (!contracts.ContainsKey(contractname))
+                {
+                    contracts.Add(contractname, (byteCode, abi));
+                }
+                else
+                {
+                    byteCode = contracts[contractname].byteCode ?? byteCode;
+                    abi = contracts[contractname].abi ?? abi;
+
+                    contracts[contractname] = (byteCode, abi);
+                }
+            }
+
+            return contracts;
         }
 
         private static(int totalTestsCount, int failingTestsCount) ExtractFailingTestsCount(string receivedOutput)
