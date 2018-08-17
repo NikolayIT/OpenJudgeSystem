@@ -19,7 +19,7 @@
         private const string ConfigFileName = "truffle-config";
         private const string TestsFolderName = "test";
         private const string MigrationsFolderName = "migrations";
-        private const string ContractsFoldername = "contracts";
+        private const string ContractsFolderName = "contracts";
         private const string BuildsFolderName = "build";
         private const string ContractNamePlaceholder = "#contractName#";
         private const string AbiPlaceholder = "#abi#";
@@ -175,10 +175,10 @@
         private(string contractsDir, string testsDir, string contractsBuildDir) CreateProjectStructure()
         {
             Directory.CreateDirectory(Path.Combine(this.directoryPath, MigrationsFolderName));
-            var contractsDir = Directory.CreateDirectory(Path.Combine(this.directoryPath, ContractsFoldername));
+            var contractsDir = Directory.CreateDirectory(Path.Combine(this.directoryPath, ContractsFolderName));
             var testsDir = Directory.CreateDirectory(Path.Combine(this.directoryPath, TestsFolderName));
             var contractsBuildDir =
-                Directory.CreateDirectory(Path.Combine(this.directoryPath, BuildsFolderName, ContractsFoldername));
+                Directory.CreateDirectory(Path.Combine(this.directoryPath, BuildsFolderName, ContractsFolderName));
 
             File.WriteAllText(
                 Path.Combine(this.directoryPath, ConfigFileName + JavaScriptFileExtension),
