@@ -101,6 +101,8 @@
 
         public static int ThreadsCount => GetSettingOrDefault("ThreadsCount", 2);
 
+        public static int GanacheCliDefaultPort => GetSettingOrDefault("GanacheCliDefaultPort", 8545);
+
         // Base time/memory used by processes
         public static int NodeJsBaseTimeUsedInMilliseconds => GetSettingOrDefault("NodeJsBaseTimeUsedInMilliseconds", 0);
 

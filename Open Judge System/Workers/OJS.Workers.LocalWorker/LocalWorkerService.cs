@@ -69,13 +69,11 @@
 
             for (var i = 1; i <= Settings.ThreadsCount; i++)
             {
-                var portNumber = int.Parse($"5{i}45");
-
                 var job = new SubmissionJob(
                     $"Job №{i}",
                     submissionsForProcessing,
                     sharedLockObject,
-                    portNumber);
+                    Settings.GanacheCliDefaultPort + i);
 
                 var thread = new Thread(job.Start) { Name = $"Thread №{i}" };
 
