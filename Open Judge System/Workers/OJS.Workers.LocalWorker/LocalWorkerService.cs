@@ -146,10 +146,7 @@
 
                 if (serviceState.Equals(ServiceState.NotFound))
                 {
-                    const string monitoringServiceExePath =
-                        @"..\..\..\OJS.Workers.LocalWorkerMonitoring\bin\Debug\OJS.Workers.LocalWorkerMonitoring.exe";
-
-                    ServicesHelper.InstallService(monitoringServiceName, monitoringServiceExePath);
+                    ServicesHelper.InstallService(monitoringServiceName, Settings.MonitoringServiceExecutablePath);
                 }
 
                 ServicesHelper.StartService(monitoringServiceName);

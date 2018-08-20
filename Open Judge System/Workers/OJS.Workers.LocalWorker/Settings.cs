@@ -4,6 +4,8 @@
 
     internal static class Settings
     {
+        public static string MonitoringServiceExecutablePath => GetSetting("MonitoringServiceExecutablePath");
+
         public static string DotNetCompilerPath => GetSetting("DotNetCompilerPath");
 
         public static string MavenPath => GetSetting("MavenPath");
