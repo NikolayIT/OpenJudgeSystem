@@ -4,6 +4,8 @@
 
     internal static class Settings
     {
+        public static string LocalWorkerServiceExecutablePath => GetSetting("LocalWorkerServiceExecutablePath");
+
         public static string EmailServerHost => GetSetting("EmailServerHost");
 
         public static int EmailServerPort => GetSettingOrDefault("EmailServerPort", 25);

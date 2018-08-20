@@ -151,12 +151,9 @@
 
         private static void InstallAndStartLocalWorker()
         {
-            const string localWorkerExePath =
-                @"..\..\..\OJS.Workers.LocalWorker\bin\Debug\OJS.Workers.LocalWorker.exe";
-
             logger.Info($"Attempting to install the {Constants.LocalWorkerServiceName}...");
 
-            ServicesHelper.InstallService(Constants.LocalWorkerServiceName, localWorkerExePath);
+            ServicesHelper.InstallService(Constants.LocalWorkerServiceName, Settings.LocalWorkerServiceExecutablePath);
 
             logger.Info($"{Constants.LocalWorkerServiceName} installed successfully.");
 
