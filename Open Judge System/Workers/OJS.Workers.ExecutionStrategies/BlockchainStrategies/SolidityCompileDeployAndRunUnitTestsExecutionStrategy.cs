@@ -113,7 +113,7 @@
 
             processExecutionResult.RemoveColorEncodingsFromReceivedOutput();
 
-            var(totalTestsCount, failingTestsCount) =
+            var (totalTestsCount, failingTestsCount) =
                 ExtractFailingTestsCount(processExecutionResult.ReceivedOutput);
 
             if (totalTestsCount != executionContext.Tests.Count())
@@ -191,7 +191,7 @@
             return contracts;
         }
 
-        private static(int totalTestsCount, int failingTestsCount) ExtractFailingTestsCount(string receivedOutput)
+        private static (int totalTestsCount, int failingTestsCount) ExtractFailingTestsCount(string receivedOutput)
         {
             int totalTestsCount;
             int failingTestsCount;

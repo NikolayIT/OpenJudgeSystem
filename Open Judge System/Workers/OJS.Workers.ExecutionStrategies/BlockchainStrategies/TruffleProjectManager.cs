@@ -71,7 +71,7 @@
             this.directoryPath = directoryPath;
             this.port = port;
 
-            var(contractsDir, testsDir, contractsBuildDir) = this.CreateProjectStructure();
+            var (contractsDir, testsDir, contractsBuildDir) = this.CreateProjectStructure();
 
             this.contractsDirectoryPath = contractsDir;
             this.testsDirectoryPath = testsDir;
@@ -172,7 +172,7 @@
             }
         }
 
-        private(string contractsDir, string testsDir, string contractsBuildDir) CreateProjectStructure()
+        private (string contractsDir, string testsDir, string contractsBuildDir) CreateProjectStructure()
         {
             Directory.CreateDirectory(Path.Combine(this.directoryPath, MigrationsFolderName));
             var contractsDir = Directory.CreateDirectory(Path.Combine(this.directoryPath, ContractsFolderName));
