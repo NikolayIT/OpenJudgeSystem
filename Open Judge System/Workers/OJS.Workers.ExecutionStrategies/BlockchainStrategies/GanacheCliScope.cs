@@ -142,23 +142,22 @@
                     break;
                 }
 
-                try
-                {
-                    errorOutputTask.Wait(100);
+                errorOutputTask.Wait(100);
 
-                    if (!string.IsNullOrEmpty(errorOutput))
-                    {
-                        this.errorMessage = errorRegex.Match(errorOutput).Value;
-                    }
-                }
-                catch (AggregateException ex)
+                if (!string.IsNullOrEmpty(errorOutput))
                 {
-                    this.errorMessage = ex.Message;
+                    this.errorMessage = errorRegex.Match(errorOutput).Value;
+                    return false;
                 }
+            }
+            catch (AggregateException ae)
+            {
+                this.errorMessage = ae.Message;
             }
             catch (Exception ex)
             {
                 this.errorMessage = ex.Message;
+                return false;
             }
 
             return isListening;
