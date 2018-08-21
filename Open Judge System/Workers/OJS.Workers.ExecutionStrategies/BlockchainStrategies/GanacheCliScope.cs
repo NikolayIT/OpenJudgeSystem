@@ -64,20 +64,18 @@
 
                 if (!started)
                 {
-                    throw new Exception("ganache-cli cannot be started");
+                    this.errorMessage = "ganache-cli cannot be started";
                 }
-
-                if (this.VerifyGanacheCliIsListening(process))
+                else if (this.VerifyGanacheCliIsListening(process))
                 {
                     return process.Id;
                 }
-
-                if (!process.HasExited)
+                else if (!process.HasExited)
                 {
                     process.Kill();
                 }
 
-                throw new Exception($"{this.errorMessage}. Plase contact an administrator.");
+                throw new Exception($"{this.errorMessage}. Please contact an administrator.");
             }
         }
 
