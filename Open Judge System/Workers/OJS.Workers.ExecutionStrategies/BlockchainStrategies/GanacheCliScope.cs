@@ -18,6 +18,7 @@
         private readonly int portNumber;
         private readonly int accountsCount;
         private readonly int processId;
+        private string errorMessage;
 
         public GanacheCliScope(
             string nodeJsExecutablePath,
@@ -47,12 +48,6 @@
 
         private int RunGanacheCli()
         {
-            var successRegex = new Regex(this.GanacheCliListeningPattern, RegexOptions.Multiline);
-            var errorRegex = new Regex(ErrorRegexPattern, RegexOptions.Multiline);
-            var errorMessage = string.Empty;
-            var errorOutput = string.Empty;
-            var isListening = false;
-
             using (var process = new Process())
             {
                 process.StartInfo = new ProcessStartInfo(this.nodeJsExecutablePath)
@@ -72,84 +67,9 @@
                     throw new Exception("ganache-cli cannot be started");
                 }
 
-                // Verify that ganache-cli is running and listening on the port
-                try
+                if (this.VerifyGanacheCliIsListening(process))
                 {
-                    var errorOutputTask = process.StandardError.ReadToEndAsync().ContinueWith(
-                    x =>
-                    {
-                        errorOutput = x.Result;
-                    });
-
-                    var linesCount = 0;
-                    while (true)
-                    {
-                        // ReSharper disable once AccessToDisposedClosure
-                        var task = Task.Factory.StartNew(() => process.StandardOutput.ReadLine());
-
-                        var canReadLine = task.Wait(GlobalConstants.DefaultProcessExitTimeOutMilliseconds);
-                        if (!canReadLine)
-                        {
-                            errorMessage = "ganache-cli is unresponsive";
-                            break;
-                        }
-
-                        var outputLine = task.Result;
-
-                        if (outputLine == null)
-                        {
-                            // Standard error output task will pick up the error message
-                            break;
-                        }
-
-                        if (errorRegex.IsMatch(outputLine))
-                        {
-                            errorMessage = errorRegex.Match(outputLine).Value;
-                            if (errorMessage.Contains(PortInUseErrorKey))
-                            {
-                                errorMessage = "Requested port is in use";
-                            }
-
-                            break;
-                        }
-
-                        if (successRegex.IsMatch(outputLine))
-                        {
-                            isListening = true;
-                            break;
-                        }
-
-                        if (++linesCount <= MaxOutputLinesToReadOnStartUp)
-                        {
-                            continue;
-                        }
-
-                        errorMessage = "ganache-cli exceeded the limit of startup output lines";
-                        break;
-                    }
-
-                    try
-                    {
-                        errorOutputTask.Wait(100);
-
-                        if (!string.IsNullOrEmpty(errorOutput))
-                        {
-                            errorMessage = errorRegex.Match(errorOutput)?.Value;
-                        }
-                    }
-                    catch (AggregateException ex)
-                    {
-                        errorMessage = ex.Message;
-                    }
-
-                    if (isListening)
-                    {
-                        return process.Id;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    errorMessage = ex.Message;
+                    return process.Id;
                 }
 
                 if (!process.HasExited)
@@ -157,8 +77,93 @@
                     process.Kill();
                 }
 
-                throw new Exception($"{errorMessage}. Plase contact an administrator.");
+                throw new Exception($"{this.errorMessage}. Plase contact an administrator.");
             }
+        }
+
+        private bool VerifyGanacheCliIsListening(Process process)
+        {
+            var isListening = false;
+
+            try
+            {
+                var successRegex = new Regex(this.GanacheCliListeningPattern, RegexOptions.Multiline);
+                var errorRegex = new Regex(ErrorRegexPattern, RegexOptions.Multiline);
+                var errorOutput = string.Empty;
+
+                var errorOutputTask = process.StandardError.ReadToEndAsync().ContinueWith(
+                    x =>
+                    {
+                        errorOutput = x.Result;
+                    });
+
+                var linesCount = 0;
+                while (true)
+                {
+                    // ReSharper disable once AccessToDisposedClosure
+                    var task = Task.Factory.StartNew(() => process.StandardOutput.ReadLine());
+
+                    var canReadLine = task.Wait(GlobalConstants.DefaultProcessExitTimeOutMilliseconds);
+                    if (!canReadLine)
+                    {
+                        this.errorMessage = "ganache-cli is unresponsive";
+                        break;
+                    }
+
+                    var outputLine = task.Result;
+
+                    if (outputLine == null)
+                    {
+                        // Standard error output task will pick up the error message
+                        break;
+                    }
+
+                    if (errorRegex.IsMatch(outputLine))
+                    {
+                        this.errorMessage = errorRegex.Match(outputLine).Value;
+                        if (this.errorMessage.Contains(PortInUseErrorKey))
+                        {
+                            this.errorMessage = "Requested port is in use";
+                        }
+
+                        break;
+                    }
+
+                    if (successRegex.IsMatch(outputLine))
+                    {
+                        isListening = true;
+                        break;
+                    }
+
+                    if (++linesCount <= MaxOutputLinesToReadOnStartUp)
+                    {
+                        continue;
+                    }
+
+                    this.errorMessage = "ganache-cli exceeded the limit of startup output lines";
+                    break;
+                }
+
+                try
+                {
+                    errorOutputTask.Wait(100);
+
+                    if (!string.IsNullOrEmpty(errorOutput))
+                    {
+                        this.errorMessage = errorRegex.Match(errorOutput).Value;
+                    }
+                }
+                catch (AggregateException ex)
+                {
+                    this.errorMessage = ex.Message;
+                }
+            }
+            catch (Exception ex)
+            {
+                this.errorMessage = ex.Message;
+            }
+
+            return isListening;
         }
     }
 }
