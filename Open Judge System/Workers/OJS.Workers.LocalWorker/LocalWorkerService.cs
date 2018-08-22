@@ -11,10 +11,11 @@
     using OJS.Common;
     using OJS.Services.Business.SubmissionsForProcessing;
     using OJS.Workers.Common;
+    using OJS.Workers.Jobs;
 
-    internal class LocalWorkerService : ServiceBase
+    internal class LocalWorkerService<T> : ServiceBase
     {
-        private static ILog logger;
+        private readonly ILog logger;
         private readonly ICollection<Thread> threads;
         private readonly ICollection<IJob> jobs;
         private readonly ISubmissionsForProcessingBusinessService submissionsForProcessingBusiness;
@@ -22,59 +23,57 @@
         public LocalWorkerService(
             ISubmissionsForProcessingBusinessService submissionsForProcessingBusiness)
         {
-            logger = LogManager.GetLogger(Constants.LocalWorkerServiceLogName);
-            logger.Info("LocalWorkerService initializing...");
+            this.logger = LogManager.GetLogger(Constants.LocalWorkerServiceLogName);
+            this.logger.Info("LocalWorkerService initializing...");
 
             this.submissionsForProcessingBusiness = submissionsForProcessingBusiness;
             this.threads = new List<Thread>();
             this.jobs = new List<IJob>();
 
-            this.SpawnJobsAndThreads(this.jobs, this.threads, new ConcurrentQueue<int>());
-
-            logger.Info("LocalWorkerService initialized.");
+            this.logger.Info("LocalWorkerService initialized.");
         }
 
         protected override void OnStart(string[] args)
         {
-            logger.Info("LocalWorkerService starting...");
+            this.logger.Info("LocalWorkerService starting...");
+
+            this.SpawnJobsAndThreads(this.jobs, this.threads, new ConcurrentQueue<T>());
 
             this.CreateExecutionStrategiesWorkingDirectory();
 
-            this.submissionsForProcessingBusiness.ResetAllProcessingSubmissions(logger);
+            this.submissionsForProcessingBusiness.ResetAllProcessingSubmissions(this.logger);
 
             this.StartThreads(this.threads);
 
-            logger.Info("LocalWorkerService started.");
+            this.logger.Info("LocalWorkerService started.");
         }
 
         protected override void OnStop()
         {
-            logger.Info("LocalWorkerService stopping...");
+            this.logger.Info("LocalWorkerService stopping...");
 
             this.StopJobs(this.jobs);
 
-            Thread.Sleep(10000);
-
             this.StopThreads(this.threads);
 
-            logger.Info("LocalWorkerService stopped.");
+            this.logger.Info("LocalWorkerService stopped.");
         }
 
         private void SpawnJobsAndThreads(
             ICollection<IJob> jobsToSpawn,
             ICollection<Thread> threadsToSpawn,
-            ConcurrentQueue<int> submissionsForProcessing)
+            ConcurrentQueue<T> submissionsForProcessing)
         {
             var sharedLockObject = new object();
 
             for (var i = 1; i <= Settings.ThreadsCount; i++)
             {
-                var job = new SubmissionJob(
+                var job = new SubmissionJob<T>(
                     $"Job №{i}",
                     submissionsForProcessing,
                     sharedLockObject);
 
-                var thread = new Thread(job.Start) { Name = $"Thread №{i}" };
+                var thread = new Thread(() => job.Start(Bootstrap.Container)) { Name = $"Thread №{i}" };
 
                 jobsToSpawn.Add(job);
                 threadsToSpawn.Add(thread);
@@ -85,9 +84,9 @@
         {
             foreach (var thread in threadsToStarts)
             {
-                logger.InfoFormat($"Starting {thread.Name}...");
+                this.logger.InfoFormat($"Starting {thread.Name}...");
                 thread.Start();
-                logger.InfoFormat($"{thread.Name} started.");
+                this.logger.InfoFormat($"{thread.Name} started.");
                 Thread.Sleep(234);
             }
         }
@@ -97,7 +96,7 @@
             foreach (var job in jobsToStop)
             {
                 job.Stop();
-                logger.InfoFormat($"{job.Name} stopped.");
+                this.logger.InfoFormat($"{job.Name} stopped.");
             }
         }
 
@@ -106,7 +105,7 @@
             foreach (var thread in threadsToStop)
             {
                 thread.Abort();
-                logger.InfoFormat($"{thread.Name} aborted.");
+                this.logger.InfoFormat($"{thread.Name} aborted.");
             }
         }
 

@@ -29,7 +29,7 @@ namespace OJS.Workers.LocalWorker
 
                 using (ThreadScopedLifestyle.BeginScope(container))
                 {
-                    var localWorkerService = container.GetInstance<LocalWorkerService>();
+                    var localWorkerService = container.GetInstance<LocalWorkerService<int>>();
 
                     ServiceBase.Run(localWorkerService);
                 }

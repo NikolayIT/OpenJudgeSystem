@@ -1,4 +1,4 @@
-﻿namespace OJS.Workers.LocalWorker.Helpers
+﻿namespace OJS.Workers.Jobs.Helpers
 {
     using System;
 

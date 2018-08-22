@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{CBFDB327-9945-4CC5-B087-6643AE7A53CC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OJS.Workers.JobStrategies</RootNamespace>
+    <AssemblyName>OJS.Workers.JobStrategies</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Identity.Core.2.2.2\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.2\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DbJobStrategy.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Data\OJS.Data.Contracts\OJS.Data.Contracts.csproj">
+      <Project>{8C4BF453-24EF-46F3-B947-31505FB905DE}</Project>
+      <Name>OJS.Data.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Data\OJS.Data.Models\OJS.Data.Models.csproj">
+      <Project>{341CA732-D483-4487-923E-27ED2A6E9A4F}</Project>
+      <Name>OJS.Data.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\OJS.Common\OJS.Common.csproj">
+      <Project>{69B10B02-22CF-47D6-B5F3-8A5FFB7DC771}</Project>
+      <Name>OJS.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\OJS.Services.Common\OJS.Services.Common.csproj">
+      <Project>{A7DE52AC-62E7-43F0-8F73-047728EB5AF2}</Project>
+      <Name>OJS.Services.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\OJS.Services\OJS.Services.csproj">
+      <Project>{44659A90-F81E-4007-8729-C37F4F650A81}</Project>
+      <Name>OJS.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OJS.Workers.Common\OJS.Workers.Common.csproj">
+      <Project>{7F714D0B-CE81-4DD7-B6B2-62080FE22CD8}</Project>
+      <Name>OJS.Workers.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OJS.Workers.ExecutionStrategies\OJS.Workers.ExecutionStrategies.csproj">
+      <Project>{69966098-E5B2-46CD-88E9-1F79B245ADE0}</Project>
+      <Name>OJS.Workers.ExecutionStrategies</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OJS.Workers.Jobs\OJS.Workers.Jobs.csproj">
+      <Project>{6E2902A5-E47F-4888-953E-4F81467B40C7}</Project>
+      <Name>OJS.Workers.Jobs</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
