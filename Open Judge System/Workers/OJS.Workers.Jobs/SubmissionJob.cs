@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Concurrent;
-    using System.Linq;
     using System.Threading;
 
     using log4net;
@@ -90,7 +89,7 @@
                             MemoryLimit = submission.MemoryLimit,
                             TimeLimit = submission.TimeLimit,
                             TaskSkeleton = submission.TaskSkeleton,
-                            Tests = submission.Tests.ToList()
+                            Tests = submission.Tests
                         };
 
                         ExecutionResult executionResult;
@@ -110,15 +109,6 @@
                         }
 
                         this.logger.InfoFormat("Work on submission №{0} ended.", submission.Id);
-
-                        submission.IsCompiledSuccessfully = executionResult.IsCompiledSuccessfully;
-                        submission.CompilerComment = executionResult.CompilerComment;
-
-                        if (!executionResult.IsCompiledSuccessfully)
-                        {
-                            jobStrategy.OnError(submission);
-                            continue;
-                        }
 
                         try
                         {

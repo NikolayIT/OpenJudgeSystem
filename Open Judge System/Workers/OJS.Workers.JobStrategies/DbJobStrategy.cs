@@ -38,37 +38,6 @@
             this.submissionsForProccessingData = submissionsForProccessingData;
         }
 
-        public override void ProcessEcexutionResult(ExecutionResult executionResult)
-        {
-            foreach (var testResult in executionResult.TestResults)
-            {
-                var testRun = new TestRun
-                {
-                    CheckerComment = testResult.CheckerDetails.Comment,
-                    ExpectedOutputFragment = testResult.CheckerDetails.ExpectedOutputFragment,
-                    UserOutputFragment = testResult.CheckerDetails.UserOutputFragment,
-                    ExecutionComment = testResult.ExecutionComment,
-                    MemoryUsed = testResult.MemoryUsed,
-                    ResultType = testResult.ResultType,
-                    TestId = testResult.Id,
-                    TimeUsed = testResult.TimeUsed
-                };
-
-                this.submission.TestRuns.Add(testRun);
-            }
-
-            this.UpdateResults();
-        }
-
-        public override void OnError(SubmissionDto submissionDto)
-        {
-            this.submission.IsCompiledSuccessfully = submissionDto.IsCompiledSuccessfully;
-            this.submission.CompilerComment = submissionDto.CompilerComment;
-            this.submission.ProcessingComment = submissionDto.ProcessingComment;
-
-            this.UpdateResults();
-        }
-
         public override SubmissionDto RetrieveSubmission()
         {
             bool retrievedSubmissionSuccessfully;
@@ -136,6 +105,7 @@
                         IsTrialTest = t.IsTrialTest,
                         OrderBy = t.OrderBy
                     })
+                    .ToList()
             };
         }
 
@@ -145,25 +115,55 @@
             this.testRunsData.DeleteBySubmission(this.submission.Id);
         }
 
+        public override void ProcessEcexutionResult(ExecutionResult executionResult)
+        {
+            this.submission.IsCompiledSuccessfully = executionResult.IsCompiledSuccessfully;
+            this.submission.CompilerComment = executionResult.CompilerComment;
+
+            if (!executionResult.IsCompiledSuccessfully)
+            {
+                this.UpdateResults();
+                return;
+            }
+
+            foreach (var testResult in executionResult.TestResults)
+            {
+                var testRun = new TestRun
+                {
+                    CheckerComment = testResult.CheckerDetails.Comment,
+                    ExpectedOutputFragment = testResult.CheckerDetails.ExpectedOutputFragment,
+                    UserOutputFragment = testResult.CheckerDetails.UserOutputFragment,
+                    ExecutionComment = testResult.ExecutionComment,
+                    MemoryUsed = testResult.MemoryUsed,
+                    ResultType = testResult.ResultType,
+                    TestId = testResult.Id,
+                    TimeUsed = testResult.TimeUsed
+                };
+
+                this.submission.TestRuns.Add(testRun);
+            }
+
+            this.UpdateResults();
+        }
+
+        public override void OnError(SubmissionDto submissionDto)
+        {
+            this.submission.ProcessingComment = submissionDto.ProcessingComment;
+
+            this.UpdateResults();
+        }
+
         private void UpdateResults()
         {
             try
             {
+                this.submissionsData.Update(this.submission);
                 this.CalculatePointsForSubmission();
             }
             catch (Exception ex)
             {
                 this.Logger.ErrorFormat("CalculatePointsForSubmission on submission №{0} has thrown an exception: {1}", this.submission.Id, ex);
                 this.submission.ProcessingComment = $"Exception in CalculatePointsForSubmission: {ex.Message}";
-            }
-
-            try
-            {
-                this.SetSubmissionToProcessed();
-            }
-            catch (Exception ex)
-            {
-                this.Logger.ErrorFormat("Unable to save changes to the submission for processing №{0}! Exception: {1}", this.submissionForProcessing.Id, ex);
             }
 
             try
@@ -188,14 +188,12 @@
 
             try
             {
-                this.submissionsData.Update(this.submission);
+                this.SetSubmissionToProcessed();
             }
             catch (Exception exception)
             {
                 this.Logger.ErrorFormat("Unable to save changes to the submission №{0}! Exception: {1}", this.submission.Id, exception);
             }
-
-            this.Logger.InfoFormat("Submission №{0} successfully processed", this.submission.Id);
         }
 
         private void CalculatePointsForSubmission()
@@ -207,7 +205,11 @@
             }
             else
             {
-                this.submission.Points = (this.submission.CorrectTestRunsWithoutTrialTestsCount * this.submission.Problem.MaximumPoints) / this.submission.TestsWithoutTrialTestsCount;
+                var points =
+                    (this.submission.CorrectTestRunsWithoutTrialTestsCount * this.submission.Problem.MaximumPoints) /
+                        this.submission.TestsWithoutTrialTestsCount;
+
+                this.submission.Points = points;
             }
         }
 
@@ -267,6 +269,8 @@
             this.submission.Processed = true;
             this.submissionForProcessing.Processed = true;
             this.submissionForProcessing.Processing = false;
+
+            this.submissionsData.Update(this.submission);
             this.submissionsForProccessingData.Update(this.submissionForProcessing);
         }
     }
