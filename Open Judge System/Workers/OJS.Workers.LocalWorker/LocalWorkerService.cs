@@ -1,6 +1,6 @@
 ﻿namespace OJS.Workers.LocalWorker
 {
-    using log4net;
+    using System;
 
     using OJS.Services.Business.SubmissionsForProcessing;
     using OJS.Workers.Jobs;
@@ -12,8 +12,20 @@
         public LocalWorkerService(ISubmissionsForProcessingBusinessService submissionsForProcessingBusiness) =>
             this.submissionsForProcessingBusiness = submissionsForProcessingBusiness;
 
-        protected override void BeforeStartingThreads(ILog logger) =>
-            this.submissionsForProcessingBusiness.ResetAllProcessingSubmissions(logger);
+        protected override void BeforeStartingThreads()
+        {
+            try
+            {
+                this.submissionsForProcessingBusiness.ResetAllProcessingSubmissions();
+            }
+            catch (Exception ex)
+            {
+                this.Logger.FatalFormat($"Resetting Processing submissions failed with exception {ex.Message}");
+                throw;
+            }
+
+            base.BeforeStartingThreads();
+        }
 
         protected override IDependencyContainer GetDependencyContainer() => Bootstrap.Container;
     }

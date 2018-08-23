@@ -16,58 +16,53 @@
 
     public class LocalWorkerServiceBase<T> : ServiceBase
     {
-        private readonly ILog logger;
         private readonly ICollection<Thread> threads;
         private readonly ICollection<IJob> jobs;
-
         private IDependencyContainer dependencyContainer;
 
         protected LocalWorkerServiceBase()
         {
-            this.logger = LogManager.GetLogger(
+            this.Logger = LogManager.GetLogger(
                 Assembly.GetEntryAssembly(),
                 Constants.LocalWorkerServiceLogName);
 
-            this.logger.Info("LocalWorkerService initializing...");
+            this.Logger.Info("LocalWorkerService initializing...");
 
             this.threads = new List<Thread>();
             this.jobs = new List<IJob>();
 
-            this.logger.Info("LocalWorkerService initialized.");
+            this.Logger.Info("LocalWorkerService initialized.");
         }
+
+        protected ILog Logger { get; }
 
         protected override void OnStart(string[] args)
         {
-            this.logger.Info("LocalWorkerService starting...");
-
-            this.dependencyContainer = this.GetDependencyContainer();
-
-            this.logger.Info("LocalWorkerService starting...");
+            this.Logger.Info("LocalWorkerService starting...");
 
             this.SpawnJobsAndThreads(this.jobs, this.threads, new ConcurrentQueue<T>());
 
-            this.CreateExecutionStrategiesWorkingDirectory();
-
-            this.BeforeStartingThreads(this.logger);
+            this.BeforeStartingThreads();
 
             this.StartThreads(this.threads);
 
-            this.logger.Info("LocalWorkerService started.");
+            this.Logger.Info("LocalWorkerService started.");
         }
 
         protected override void OnStop()
         {
-            this.logger.Info("LocalWorkerService stopping...");
+            this.Logger.Info("LocalWorkerService stopping...");
 
             this.StopJobs(this.jobs);
 
             this.StopThreads(this.threads);
 
-            this.logger.Info("LocalWorkerService stopped.");
+            this.Logger.Info("LocalWorkerService stopped.");
         }
 
-        protected virtual void BeforeStartingThreads(ILog loggerToUse)
+        protected virtual void BeforeStartingThreads()
         {
+            this.CreateExecutionStrategiesWorkingDirectory();
         }
 
         protected virtual IDependencyContainer GetDependencyContainer() =>
@@ -79,6 +74,8 @@
             ICollection<Thread> threadsToSpawn,
             ConcurrentQueue<T> submissionsForProcessing)
         {
+            this.dependencyContainer = this.GetDependencyContainer();
+
             var sharedLockObject = new object();
 
             for (var i = 1; i <= Settings.ThreadsCount; i++)
@@ -99,9 +96,9 @@
         {
             foreach (var thread in threadsToStarts)
             {
-                this.logger.InfoFormat($"Starting {thread.Name}...");
+                this.Logger.InfoFormat($"Starting {thread.Name}...");
                 thread.Start();
-                this.logger.InfoFormat($"{thread.Name} started.");
+                this.Logger.InfoFormat($"{thread.Name} started.");
                 Thread.Sleep(234);
             }
         }
@@ -111,7 +108,7 @@
             foreach (var job in jobsToStop)
             {
                 job.Stop();
-                this.logger.InfoFormat($"{job.Name} stopped.");
+                this.Logger.InfoFormat($"{job.Name} stopped.");
             }
         }
 
@@ -120,7 +117,7 @@
             foreach (var thread in threadsToStop)
             {
                 thread.Abort();
-                this.logger.InfoFormat($"{thread.Name} aborted.");
+                this.Logger.InfoFormat($"{thread.Name} aborted.");
             }
         }
 
