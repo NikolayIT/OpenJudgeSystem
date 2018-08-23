@@ -42,7 +42,10 @@
                         ContestId = c.Key.Id,
                         ContestName = c.Key.Name,
                         RegistrationTime = c.Key.CreatedOn,
-                        ContestMaximumPoints = c.Key.ProblemGroups
+                        ContestCompeteMaximumPoints = c.Key.ProblemGroups
+                            .Where(pg => pg.Problems.Any(p => !p.IsDeleted))
+                            .Sum(pg => pg.Problems.FirstOrDefault().MaximumPoints),
+                        ContestPracticeMaximumPoints = c.Key.ProblemGroups
                             .SelectMany(pg => pg.Problems)
                             .Where(x => !x.IsDeleted)
                             .Sum(pr => pr.MaximumPoints),

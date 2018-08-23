@@ -345,7 +345,7 @@
 
             var contestResults = this.GetContestResults(contest, official, true, true);
 
-            var maxResult = contestResults.Problems.Sum(p => p.MaximumPoints);
+            var maxResult = this.contestsData.GetMaxPointsById(contest.Id);
 
             var participantsCount = contestResults.Results.Count();
             var statsModel = new ContestStatsViewModel
@@ -360,33 +360,69 @@
 
             var fromPoints = 0;
             var toPoints = 0;
-            foreach (var problem in contestResults.Problems)
-            {
-                var maxResultsForProblem = contestResults.Results
-                    .Count(r => r.ProblemResults?
-                        .Any(pr =>
-                            pr.ProblemId == problem.Id &&
-                            pr.BestSubmission != null && pr.BestSubmission.Points == problem.MaximumPoints) ?? false);
 
-                var maxResultsForProblemPercent = (double)maxResultsForProblem / participantsCount;
+            if (contest.IsOnline && official)
+            {
+                statsModel.IsGroupedByProblemGroup = true;
+
+                foreach (var problems in contestResults.Problems.GroupBy(p => p.ProblemGroupId))
+                {
+                    var maxResultsForProblemGroupCount = contestResults.Results
+                        .Count(r => r.ProblemResults?
+                            .Any(pr => problems
+                                .Any(p =>
+                                    p.Id == pr.ProblemId &&
+                                    pr.BestSubmission.Points == pr.MaximumPoints)) ?? false);
+
+                    var maxPointsForProblemGroup = problems.FirstOrDefault()?.MaximumPoints ?? default(int);
+                    var problemGroupName = string.Join("<br/>", problems.Select(p => p.Name));
+
+                    AddStatsByProblem(problemGroupName, maxPointsForProblemGroup, maxResultsForProblemGroupCount);
+                    AddStatsByPointsRange(maxPointsForProblemGroup, contestResults.Results);
+                }
+            }
+            else
+            {
+                foreach (var problem in contestResults.Problems)
+                {
+                    var maxResultForProblemCount = contestResults.Results
+                        .Count(r => r.ProblemResults?
+                            .Any(pr =>
+                                pr.ProblemId == problem.Id &&
+                                pr.BestSubmission.Points == problem.MaximumPoints) ?? false);
+
+                    AddStatsByProblem(problem.Name, problem.MaximumPoints, maxResultForProblemCount);
+                    AddStatsByPointsRange(problem.MaximumPoints, contestResults.Results);
+                }
+            }
+
+            void AddStatsByProblem(string name, int maxPoints, int maxResultsCount)
+            {
+                var maxResultsPercent = (double)maxResultsCount / participantsCount;
+
                 statsModel.StatsByProblem.Add(new ContestProblemStatsViewModel
                 {
-                    Name = problem.Name,
-                    MaxResultsCount = maxResultsForProblem,
-                    MaxResultsPercent = maxResultsForProblemPercent,
-                    MaxPossiblePoints = problem.MaximumPoints
+                    Name = name,
+                    MaxResultsCount = maxResultsCount,
+                    MaxResultsPercent = maxResultsPercent,
+                    MaxPossiblePoints = maxPoints
                 });
+            }
 
+            void AddStatsByPointsRange(int maxPoints, IEnumerable<ParticipantResultViewModel> results)
+            {
                 if (toPoints == 0)
                 {
-                    toPoints = problem.MaximumPoints;
+                    toPoints = maxPoints;
                 }
                 else
                 {
-                    toPoints += problem.MaximumPoints;
+                    toPoints += maxPoints;
                 }
 
-                var participantsInPointsRange = contestResults.Results.Count(r => r.Total >= fromPoints && r.Total <= toPoints);
+                // ReSharper disable once AccessToModifiedClosure
+                var participantsInPointsRange = results.Count(r => r.Total >= fromPoints && r.Total <= toPoints);
+
                 var participantsInPointsRangePercent = (double)participantsInPointsRange / participantsCount;
 
                 statsModel.StatsByPointsRange.Add(new ContestPointsRangeViewModel
