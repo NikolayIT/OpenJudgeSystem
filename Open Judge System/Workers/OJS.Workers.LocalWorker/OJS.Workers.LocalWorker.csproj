@@ -94,6 +94,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DepenencyContainer.cs" />
     <Compile Include="LocalWorkerService.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -174,6 +175,10 @@
     <ProjectReference Include="..\OJS.Workers.Jobs\OJS.Workers.Jobs.csproj">
       <Project>{6E2902A5-E47F-4888-953E-4F81467B40C7}</Project>
       <Name>OJS.Workers.Jobs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OJS.Workers\OJS.Workers.csproj">
+      <Project>{2CD6D71C-26BB-478B-8FF3-691A59B51D51}</Project>
+      <Name>OJS.Workers</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -10,9 +10,6 @@
     using OJS.Workers.Jobs.Helpers;
     using OJS.Workers.Jobs.Models;
 
-    using SimpleInjector;
-    using SimpleInjector.Lifestyles;
-
     using ExecutionContext = ExecutionStrategies.ExecutionContext;
 
     public class SubmissionJob<T> : IJob
@@ -45,19 +42,19 @@
 
         public string Name { get; set; }
 
-        public void Start(Container container)
+        public void Start(IDependencyContainer dependencyContainer)
         {
             this.logger.Info("SubmissionJob starting...");
             
             while (!this.stopping)
             {
-                using (ThreadScopedLifestyle.BeginScope(container))
+                using (dependencyContainer.CreateScope())
                 {
-                    var jobStrategy = container.GetInstance<IJobStrategy<T>>();
+                    var jobStrategy = dependencyContainer.GetInstance<IJobStrategy<T>>();
 
                     jobStrategy.Initialize(this.logger, this.submissionsForProcessing, this.sharedLockObject);
 
-                    SubmissionDto submission;
+                    SubmissionModel submission;
 
                     try
                     {

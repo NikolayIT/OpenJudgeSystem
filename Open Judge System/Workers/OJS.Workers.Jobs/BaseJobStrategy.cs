@@ -27,10 +27,10 @@
         }
 
 
-        public abstract SubmissionDto RetrieveSubmission();
+        public abstract SubmissionModel RetrieveSubmission();
 
         public abstract void ProcessEcexutionResult(ExecutionResult executionResult);
 
-        public abstract void OnError(SubmissionDto submissionDto);
+        public abstract void OnError(SubmissionModel submission);
     }
 }

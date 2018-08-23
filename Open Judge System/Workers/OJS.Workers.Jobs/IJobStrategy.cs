@@ -11,12 +11,12 @@
     {
         void Initialize(ILog logger, ConcurrentQueue<T> queue, object sharedLockObject = null);
 
-        SubmissionDto RetrieveSubmission();
+        SubmissionModel RetrieveSubmission();
 
         void BeforeExecute();
 
         void ProcessEcexutionResult(ExecutionResult executionResult);
 
-        void OnError(SubmissionDto submissionDto);
+        void OnError(SubmissionModel submission);
     }
 }

@@ -38,7 +38,7 @@
             this.submissionsForProccessingData = submissionsForProccessingData;
         }
 
-        public override SubmissionDto RetrieveSubmission()
+        public override SubmissionModel RetrieveSubmission()
         {
             bool retrievedSubmissionSuccessfully;
 
@@ -81,7 +81,7 @@
                 return null;
             }
 
-            return new SubmissionDto
+            return new SubmissionModel
             {
                 Id = this.submission.Id,
                 AdditionalCompilerArguments = this.submission.SubmissionType.AdditionalCompilerArguments,
@@ -143,12 +143,14 @@
                 this.submission.TestRuns.Add(testRun);
             }
 
+            this.submissionsData.Update(this.submission);
+
             this.UpdateResults();
         }
 
-        public override void OnError(SubmissionDto submissionDto)
+        public override void OnError(SubmissionModel submissionModel)
         {
-            this.submission.ProcessingComment = submissionDto.ProcessingComment;
+            this.submission.ProcessingComment = submissionModel.ProcessingComment;
 
             this.UpdateResults();
         }
@@ -157,7 +159,6 @@
         {
             try
             {
-                this.submissionsData.Update(this.submission);
                 this.CalculatePointsForSubmission();
             }
             catch (Exception ex)

@@ -7,9 +7,6 @@ namespace OJS.Workers.LocalWorker
     using System.IO;
     using System.ServiceProcess;
 
-    using SimpleInjector;
-    using SimpleInjector.Lifestyles;
-
     internal static class Program
     {
         /// <summary>
@@ -24,12 +21,12 @@ namespace OJS.Workers.LocalWorker
                 Environment.CurrentDirectory = Path.GetDirectoryName(typeof(Program).Assembly.Location);
                 AppDomain.CurrentDomain.SetData("APP_CONFIG_FILE", "OJS.Workers.LocalWorker.exe.config");
 
-                var container = new Container();
+                var container = new DepenencyContainer();
                 Bootstrap.Start(container);
 
-                using (ThreadScopedLifestyle.BeginScope(container))
+                using (container.CreateScope())
                 {
-                    var localWorkerService = container.GetInstance<LocalWorkerService<int>>();
+                    var localWorkerService = container.GetInstance<LocalWorkerService>();
 
                     ServiceBase.Run(localWorkerService);
                 }

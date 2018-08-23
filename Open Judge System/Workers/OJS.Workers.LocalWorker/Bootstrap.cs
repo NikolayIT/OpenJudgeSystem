@@ -20,24 +20,24 @@
     using SimpleInjector;
     using SimpleInjector.Lifestyles;
 
-    internal static class Bootstrap 
+    internal static class Bootstrap
     {
-        public static Container Container;
+        public static DepenencyContainer Container;
 
-        public static void Start(Container container)
+        public static void Start(DepenencyContainer container)
         {
-            Container = container;
-
             container.Options.DefaultScopedLifestyle = new ThreadScopedLifestyle();
 
             RegisterTypes(container);
 
             container.Verify();
+
+            Container = container;
         }
 
         private static void RegisterTypes(Container container)
         {
-            container.Register<LocalWorkerService<int>>(Lifestyle.Scoped);
+            container.Register<LocalWorkerService>(Lifestyle.Scoped);
             container.Register<OjsDbContext>(Lifestyle.Scoped);
             container.Register<ArchivesDbContext>(Lifestyle.Scoped);
 

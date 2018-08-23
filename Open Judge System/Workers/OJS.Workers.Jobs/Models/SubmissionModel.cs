@@ -5,7 +5,7 @@
     using OJS.Common.Models;
     using OJS.Workers.ExecutionStrategies;
 
-    public class SubmissionDto
+    public class SubmissionModel
     {
         public int Id { get; set; }
 
@@ -18,10 +18,6 @@
         public string AllowedFileExtensions { get; set; }
 
         public string CheckerTypeName { get; set; }
-
-        public bool IsCompiledSuccessfully { get; set; }
-
-        public string CompilerComment { get; set; }
 
         public string ProcessingComment { get; set; }
 
