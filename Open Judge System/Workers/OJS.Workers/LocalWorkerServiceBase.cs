@@ -18,7 +18,6 @@
     {
         private readonly ICollection<Thread> threads;
         private readonly ICollection<IJob> jobs;
-        private IDependencyContainer dependencyContainer;
 
         protected LocalWorkerServiceBase()
         {
@@ -32,9 +31,13 @@
 
         protected ILog Logger { get; }
 
+        protected IDependencyContainer DependencyContainer { get; private set; }
+
         protected override void OnStart(string[] args)
         {
             this.Logger.Info("LocalWorkerService starting...");
+
+            this.DependencyContainer = this.GetDependencyContainer();
 
             this.SpawnJobsAndThreads(this.jobs, this.threads, new ConcurrentQueue<T>());
 
@@ -50,6 +53,8 @@
             this.Logger.Info("LocalWorkerService stopping...");
 
             this.StopJobs(this.jobs);
+
+            Thread.Sleep(Constants.TimeBeforeAbortingThreadsInMilliseconds);
 
             this.StopThreads(this.threads);
 
@@ -70,8 +75,6 @@
             ICollection<Thread> threadsToSpawn,
             ConcurrentQueue<T> submissionsForProcessing)
         {
-            this.dependencyContainer = this.GetDependencyContainer();
-
             var sharedLockObject = new object();
 
             for (var i = 1; i <= Settings.ThreadsCount; i++)
@@ -81,7 +84,7 @@
                     submissionsForProcessing,
                     sharedLockObject);
 
-                var thread = new Thread(() => job.Start(this.dependencyContainer)) { Name = $"Thread №{i}" };
+                var thread = new Thread(() => job.Start(this.DependencyContainer)) { Name = $"Thread №{i}" };
 
                 jobsToSpawn.Add(job);
                 threadsToSpawn.Add(thread);

@@ -24,12 +24,9 @@ namespace OJS.Workers.LocalWorker
                 var container = new SimpleInjectorContainer();
                 Bootstrap.Start(container);
 
-                using (container.BeginDefaultScope())
-                {
-                    var localWorkerService = container.GetInstance<LocalWorkerService>();
+                var localWorkerService = new LocalWorkerService();
 
-                    ServiceBase.Run(localWorkerService);
-                }
+                ServiceBase.Run(localWorkerService);
             }
             catch (Exception exception)
             {

@@ -7,16 +7,17 @@
 
     internal class LocalWorkerService : LocalWorkerServiceBase<int>
     {
-        private readonly ISubmissionsForProcessingBusinessService submissionsForProcessingBusiness;
-
-        public LocalWorkerService(ISubmissionsForProcessingBusinessService submissionsForProcessingBusiness) =>
-            this.submissionsForProcessingBusiness = submissionsForProcessingBusiness;
-
         protected override void BeforeStartingThreads()
         {
             try
             {
-                this.submissionsForProcessingBusiness.ResetAllProcessingSubmissions();
+                using (this.DependencyContainer.BeginDefaultScope())
+                {
+                    var submissionsForProcessingBusiness =
+                        this.DependencyContainer.GetInstance<ISubmissionsForProcessingBusinessService>();
+
+                    submissionsForProcessingBusiness.ResetAllProcessingSubmissions();
+                }
             }
             catch (Exception ex)
             {

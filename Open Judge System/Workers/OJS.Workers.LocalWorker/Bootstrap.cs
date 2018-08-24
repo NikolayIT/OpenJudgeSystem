@@ -36,10 +36,8 @@
 
         private static void RegisterTypes(Container container)
         {
-            container.Register<LocalWorkerService>(Lifestyle.Scoped);
             container.Register<OjsDbContext>(Lifestyle.Scoped);
             container.Register<ArchivesDbContext>(Lifestyle.Scoped);
-
             container.Register<DbContext>(container.GetInstance<OjsDbContext>, Lifestyle.Scoped);
 
             container.Register(
