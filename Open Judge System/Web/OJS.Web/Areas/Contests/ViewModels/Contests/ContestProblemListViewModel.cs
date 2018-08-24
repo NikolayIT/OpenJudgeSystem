@@ -15,6 +15,7 @@
                 Name = pr.Name,
                 ShowResults = pr.ShowResults,
                 MaximumPoints = pr.MaximumPoints,
+                ProblemGroupId = pr.ProblemGroupId,
                 IsExcludedFromHomework = pr.ProblemGroup.Type == ProblemGroupType.ExcludedFromHomework
             };
 
@@ -24,8 +25,10 @@
 
         public bool ShowResults { get; set; }
 
-        public bool IsExcludedFromHomework { get; set; }
-
         public short MaximumPoints { get; set; }
+
+        public int ProblemGroupId { get; set; }
+
+        public bool IsExcludedFromHomework { get; set; }
     }
 }

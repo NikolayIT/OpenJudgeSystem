@@ -4,12 +4,6 @@
 
     public class ContestStatsViewModel
     {
-        public ContestStatsViewModel()
-        {
-            this.StatsByProblem = new List<ContestProblemStatsViewModel>();
-            this.StatsByPointsRange = new List<ContestPointsRangeViewModel>();
-        }
-
         public int MaxResultsCount { get; set; }
 
         public double MaxResultsPercent { get; set; }
@@ -20,8 +14,12 @@
 
         public double AverageResult { get; set; }
 
-        public ICollection<ContestProblemStatsViewModel> StatsByProblem { get; set; }
+        public bool IsGroupedByProblemGroup { get; set; }
 
-        public ICollection<ContestPointsRangeViewModel> StatsByPointsRange { get; set; }
+        public ICollection<ContestProblemStatsViewModel> StatsByProblem { get; set; } =
+            new List<ContestProblemStatsViewModel>();
+
+        public ICollection<ContestPointsRangeViewModel> StatsByPointsRange { get; set; } =
+            new List<ContestPointsRangeViewModel>();
     }
 }

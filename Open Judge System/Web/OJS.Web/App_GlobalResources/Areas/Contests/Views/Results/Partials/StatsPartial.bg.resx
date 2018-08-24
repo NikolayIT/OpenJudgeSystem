@@ -132,6 +132,9 @@
   <data name="Max_points_label" xml:space="preserve">
     <value>точки макс</value>
   </data>
+  <data name="Max_result_for_problem_group" xml:space="preserve">
+    <value>Максимален резултат за всяка група от задачи</value>
+  </data>
   <data name="Max_result_for_task" xml:space="preserve">
     <value>Максимален резултат за всяка задача</value>
   </data>
