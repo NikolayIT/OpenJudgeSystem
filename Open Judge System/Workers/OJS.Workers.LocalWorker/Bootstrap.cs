@@ -19,7 +19,7 @@
     using SimpleInjector;
     using SimpleInjector.Lifestyles;
 
-    internal static class Bootstrap
+    internal class Bootstrap
     {
         public static SimpleInjectorContainer Container { get; private set; }
 

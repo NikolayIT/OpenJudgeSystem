@@ -26,10 +26,7 @@
             this.SharedLockObject = sharedLockObject;
         }
 
-        public virtual void BeforeExecute()
-        {
-        }
-
+        public abstract void BeforeExecute();
 
         public abstract SubmissionModel RetrieveSubmission();
 
