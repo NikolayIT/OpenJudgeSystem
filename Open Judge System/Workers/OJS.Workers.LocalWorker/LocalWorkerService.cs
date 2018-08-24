@@ -3,10 +3,13 @@
     using System;
 
     using OJS.Services.Business.SubmissionsForProcessing;
-    using OJS.Workers.Jobs;
+    using OJS.Workers;
+    using OJS.Workers.Common;
 
     internal class LocalWorkerService : LocalWorkerServiceBase<int>
     {
+        protected override IDependencyContainer GetDependencyContainer() => Bootstrap.Container;
+
         protected override void BeforeStartingThreads()
         {
             try
@@ -27,7 +30,5 @@
 
             base.BeforeStartingThreads();
         }
-
-        protected override IDependencyContainer GetDependencyContainer() => Bootstrap.Container;
     }
 }

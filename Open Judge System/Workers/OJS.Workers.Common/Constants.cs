@@ -5,6 +5,6 @@
         public const string LocalWorkerServiceLogName = "LocalWorkerService";
 
         public const int DefaultJobLoopWaitTimeInMilliseconds = 1000;
-        public const int TimeBeforeAbortingThreadsInMilliseconds = 10000;
+        public const int DefaultTimeBeforeAbortingThreadsInMilliseconds = 10000;
     }
 }

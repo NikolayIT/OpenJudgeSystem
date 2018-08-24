@@ -54,7 +54,7 @@
 
             this.StopJobs(this.jobs);
 
-            Thread.Sleep(Constants.TimeBeforeAbortingThreadsInMilliseconds);
+            Thread.Sleep(this.TimeBeforeAbortingThreadsInMilliseconds);
 
             this.StopThreads(this.threads);
 
@@ -69,6 +69,9 @@
         protected virtual IDependencyContainer GetDependencyContainer() =>
             throw new InvalidOperationException(
                 $"{nameof(this.GetDependencyContainer)} method required but not implemented in derived service");
+
+        protected virtual int TimeBeforeAbortingThreadsInMilliseconds =>
+            Constants.DefaultTimeBeforeAbortingThreadsInMilliseconds;
 
         private void SpawnJobsAndThreads(
             ICollection<IJob> jobsToSpawn,

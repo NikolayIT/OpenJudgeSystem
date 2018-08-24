@@ -6,6 +6,7 @@
 
     using log4net;
 
+    using OJS.Workers.Common;
     using OJS.Workers.ExecutionStrategies;
     using OJS.Workers.Jobs.Helpers;
     using OJS.Workers.Jobs.Models;

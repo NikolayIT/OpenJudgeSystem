@@ -1,7 +1,8 @@
 ﻿namespace OJS.Workers.LocalWorker
 {
     using System;
-    using OJS.Workers.Jobs;
+
+    using OJS.Workers.Common;
 
     using SimpleInjector;
     using SimpleInjector.Lifestyles;

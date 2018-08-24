@@ -48,7 +48,6 @@
     <Compile Include="Helpers\SubmissionJobHelper.cs" />
     <Compile Include="IJob.cs" />
     <Compile Include="IJobStrategy.cs" />
-    <Compile Include="IDependencyContainer.cs" />
     <Compile Include="Models\SubmissionModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SubmissionJob.cs" />

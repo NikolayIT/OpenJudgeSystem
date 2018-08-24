@@ -75,6 +75,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="Helpers\CSharpPreprocessorHelper.cs" />
     <Compile Include="Helpers\JavaCodePreprocessorHelper.cs" />
+    <Compile Include="IDependencyContainer.cs" />
     <Compile Include="ProcessExecutionResult.cs" />
     <Compile Include="ProcessExecutionResultType.cs" />
     <Compile Include="IChecker.cs" />
