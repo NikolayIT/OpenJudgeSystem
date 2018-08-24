@@ -15,16 +15,15 @@
     using OJS.Services.Common.BackgroundJobs;
     using OJS.Services.Data.SubmissionsForProcessing;
     using OJS.Workers.Jobs;
-    using OJS.Workers.JobStrategies;
 
     using SimpleInjector;
     using SimpleInjector.Lifestyles;
 
     internal static class Bootstrap
     {
-        public static DepenencyContainer Container;
+        public static SimpleInjectorContainer Container { get; private set; }
 
-        public static void Start(DepenencyContainer container)
+        public static void Start(SimpleInjectorContainer container)
         {
             container.Options.DefaultScopedLifestyle = new ThreadScopedLifestyle();
 
@@ -45,7 +44,7 @@
 
             container.Register(
                 typeof(IJobStrategy<>),
-                typeof(DbJobStrategy),
+                typeof(SubmissionJobStrategy),
                 Lifestyle.Scoped);
 
             container.Register(

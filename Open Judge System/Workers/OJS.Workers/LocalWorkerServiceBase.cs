@@ -26,12 +26,8 @@
 
             this.Logger = LogManager.GetLogger(loggerAssembly, Constants.LocalWorkerServiceLogName);
 
-            this.Logger.Info("LocalWorkerService initializing...");
-
             this.threads = new List<Thread>();
             this.jobs = new List<IJob>();
-
-            this.Logger.Info("LocalWorkerService initialized.");
         }
 
         protected ILog Logger { get; }

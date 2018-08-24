@@ -48,7 +48,7 @@
             
             while (!this.stopping)
             {
-                using (dependencyContainer.CreateScope())
+                using (dependencyContainer.BeginDefaultScope())
                 {
                     var jobStrategy = dependencyContainer.GetInstance<IJobStrategy<T>>();
 

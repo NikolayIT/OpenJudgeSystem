@@ -6,6 +6,6 @@
     {
         T GetInstance<T>() where T : class;
 
-        IDisposable CreateScope();
+        IDisposable BeginDefaultScope();
     }
 }

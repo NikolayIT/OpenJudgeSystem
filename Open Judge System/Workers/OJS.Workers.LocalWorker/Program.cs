@@ -21,10 +21,10 @@ namespace OJS.Workers.LocalWorker
                 Environment.CurrentDirectory = Path.GetDirectoryName(typeof(Program).Assembly.Location);
                 AppDomain.CurrentDomain.SetData("APP_CONFIG_FILE", "OJS.Workers.LocalWorker.exe.config");
 
-                var container = new DepenencyContainer();
+                var container = new SimpleInjectorContainer();
                 Bootstrap.Start(container);
 
-                using (container.CreateScope())
+                using (container.BeginDefaultScope())
                 {
                     var localWorkerService = container.GetInstance<LocalWorkerService>();
 
