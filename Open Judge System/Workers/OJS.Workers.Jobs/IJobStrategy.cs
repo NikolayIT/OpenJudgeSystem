@@ -9,6 +9,8 @@
 
     public interface IJobStrategy<T>
     {
+        int JobLoopWaitTimeInMilliseconds { get; }
+
         void Initialize(ILog logger, ConcurrentQueue<T> queue, object sharedLockObject = null);
 
         SubmissionModel RetrieveSubmission();

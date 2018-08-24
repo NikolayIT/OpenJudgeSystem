@@ -22,9 +22,9 @@
 
         protected LocalWorkerServiceBase()
         {
-            this.Logger = LogManager.GetLogger(
-                Assembly.GetEntryAssembly(),
-                Constants.LocalWorkerServiceLogName);
+            var loggerAssembly = Assembly.GetEntryAssembly() ?? Assembly.GetCallingAssembly();
+
+            this.Logger = LogManager.GetLogger(loggerAssembly, Constants.LocalWorkerServiceLogName);
 
             this.Logger.Info("LocalWorkerService initializing...");
 

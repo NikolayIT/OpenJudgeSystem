@@ -123,7 +123,7 @@
                     }
                     else
                     {
-                        Thread.Sleep(1000);
+                        Thread.Sleep(jobStrategy.JobLoopWaitTimeInMilliseconds);
                     }
                 }
             }
