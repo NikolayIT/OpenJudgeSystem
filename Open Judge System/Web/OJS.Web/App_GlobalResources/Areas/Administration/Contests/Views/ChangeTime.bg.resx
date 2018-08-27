@@ -123,8 +123,14 @@
   <data name="Add_time" xml:space="preserve">
     <value>Добави време</value>
   </data>
+  <data name="Change_time_by_time_interval" xml:space="preserve">
+    <value>Промяна на времената на множество участници по времеви интервал</value>
+  </data>
+  <data name="Change_time_by_user" xml:space="preserve">
+    <value>Промяна на времето на един участник по потребителско име</value>
+  </data>
   <data name="Change_time_legend" xml:space="preserve">
-    <value>Променя продължителността на състезанието само за участници, започнали да участват в състезанието в определения интервал от време. Не афектира времето на състезанието, нито времето, в което то стартира или приключва.</value>
+    <value>Променя продължителността на състезанието само за участници, започнали да участват в състезанието в определения интервал от време или за конкретен потребител. Не афектира времето на състезанието, нито времето, в което то стартира или приключва.</value>
   </data>
   <data name="Confirmation_message_header" xml:space="preserve">
     <value>Сигурни ли сте, че искате да &lt;strong id="action"&gt;&lt;/strong&gt; &lt;strong id="minutes"&gt;&lt;/strong&gt; &lt;strong&gt;минути&lt;/strong&gt; &lt;span id="preposition"&gt;&lt;/span&gt; продължителността на съзтезанието на всички участници, създадени в интервала между &lt;strong id="createdAfter"&gt;&lt;/strong&gt; и &lt;strong id="createdBefore"&gt;&lt;/strong&gt;?</value>
@@ -157,7 +163,7 @@
     <value>Създадени преди</value>
   </data>
   <data name="Participants_created_in_time_interval_information" xml:space="preserve">
-    <value>&lt;strong&gt;Промени продължителността на състезанието за участници, създадени в следния интервал&lt;/strong&gt;:</value>
+    <value>Промени продължителността на състезанието за участници, създадени в следния интервал</value>
   </data>
   <data name="Subtract_are_you_sure" xml:space="preserve">
     <value>премахнете</value>

@@ -14,6 +14,8 @@
             bool isOfficial,
             bool isAdmin);
 
+        void UpdateContestEndTimeByIdAndTimeInMinutes(int id, int minutes);
+
         /// <summary>
         /// Updates contest duration for participants in contest,
         /// in time range with amount of minutes provided. If any participants' contest duration

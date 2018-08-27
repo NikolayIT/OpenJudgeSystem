@@ -123,8 +123,14 @@
   <data name="Add_time" xml:space="preserve">
     <value>Add Time</value>
   </data>
+  <data name="Change_time_by_time_interval" xml:space="preserve">
+    <value>Change time for multiple participants by time interval</value>
+  </data>
+  <data name="Change_time_by_user" xml:space="preserve">
+    <value>Change time for single participant by username</value>
+  </data>
   <data name="Change_time_legend" xml:space="preserve">
-    <value>Changes the contest duration only for participants who started competing in a specified time interval in this contest. Does not affect the total duration of the contest nor its start or end time.</value>
+    <value>Changes the contest duration only for participants who started competing in a specified time interval in this contest or for a specific user. Does not affect the total duration of the contest nor its start or end time.</value>
   </data>
   <data name="Confirmation_message_header" xml:space="preserve">
     <value>Are you sure you want to &lt;strong id="action"&gt;&lt;/strong&gt; &lt;strong id="minutes"&gt;&lt;/strong&gt; &lt;strong&gt;minutes&lt;/strong&gt; &lt;span id="preposition"&gt;&lt;/span&gt; the contest duration of all participants created in the time interval between &lt;strong id="createdAfter"&gt;&lt;/strong&gt; and  &lt;strong id="createdBefore"&gt;&lt;/strong&gt;?</value>
@@ -157,7 +163,7 @@
     <value>Created before</value>
   </data>
   <data name="Participants_created_in_time_interval_information" xml:space="preserve">
-    <value>&lt;strong&gt;Change the contest duration for participants created in the following interval&lt;/strong&gt;:</value>
+    <value>Change the contest duration for participants created in the following interval</value>
   </data>
   <data name="Subtract_are_you_sure" xml:space="preserve">
     <value>subtract</value>

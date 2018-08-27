@@ -3,13 +3,14 @@
     using System;
     using System.Data.Entity.SqlServer;
     using System.Linq;
-    using OJS.Common.Models;
+    using EntityFramework.Extensions;
     using OJS.Data.Models;
     using OJS.Services.Data.Contests;
     using OJS.Services.Data.Participants;
 
     public class ParticipantsBusinessService : IParticipantsBusinessService
     {
+        private const string Minute = "minute";
         private readonly IParticipantsDataService participantsData;
         private readonly IContestsDataService contestsData;
 
@@ -45,6 +46,17 @@
             return participant;
         }
 
+        public void UpdateContestEndTimeByIdAndTimeInMinutes(int id, int minutes) =>
+            this.participantsData
+                .GetByIdQuery(id)
+                .Update(p => new Participant
+                {
+                    ParticipationEndTime = SqlFunctions.DateAdd(
+                        Minute,
+                        minutes,
+                        p.ParticipationEndTime)
+                });
+
         public void UpdateContestEndTimeForAllParticipantsByContestByParticipantContestStartTimeRangeAndTimeIntervalInMinutes(
             int contestId,
             int minutes,
@@ -62,12 +74,12 @@
 
             this.participantsData.Update(
                 participantsInTimeRange
-                    .Where(p => SqlFunctions.DateAdd("minute", minutes, p.ParticipationEndTime) >=
-                        SqlFunctions.DateAdd("minute", contestTotalDurationInMinutes, p.ParticipationStartTime)),
+                    .Where(p => SqlFunctions.DateAdd(Minute, minutes, p.ParticipationEndTime) >=
+                        SqlFunctions.DateAdd(Minute, contestTotalDurationInMinutes, p.ParticipationStartTime)),
                 p => new Participant
                 {
                     ParticipationEndTime = SqlFunctions.DateAdd(
-                    "minute",
+                    Minute,
                     minutes,
                     p.ParticipationEndTime)
                 });
@@ -88,8 +100,8 @@
                         contestId,
                         contestStartTimeRangeStart,
                         contestStartTimeRangeEnd)
-                    .Where(p => SqlFunctions.DateAdd("minute", minutes, p.ParticipationEndTime) <
-                                SqlFunctions.DateAdd("minute", contestTotalDurationInMinutes, p.ParticipationStartTime));
+                    .Where(p => SqlFunctions.DateAdd(Minute, minutes, p.ParticipationEndTime) <
+                                SqlFunctions.DateAdd(Minute, contestTotalDurationInMinutes, p.ParticipationStartTime));
 
             return participantsInvalidForUpdate;
         }

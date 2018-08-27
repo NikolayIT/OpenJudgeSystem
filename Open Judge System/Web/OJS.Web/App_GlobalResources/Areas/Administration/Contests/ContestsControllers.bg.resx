@@ -129,6 +129,9 @@
   <data name="Added_time_to_participants_online" xml:space="preserve">
     <value>Успешно добавихте {0} минути към времената на всички активни участници в състезанието {1}</value>
   </data>
+  <data name="Added_time_to_single_participant_online" xml:space="preserve">
+    <value>Успешно добавихте {0} минути към времeто на участник с потребителско име: {1}, в състезанието {2}</value>
+  </data>
   <data name="Contest_added" xml:space="preserve">
     <value>Състезанието беше добавено успешно</value>
   </data>
@@ -165,6 +168,9 @@
   <data name="Participants_transferred" xml:space="preserve">
     <value>Участниците са преместени успешно!</value>
   </data>
+  <data name="Participant_not_in_contest" xml:space="preserve">
+    <value>Участникът не фигурира в състезанието!</value>
+  </data>
   <data name="Practice_start_date_before_end" xml:space="preserve">
     <value>Началната дата за упражнения не може да бъде след крайната дата за упражнения</value>
   </data>
@@ -182,5 +188,8 @@
   </data>
   <data name="Subtracted_time_from_participants_online" xml:space="preserve">
     <value>Успешно отнехте {0} минути от времената на всички активни участници в състезанието {1}</value>
+  </data>
+  <data name="Subtracted_time_from_single_participant_online" xml:space="preserve">
+    <value>Успешно отнехте {0} минути от времето на участник с потребителско име: {1},  в състезанието {2}</value>
   </data>
 </root>

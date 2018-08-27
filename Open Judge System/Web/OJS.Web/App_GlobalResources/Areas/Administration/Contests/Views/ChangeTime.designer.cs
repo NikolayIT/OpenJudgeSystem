@@ -79,7 +79,25 @@ namespace Resources.Areas.Administration.Contests.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Changes the contest duration only for participants who started competing in a specified time interval in this contest. Does not affect the total duration of the contest nor its start or end time..
+        ///   Looks up a localized string similar to Change time for multiple participants by time interval.
+        /// </summary>
+        public static string Change_time_by_time_interval {
+            get {
+                return ResourceManager.GetString("Change_time_by_time_interval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change time for single participant by username.
+        /// </summary>
+        public static string Change_time_by_user {
+            get {
+                return ResourceManager.GetString("Change_time_by_user", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changes the contest duration only for participants who started competing in a specified time interval in this contest or for a specific user. Does not affect the total duration of the contest nor its start or end time..
         /// </summary>
         public static string Change_time_legend {
             get {
@@ -178,7 +196,7 @@ namespace Resources.Areas.Administration.Contests.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;strong&gt;Change the contest duration for participants created in the following interval&lt;/strong&gt;:.
+        ///   Looks up a localized string similar to Change the contest duration for participants created in the following interval.
         /// </summary>
         public static string Participants_created_in_time_interval_information {
             get {

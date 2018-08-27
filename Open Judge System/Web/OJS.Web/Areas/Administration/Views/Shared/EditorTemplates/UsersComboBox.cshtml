@@ -1,8 +1,8 @@
-﻿@model OJS.Web.Areas.Administration.ViewModels.User.UserProfileSimpleAdministrationViewModel
+﻿@model string
 
 @using Resource = Resources.Areas.Administration.Roles.Views.RolesIndex
 
-@(Html.Kendo().ComboBoxFor(m => m.Username)
+@(Html.Kendo().ComboBoxFor(m => m)
     .Name("UserId")
     .DataTextField("Text")
     .DataValueField("Value")
@@ -16,7 +16,7 @@
             read
                 .Action("GetUsersContaining", "KendoRemoteData")
                 .Data(@<text>
-                        function () { return { userFilter: $('\\#UserId').data("kendoComboBox").input.val() };}
+                        function () { return { userFilter: $('\#UserId').data("kendoComboBox").input.val() };}
                     </text>);
         }))
     .AutoBind(false)
