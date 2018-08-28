@@ -7,7 +7,7 @@
     using System.Web.Mvc;
 
     using OJS.Data.Models;
-    using OJS.Web.Areas.Administration.ViewModels.User;
+
     using Resource = Resources.Areas.Administration.Contests.Views.ChangeTime;
 
     public class ChangeTimeForParticipantsViewModel
@@ -37,18 +37,16 @@
         public int TimeInMinutes { get; set; }
 
         [Display(Name = "Participants_created_after", ResourceType = typeof(Resource))]
-        [Required(ErrorMessageResourceName = "Time_required_error", ErrorMessageResourceType = typeof(Resource))]
         public DateTime? ParticipantsCreatedAfterDateTime { get; set; }
 
         [Display(Name = "Participants_created_before", ResourceType = typeof(Resource))]
-        [Required(ErrorMessageResourceName = "Time_required_error", ErrorMessageResourceType = typeof(Resource))]
         public DateTime? ParticipantsCreatedBeforeDateTime { get; set; }
 
         [UIHint("UsersComboBox")]
         public string UserId { get; set; }
 
         [Display(Name = "Change_time_by_time_interval", ResourceType = typeof(Resource))]
-        public bool ChangeByTimeInterval { get; set; }
+        public bool ChangeByTimeInterval { get; set; } = true;
 
         [Display(Name = "Change_time_by_user", ResourceType = typeof(Resource))]
         public bool ChangeByUser { get; set; }

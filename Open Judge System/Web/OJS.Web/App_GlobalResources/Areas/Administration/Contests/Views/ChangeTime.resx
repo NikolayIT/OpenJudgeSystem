@@ -132,8 +132,14 @@
   <data name="Change_time_legend" xml:space="preserve">
     <value>Changes the contest duration only for participants who started competing in a specified time interval in this contest or for a specific user. Does not affect the total duration of the contest nor its start or end time.</value>
   </data>
+  <data name="Confirmation_message_body_change_by_interval" xml:space="preserve">
+    <value>all participants created in the time interval between &lt;strong id="createdAfter"&gt;&lt;/strong&gt; and  &lt;strong id="createdBefore"&gt;&lt;/strong&gt;?</value>
+  </data>
+  <data name="Confirmation_message_body_change_by_user" xml:space="preserve">
+    <value>the participant with username &lt;strong id="username-placeholder"&gt;&lt;/strong&gt;?</value>
+  </data>
   <data name="Confirmation_message_header" xml:space="preserve">
-    <value>Are you sure you want to &lt;strong id="action"&gt;&lt;/strong&gt; &lt;strong id="minutes"&gt;&lt;/strong&gt; &lt;strong&gt;minutes&lt;/strong&gt; &lt;span id="preposition"&gt;&lt;/span&gt; the contest duration of all participants created in the time interval between &lt;strong id="createdAfter"&gt;&lt;/strong&gt; and  &lt;strong id="createdBefore"&gt;&lt;/strong&gt;?</value>
+    <value>Are you sure you want to &lt;strong id="action"&gt;&lt;/strong&gt; &lt;strong id="minutes"&gt;&lt;/strong&gt; &lt;strong&gt;minutes&lt;/strong&gt; &lt;span id="preposition"&gt;&lt;/span&gt; the contest duration of</value>
   </data>
   <data name="Contest" xml:space="preserve">
     <value>Contest</value>

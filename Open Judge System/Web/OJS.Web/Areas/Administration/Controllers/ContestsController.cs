@@ -20,7 +20,6 @@
     using OJS.Services.Data.Contests;
     using OJS.Services.Data.Ips;
     using OJS.Services.Data.Participants;
-    using OJS.Services.Data.Users;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.ViewModels.Contest;
     using OJS.Web.Areas.Contests.Models;
@@ -357,7 +356,7 @@
 
             if (!this.ModelState.IsValid)
             {
-                this.ViewBag.CurrentUsername = this.UserProfile.UserName;
+                PrepareViewBagDataLocal();
                 return this.View(model);
             }
 
@@ -378,7 +377,7 @@
                 if (participant == null)
                 {
                     this.ModelState.AddModelError(nameof(model.UserId), Resource.Participant_not_in_contest);
-                    this.ViewBag.CurrentUsername = this.UserProfile.UserName;
+                    PrepareViewBagDataLocal();
                     return this.View(model);
                 }
 
@@ -416,12 +415,34 @@
 
             if (model.ChangeByTimeInterval)
             {
-                if (model.ParticipantsCreatedBeforeDateTime < model.ParticipantsCreatedAfterDateTime)
+                var isModelValid = false;
+
+                if (model.ParticipantsCreatedAfterDateTime == null)
+                {
+                    this.ModelState.AddModelError(
+                        nameof(model.ParticipantsCreatedAfterDateTime),
+                        ChangeTimeResource.Time_required_error);
+                }
+                else if (model.ParticipantsCreatedBeforeDateTime == null)
+                {
+                    this.ModelState.AddModelError(
+                        nameof(model.ParticipantsCreatedBeforeDateTime),
+                        ChangeTimeResource.Time_required_error);
+                }
+                else if (model.ParticipantsCreatedBeforeDateTime < model.ParticipantsCreatedAfterDateTime)
                 {
                     this.ModelState.AddModelError(
                         nameof(model.ParticipantsCreatedAfterDateTime),
                         ChangeTimeResource.Participants_created_after_must_be_before_Participants_created_before);
-                    this.ViewBag.CurrentUsername = this.UserProfile.UserName;
+                }
+                else
+                {
+                    isModelValid = true;
+                }
+
+                if (!isModelValid)
+                {
+                    PrepareViewBagDataLocal();
                     return this.View(model);
                 }
 
@@ -455,6 +476,8 @@
             }
 
             this.TempData.AddInfoMessage(sb.ToString());
+
+            void PrepareViewBagDataLocal() => this.ViewBag.CurrentUsername = this.UserProfile.UserName;
 
             return this.RedirectToAction("Details", "Contests", new { id = model.ContesId, area = "Contests" });
         }
@@ -619,6 +642,16 @@
             {
                 this.participantsData.InvalidateByContestAndIsOfficial(contest.Id, isOfficial: false);
             }
+        }
+
+        private void ChangeEndTimeForParticipant(int participantId, int minutes, string contestName)
+        {
+
+        }
+
+        private void PrepareSystemMessageForChangedParticipantsEndTime()
+        {
+
         }
     }
 }

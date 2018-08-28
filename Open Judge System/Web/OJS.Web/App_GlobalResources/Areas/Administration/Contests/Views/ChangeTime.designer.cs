@@ -106,7 +106,25 @@ namespace Resources.Areas.Administration.Contests.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Are you sure you want to &lt;strong id=&quot;action&quot;&gt;&lt;/strong&gt; &lt;strong id=&quot;minutes&quot;&gt;&lt;/strong&gt; &lt;strong&gt;minutes&lt;/strong&gt; &lt;span id=&quot;preposition&quot;&gt;&lt;/span&gt; the contest duration of all participants created in the time interval between &lt;strong id=&quot;createdAfter&quot;&gt;&lt;/strong&gt; and  &lt;strong id=&quot;createdBefore&quot;&gt;&lt;/strong&gt;?.
+        ///   Looks up a localized string similar to all participants created in the time interval between &lt;strong id=&quot;createdAfter&quot;&gt;&lt;/strong&gt; and  &lt;strong id=&quot;createdBefore&quot;&gt;&lt;/strong&gt;?.
+        /// </summary>
+        public static string Confirmation_message_body_change_by_interval {
+            get {
+                return ResourceManager.GetString("Confirmation_message_body_change_by_interval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to the participant with username &lt;strong id=&quot;username-placeholder&quot;&gt;&lt;/strong&gt;?.
+        /// </summary>
+        public static string Confirmation_message_body_change_by_user {
+            get {
+                return ResourceManager.GetString("Confirmation_message_body_change_by_user", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to &lt;strong id=&quot;action&quot;&gt;&lt;/strong&gt; &lt;strong id=&quot;minutes&quot;&gt;&lt;/strong&gt; &lt;strong&gt;minutes&lt;/strong&gt; &lt;span id=&quot;preposition&quot;&gt;&lt;/span&gt; the contest duration of.
         /// </summary>
         public static string Confirmation_message_header {
             get {
