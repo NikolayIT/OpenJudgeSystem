@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Globalization;
     using System.Linq;
@@ -368,7 +369,6 @@
             }
 
             ServiceResult result;
-            string systemMessage;
 
             if (model.ChangeByTimeInterval)
             {
@@ -403,15 +403,8 @@
                     return this.View(model);
                 }
 
-                systemMessage = this.GetMessageForChangedParticipantsEndTimeByTimeInterval(
-                    model.TimeInMinutes,
-                    model.ContesId,
-                    model.ContestName,
-                    model.ParticipantsCreatedAfterDateTime.Value,
-                    model.ParticipantsCreatedBeforeDateTime.Value);
-
                 result = this.participantsBusiness
-                    .UpdateContestEndTimeForAllParticipantsByContestByParticipantContestStartTimeRangeAndTimeIntervalInMinutes(
+                    .UpdateParticipationsEndTimeByContestByParticipationStartTimeRangeAndTimeInMinutes(
                         model.ContesId,
                         model.TimeInMinutes,
                         model.ParticipantsCreatedAfterDateTime.Value,
@@ -429,17 +422,17 @@
                     return this.View(model);
                 }
 
-                systemMessage = this.GetMessageForChangedSingleParticipantEndTime(
-                    model.TimeInMinutes,
-                    participant.User.UserName,
-                    model.ContestName);
-
                 result = this.participantsBusiness
-                    .UpdateContestEndTimeByIdAndTimeInMinutes(participant.Id, model.TimeInMinutes);
+                    .UpdateParticipationEndTimeByIdAndTimeInMinutes(participant.Id, model.TimeInMinutes);
             }
 
             if (!result.IsError)
             {
+                var systemMessage = this.GetMessageForChangedParticipantsEndTime(
+                    model.TimeInMinutes,
+                    model.ContestName,
+                    result);
+
                 this.TempData.AddInfoMessage(systemMessage);
             }
             else
@@ -614,65 +607,62 @@
             }
         }
 
-        private string GetMessageForChangedSingleParticipantEndTime(
+        private string GetMessageForChangedParticipantsEndTime(
             int timeInMinutes,
-            string username,
-            string contestName)
-        {
-            var minutesForDisplay = timeInMinutes.ToString();
-
-            var message = timeInMinutes >= 0
-                ? string.Format(
-                    Resource.Added_time_to_single_participant_online,
-                    minutesForDisplay,
-                    username,
-                    contestName)
-                : string.Format(
-                    Resource.Subtracted_time_from_single_participant_online,
-                    minutesForDisplay.Substring(1, minutesForDisplay.Length - 1),
-                    username,
-                    contestName);
-
-            return message;
-        }
-
-        private string GetMessageForChangedParticipantsEndTimeByTimeInterval(
-            int timeInMinutes,
-            int contestId,
             string contestName,
-            DateTime participantsCreatedAfterDateTime,
-            DateTime participantsCreatedBeforeDateTime)
+            ServiceResult serviceResult)
         {
+            var username = string.Empty;
+            ICollection<string> notUpdatedUsernames = new List<string>();
+            string message;
+
+            if (serviceResult is ServiceResult<ICollection<string>> result)
+            {
+                notUpdatedUsernames = result.Data;
+            }
+            else
+            {
+                username = ((ServiceResult<string>)serviceResult).Data;
+            }
+
             var minutesForDisplay = timeInMinutes.ToString();
 
             var sb = new StringBuilder();
 
-            var message = timeInMinutes >= 0
-                ? string.Format(
-                    Resource.Added_time_to_participants_online,
-                    minutesForDisplay,
-                    contestName)
-                : string.Format(
-                    Resource.Subtracted_time_from_participants_online,
-                    minutesForDisplay.Substring(1, minutesForDisplay.Length - 1),
-                    contestName);
+            if (timeInMinutes >= 0)
+            {
+                message = string.IsNullOrEmpty(username)
+                    ? string.Format(
+                        Resource.Added_time_to_participants_online,
+                        minutesForDisplay,
+                        contestName)
+                    : string.Format(
+                        Resource.Added_time_to_single_participant_online,
+                        minutesForDisplay,
+                        username,
+                        contestName);
+            }
+            else
+            {
+                message = string.IsNullOrEmpty(username)
+                    ? string.Format(
+                        Resource.Subtracted_time_from_participants_online,
+                        minutesForDisplay.Substring(1, minutesForDisplay.Length - 1),
+                        contestName)
+                    : string.Format(
+                        Resource.Subtracted_time_from_single_participant_online,
+                        minutesForDisplay.Substring(1, minutesForDisplay.Length - 1),
+                        username,
+                        contestName);
+            }
 
             sb.AppendLine(message);
 
-            var usernamesThatWillNotBeUpdated = this.participantsBusiness
-                .GetAllParticipantsWhoWouldBeReducedBelowDefaultContestDuration(
-                    contestId,
-                    timeInMinutes,
-                    participantsCreatedAfterDateTime,
-                    participantsCreatedBeforeDateTime)
-                .Select(u => u.User.UserName)
-                .ToList();
-
-            if (usernamesThatWillNotBeUpdated.Any())
+            if (notUpdatedUsernames.Any())
             {
                 var warningMessage = string.Format(
                     Resource.Failed_to_update_participants_duration,
-                    string.Join(", ", usernamesThatWillNotBeUpdated));
+                    string.Join(", ", notUpdatedUsernames));
 
                 sb.AppendLine(warningMessage);
             }

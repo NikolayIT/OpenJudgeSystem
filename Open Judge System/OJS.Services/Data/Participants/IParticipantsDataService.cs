@@ -22,10 +22,10 @@
 
         IQueryable<Participant> GetAllByContestAndIsOfficial(int contestId, bool isOfficial);
 
-        IQueryable<Participant> GetAllOfficialInOnlineContestByContestAndContestStartTimeRange(
+        IQueryable<Participant> GetAllOfficialInOnlineContestByContestAndParticipationStartTimeRange(
             int contestId,
-            DateTime contestStartTimeRangeStart,
-            DateTime contestStartTimeRangeEnd);
+            DateTime participationStartTimeRangeStart,
+            DateTime participationStartTimeRangeEnd);
 
         bool ExistsByContestByUserAndIsOfficial(int contestId, string userId, bool isOfficial);
 

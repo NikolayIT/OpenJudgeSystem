@@ -96,6 +96,7 @@
     <Compile Include="HttpRequester\IHttpRequesterService.cs" />
     <Compile Include="HttpRequester\Models\ExternalDataRetrievalResult.cs" />
     <Compile Include="HttpRequester\HttpRequesterService.cs" />
+    <Compile Include="ServiceResult{T}.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
