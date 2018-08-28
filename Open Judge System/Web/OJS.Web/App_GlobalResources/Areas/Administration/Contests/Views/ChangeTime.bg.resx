@@ -132,13 +132,13 @@
   <data name="Change_time_legend" xml:space="preserve">
     <value>Променя продължителността на състезанието само за участници, започнали да участват в състезанието в определения интервал от време или за конкретен потребител. Не афектира времето на състезанието, нито времето, в което то стартира или приключва.</value>
   </data>
-  <data name="Confirmation_message_body_change_by_interval" xml:space="preserve">
+  <data name="Confirmation_message_header_change_by_interval" xml:space="preserve">
     <value>всички участници, създадени в интервала между &lt;strong id="createdAfter"&gt;&lt;/strong&gt; и &lt;strong id="createdBefore"&gt;&lt;/strong&gt;?</value>
   </data>
-  <data name="Confirmation_message_body_change_by_user" xml:space="preserve">
+  <data name="Confirmation_message_header_change_by_user" xml:space="preserve">
     <value>участникът с потребителско име &lt;strong id="username-placeholder"&gt;&lt;/strong&gt;?</value>
   </data>
-  <data name="Confirmation_message_header" xml:space="preserve">
+  <data name="Confirmation_message_header_prefix" xml:space="preserve">
     <value>Сигурни ли сте, че искате да &lt;strong id="action"&gt;&lt;/strong&gt; &lt;strong id="minutes"&gt;&lt;/strong&gt; &lt;strong&gt;минути&lt;/strong&gt; &lt;span id="preposition"&gt;&lt;/span&gt; продължителността на съзтезанието на</value>
   </data>
   <data name="Contest" xml:space="preserve">

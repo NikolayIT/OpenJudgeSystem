@@ -88,7 +88,7 @@
             </div>
 
             <div class="row top-buffer">
-                @Html.CheckBoxFor(m => m.ChangeByUser, new { id = "change-time-by-username", @class="change-time-method-checkbox" })
+                @Html.CheckBoxFor(m => m.ChangeByUser, new { @class="change-time-method-checkbox" })
                 @Html.LabelFor(m => m.ChangeByUser)
                 
                 <div class="row change-time-method-container" id="change-time-by-user" hidden>
@@ -116,7 +116,7 @@
 </div>
 <div id="confirm-window-pop-up-container" style="display: none">
     <div id="confirm-window-pop-up" class="row">
-        <h3 id="confirm-window-header">@Html.Raw(Resource.Confirmation_message_header)</h3>
+        <h3 id="confirm-window-header"></h3>
         <label name="Name">@Resource.Enter_your_username</label>
         <input id="username-confirmation-input" class="form-control" type="text"/>
         <div class="container-fluid row">
@@ -128,7 +128,7 @@
 
 
 @section Scripts{
-    <script>
+<script>
         ($(function () {
             if ("@Model.ChangeByUser.ToString().ToLower()" === "true") {
                 $('#change-time-by-user').show();
@@ -221,17 +221,17 @@
 
             function setConfirmWindowHeader() {
                 var confirmWindowHeader = $('#confirm-window-header');
-                var confirmWindowHeaderText = '';
-                
+                var headerPrefix = '@Resource.Confirmation_message_header_prefix ';
+                var headerText = '';
+
                 if ($('#change-time-by-interval').is(':visible')) {
-                    confirmWindowHeaderText = '@Resource.Confirmation_message_header @Resource.Confirmation_message_body_change_by_interval';
+                    headerText = '@Resource.Confirmation_message_header_change_by_interval';
                 } else if ($('#change-time-by-user').is(':visible')) {
-                    confirmWindowHeaderText = '@Resource.Confirmation_message_header @Resource.Confirmation_message_body_change_by_user';
+                    headerText = '@Resource.Confirmation_message_header_change_by_user';
                 }
 
                 var parser = new DOMParser;
-
-                var header = parser.parseFromString(confirmWindowHeaderText, 'text/html');
+                var header = parser.parseFromString(headerPrefix + headerText, 'text/html');
 
                 confirmWindowHeader.html(header.body.textContent);
             }
@@ -239,16 +239,15 @@
             function changeAddSubractButton(value) {
                 var addButton = $(addButtonSelector);
                 var subtractButton = $(subtractButtonSelector);
-                var hiddenClass = 'hidden';
 
                 if (value >= 0) {
-                    addButton.removeClass(hiddenClass);
-                    subtractButton.addClass(hiddenClass);
+                    addButton.removeClass('hidden');
+                    subtractButton.addClass('hidden');
                 } else if (value < 0) {
-                    addButton.addClass(hiddenClass);
-                    subtractButton.removeClass(hiddenClass);
+                    addButton.addClass('hidden');
+                    subtractButton.removeClass('hidden');
                 }
             }
         }))
-    </script>
+</script>
 }
