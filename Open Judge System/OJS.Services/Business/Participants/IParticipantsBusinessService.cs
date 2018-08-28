@@ -14,7 +14,7 @@
             bool isOfficial,
             bool isAdmin);
 
-        void UpdateContestEndTimeByIdAndTimeInMinutes(int id, int minutes);
+        ServiceResult UpdateContestEndTimeByIdAndTimeInMinutes(int id, int minutes);
 
         /// <summary>
         /// Updates contest duration for participants in contest,
@@ -26,7 +26,7 @@
         /// Amount can be negative</param>
         /// <param name="contestStartTimeRangeStart">The lower bound against which participants' contest start time would be checked</param>
         /// <param name="contestStartTimeRangeEnd">The upper bound against which participants' contest start time would be checked</param>
-        void UpdateContestEndTimeForAllParticipantsByContestByParticipantContestStartTimeRangeAndTimeIntervalInMinutes(
+        ServiceResult UpdateContestEndTimeForAllParticipantsByContestByParticipantContestStartTimeRangeAndTimeIntervalInMinutes(
             int contestId,
             int minutes,
             DateTime contestStartTimeRangeStart,

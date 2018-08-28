@@ -3,14 +3,17 @@
     using System;
     using System.Data.Entity.SqlServer;
     using System.Linq;
-    using EntityFramework.Extensions;
+
     using OJS.Data.Models;
+    using OJS.Services.Common;
     using OJS.Services.Data.Contests;
     using OJS.Services.Data.Participants;
 
     public class ParticipantsBusinessService : IParticipantsBusinessService
     {
         private const string Minute = "minute";
+        private const string ContestDoesNotExistErrorMessage = "Contest does not exist!";
+        private const string ContestDoesNotHaveDurationErrorMessage = "The contest does not have duration set!";
         private readonly IParticipantsDataService participantsData;
         private readonly IContestsDataService contestsData;
 
@@ -46,24 +49,59 @@
             return participant;
         }
 
-        public void UpdateContestEndTimeByIdAndTimeInMinutes(int id, int minutes) =>
-            this.participantsData
-                .GetByIdQuery(id)
-                .Update(p => new Participant
-                {
-                    ParticipationEndTime = SqlFunctions.DateAdd(
-                        Minute,
-                        minutes,
-                        p.ParticipationEndTime)
-                });
+        public ServiceResult UpdateContestEndTimeByIdAndTimeInMinutes(int id, int minutes)
+        {
+            var participant = this.participantsData.GetById(id);
+            if (participant == null)
+            {
+                throw new ArgumentException("Participant does not exist!");
+            }
 
-        public void UpdateContestEndTimeForAllParticipantsByContestByParticipantContestStartTimeRangeAndTimeIntervalInMinutes(
+            if (!participant.Contest.Duration.HasValue)
+            {
+                return new ServiceResult(ContestDoesNotHaveDurationErrorMessage);
+            }
+
+            if (!participant.ParticipationEndTime.HasValue ||
+                !participant.ParticipationStartTime.HasValue)
+            {
+                throw new ArgumentException("Participant does not have compete time set!");
+            }
+
+            var newEndTime = participant.ParticipationEndTime.Value.AddMinutes(minutes);
+            var minAllowedEndTime = participant.ParticipationStartTime.Value
+                .AddMinutes(participant.Contest.Duration.Value.TotalMinutes);
+
+            if (newEndTime < minAllowedEndTime)
+            {
+                return new ServiceResult("Participant time would be reduced below the contest duration!");
+            }
+
+            participant.ParticipationEndTime = newEndTime;
+
+            this.participantsData.Update(participant);
+
+            return ServiceResult.Success;
+        }
+
+        public ServiceResult UpdateContestEndTimeForAllParticipantsByContestByParticipantContestStartTimeRangeAndTimeIntervalInMinutes(
             int contestId,
             int minutes,
             DateTime contestStartTimeRangeStart,
             DateTime contestStartTimeRangeEnd)
         {
             var contest = this.contestsData.GetById(contestId);
+
+            if (contest == null)
+            {
+                return new ServiceResult(ContestDoesNotExistErrorMessage);
+            }
+
+            if (!contest.Duration.HasValue)
+            {
+                return new ServiceResult(ContestDoesNotHaveDurationErrorMessage);
+            }
+
             var contestTotalDurationInMinutes = contest.Duration.Value.TotalMinutes;
 
             var participantsInTimeRange =
@@ -74,15 +112,18 @@
 
             this.participantsData.Update(
                 participantsInTimeRange
-                    .Where(p => SqlFunctions.DateAdd(Minute, minutes, p.ParticipationEndTime) >=
+                    .Where(p =>
+                        SqlFunctions.DateAdd(Minute, minutes, p.ParticipationEndTime) >=
                         SqlFunctions.DateAdd(Minute, contestTotalDurationInMinutes, p.ParticipationStartTime)),
                 p => new Participant
                 {
                     ParticipationEndTime = SqlFunctions.DateAdd(
-                    Minute,
-                    minutes,
-                    p.ParticipationEndTime)
+                        Minute,
+                        minutes,
+                        p.ParticipationEndTime)
                 });
+
+            return ServiceResult.Success;
         }
 
         public IQueryable<Participant> GetAllParticipantsWhoWouldBeReducedBelowDefaultContestDuration(
@@ -92,6 +133,17 @@
             DateTime contestStartTimeRangeEnd)
         {
             var contest = this.contestsData.GetById(contestId);
+
+            if (contest == null)
+            {
+                throw new ArgumentException(ContestDoesNotExistErrorMessage);
+            }
+
+            if (!contest.Duration.HasValue)
+            {
+                throw new ArgumentException(ContestDoesNotHaveDurationErrorMessage);
+            }
+
             var contestTotalDurationInMinutes = contest.Duration.Value.TotalMinutes;
 
             var participantsInvalidForUpdate =
@@ -100,8 +152,9 @@
                         contestId,
                         contestStartTimeRangeStart,
                         contestStartTimeRangeEnd)
-                    .Where(p => SqlFunctions.DateAdd(Minute, minutes, p.ParticipationEndTime) <
-                                SqlFunctions.DateAdd(Minute, contestTotalDurationInMinutes, p.ParticipationStartTime));
+                    .Where(p =>
+                        SqlFunctions.DateAdd(Minute, minutes, p.ParticipationEndTime) <
+                        SqlFunctions.DateAdd(Minute, contestTotalDurationInMinutes, p.ParticipationStartTime));
 
             return participantsInvalidForUpdate;
         }

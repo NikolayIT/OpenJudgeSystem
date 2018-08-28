@@ -42,7 +42,7 @@
         [Display(Name = "Participants_created_before", ResourceType = typeof(Resource))]
         public DateTime? ParticipantsCreatedBeforeDateTime { get; set; }
 
-        [UIHint("UsersComboBox")]
+        [UIHint("UsersSimpleComboBox")]
         public string UserId { get; set; }
 
         [Display(Name = "Change_time_by_time_interval", ResourceType = typeof(Resource))]
