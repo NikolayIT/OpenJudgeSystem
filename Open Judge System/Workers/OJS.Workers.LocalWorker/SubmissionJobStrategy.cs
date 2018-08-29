@@ -163,7 +163,11 @@
             }
             catch (Exception ex)
             {
-                this.Logger.ErrorFormat("CalculatePointsForSubmission on submission №{0} has thrown an exception: {1}", this.submission.Id, ex);
+                this.Logger.ErrorFormat(
+                    "CalculatePointsForSubmission on submission №{0} has thrown an exception: {1}",
+                    this.submission.Id,
+                    ex);
+
                 this.submission.ProcessingComment = $"Exception in CalculatePointsForSubmission: {ex.Message}";
             }
 
@@ -171,29 +175,40 @@
             {
                 this.SaveParticipantScore();
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                this.Logger.ErrorFormat("SaveParticipantScore on submission №{0} has thrown an exception: {1}", this.submission.Id, exception);
-                this.submission.ProcessingComment = $"Exception in SaveParticipantScore: {exception.Message}";
+                this.Logger.ErrorFormat(
+                    "SaveParticipantScore on submission №{0} has thrown an exception: {1}",
+                    this.submission.Id,
+                    ex);
+
+                this.submission.ProcessingComment = $"Exception in SaveParticipantScore: {ex.Message}";
             }
 
             try
             {
                 this.submission.CacheTestRuns();
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                this.Logger.ErrorFormat("CacheTestRuns on submission №{0} has thrown an exception: {1}", this.submission.Id, exception);
-                this.submission.ProcessingComment = $"Exception in CacheTestRuns: {exception.Message}";
+                this.Logger.ErrorFormat(
+                    "CacheTestRuns on submission №{0} has thrown an exception: {1}",
+                    this.submission.Id,
+                    ex);
+
+                this.submission.ProcessingComment = $"Exception in CacheTestRuns: {ex.Message}";
             }
 
             try
             {
                 this.SetSubmissionToProcessed();
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                this.Logger.ErrorFormat("Unable to save changes to the submission №{0}! Exception: {1}", this.submission.Id, exception);
+                this.Logger.ErrorFormat(
+                    "Unable to save changes to the submission №{0}! Exception: {1}",
+                    this.submission.Id,
+                    ex);
             }
         }
 

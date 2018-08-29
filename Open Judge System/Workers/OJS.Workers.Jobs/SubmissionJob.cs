@@ -100,7 +100,10 @@
                         }
                         catch (Exception ex)
                         {
-                            this.logger.Error($"executionStrategy.Execute on submission №{submission.Id} has thrown an exception:", ex);
+                            this.logger.Error(
+                                $"executionStrategy.Execute on submission №{submission.Id} has thrown an exception:",
+                                ex);
+
                             submission.ProcessingComment = $"Exception in executionStrategy.Execute: {ex.Message}";
                             jobStrategy.OnError(submission);
                             continue;
@@ -114,7 +117,11 @@
                         }
                         catch (Exception ex)
                         {
-                            this.logger.ErrorFormat("ProcessExecutionResult on submission №{0} has thrown an exception: {1}", submission.Id, ex);
+                            this.logger.ErrorFormat(
+                                "ProcessExecutionResult on submission №{0} has thrown an exception: {1}",
+                                submission.Id,
+                                ex);
+
                             submission.ProcessingComment = $"Exception in ProcessSubmission: {ex.Message}";
                             jobStrategy.OnError(submission);
                             continue;
