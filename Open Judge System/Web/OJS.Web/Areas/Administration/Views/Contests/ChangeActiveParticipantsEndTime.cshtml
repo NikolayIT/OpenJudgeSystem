@@ -190,7 +190,7 @@
                     $('#username-confirmation-input').on('input',
                         function () {
                             var value = $(this).val();
-                            if (value === '@ViewBag.CurrentUsername') {
+                            if (value === '@this.User.Identity.Name') {
                                 submitFormButton.attr('disabled', false);
                             } else {
                                 submitFormButton.attr('disabled', true);

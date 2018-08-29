@@ -106,7 +106,7 @@
 
             var contestTotalDurationInMinutes = contest.Duration.Value.TotalMinutes;
 
-            var participantsInvalidForUpdate =
+            var invalidForUpdateParticipantUsernames =
                 this.participantsData
                     .GetAllOfficialInOnlineContestByContestAndParticipationStartTimeRange(
                         contestId,
@@ -137,7 +137,7 @@
                         p.ParticipationEndTime)
                 });
 
-            return ServiceResult<ICollection<string>>.Success(participantsInvalidForUpdate);
+            return ServiceResult<ICollection<string>>.Success(invalidForUpdateParticipantUsernames);
         }
 
         private void AssignRandomProblemsToParticipant(Participant participant, Contest contest)
