@@ -1747,7 +1747,9 @@
     <Compile Include="Areas\Administration\Controllers\TestsController.cs" />
     <Compile Include="Areas\Administration\Controllers\UsersController.cs" />
     <Compile Include="Areas\Administration\InputModels\AntiCheat\SubmissionSimilarityFiltersInputModel.cs" />
-    <Compile Include="Areas\Administration\ViewModels\Contest\ChangeTimeForParticipantsViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\Contest\ChangeParticipationEndTimeByUserViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\Contest\ChangeParticipationEndTimeViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\Contest\ChangeParticipationEndTimeByTimeIntervalViewModel.cs" />
     <Compile Include="Areas\Administration\Models\ParticipantModel.cs" />
     <Compile Include="Areas\Administration\Models\ProblemModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\AccessLogs\AccessLogGridViewModel.cs" />
@@ -2524,6 +2526,8 @@
     <Content Include="Areas\Administration\Views\Problems\EditorTemplates\ProblemGroupsCascadeDropDown.cshtml" />
     <Content Include="Areas\Administration\Views\ExamGroups\_BulkAddUsersToExamGroup.cshtml" />
     <Content Include="Areas\Administration\Views\Contests\EditorTemplates\UsersSimpleComboBox.cshtml" />
+    <Content Include="Areas\Administration\Views\Contests\_ChangeParticipationEndTimeByUser.cshtml" />
+    <Content Include="Areas\Administration\Views\Contests\_ChangeParticipationEndTimeByTimeInterval.cshtml" />
     <None Include="Properties\PublishProfiles\Dev Suls Judge System.pubxml" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Properties\PublishProfiles\Suls Judge System.pubxml" />

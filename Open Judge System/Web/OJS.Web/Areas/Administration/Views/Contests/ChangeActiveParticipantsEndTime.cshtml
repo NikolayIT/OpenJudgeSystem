@@ -1,9 +1,7 @@
-﻿@model OJS.Web.Areas.Administration.ViewModels.Contest.ChangeTimeForParticipantsViewModel
-
-@using OJS.Web.Areas.Administration.Controllers
+﻿@model OJS.Web.Areas.Administration.ViewModels.Contest.ChangeParticipationEndTimeViewModel
 
 @using Resource = Resources.Areas.Administration.Contests.Views.ChangeTime
-@using SharedResource = Resources.Areas.Contests.ContestsGeneral;
+@using SharedResource = Resources.Areas.Contests.ContestsGeneral
 
 @{
     ViewBag.Title = Resource.Page_title;
@@ -17,101 +15,49 @@
     <h1>@ViewBag.Title</h1>
     <h2>@Resource.Contest : <strong class="text-success">@Model.ContestName</strong></h2>
     <h3>@Resource.Change_time_legend</h3>
-    <div id="change-time-for-active-participants" class="container">
-        @using (Html.BeginForm<ContestsController>(c => c.ChangeActiveParticipantsEndTime(null), FormMethod.Post))
-        {
-            @Html.AntiForgeryToken()
-            @Html.HiddenFor(m => m.ContesId)
-            @Html.HiddenFor(m => m.ContestName)
+    
+    <ul class="nav nav-tabs nav-justified top-buffer-lg">
+        <li role="presentation" class="active">
+            <a href="#change-time-by-interval" role="tab" data-toggle="tab">@Resource.Change_time_by_time_interval</a>
+        </li>
+        <li role="presentation">
+            <a href="#change-time-by-user" role="tab" data-toggle="tab">@Resource.Change_time_by_user</a>
+        </li>
+    </ul>
 
-            <div class="top-buffer">
-                <div class="row">
-                    <div class="col-xs-12 bottom-buffer">
-                        <div class="center-block">
-                            <span class="right-buffer glyphicon glyphicon-time"></span>
-                            @Html.LabelFor(m => m.TimeInMinutes)
-                        </div>
-                    </div>
-                    <div class="editor-field col-xs-3 text-center">
-                        <div class="number-input">
-                            @Html.EditorFor(m => m.TimeInMinutes, new { @class = "pull-left" })
-                        </div>
-                    </div>
-                    <div class="editor-field col-xs-4">
-                        @Html.ValidationMessageFor(m => m.TimeInMinutes)
-                    </div>
+    <div class="top-buffer">
+        <div class="row">
+            <div class="col-xs-12 bottom-buffer">
+                <div class="center-block">
+                    <span class="right-buffer glyphicon glyphicon-time"></span>
+                    @Html.LabelFor(m => m.TimeInMinutes)
                 </div>
             </div>
-
-            <div class="row top-buffer-lg ">
-                @Html.CheckBoxFor(m => m.ChangeByTimeInterval, new { @class = "change-time-method-checkbox top-buffer-lg" })
-                @Html.LabelFor(m => m.ChangeByTimeInterval)
-                
-                <div class="change-time-method-container" id="change-time-by-interval">
-                    <div class="row">
-                        <div class="col-xs-12 bottom-buffer">
-                            <div>
-                                <h5><strong>@Resource.Participants_created_in_time_interval_information:</strong></h5>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="center-block">
-                                @Html.LabelFor(m => m.ParticipantsCreatedAfterDateTime)
-                            </div>
-                        </div>
-                        <div class="editor-field col-xs-10">
-                            @Html.EditorFor(m => m.ParticipantsCreatedAfterDateTime)
-                            <p>@Html.Raw(Resource.Default_participants_created_after_value_explanation)</p>
-                        </div>
-                        <div class="editor-field col-xs-4">
-                            @Html.ValidationMessageFor(m => m.ParticipantsCreatedAfterDateTime)
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="center-block">
-                                @Html.LabelFor(m => m.ParticipantsCreatedBeforeDateTime)
-                            </div>
-                        </div>
-                        <div class="editor-field col-xs-10">
-                            @Html.EditorFor(m => m.ParticipantsCreatedBeforeDateTime)
-                            <p>@Html.Raw(Resource.Default_participants_created_before_value_explanation)</p>
-                        </div>
-                        <div class="editor-field col-xs-4">
-                            @Html.ValidationMessageFor(m => m.ParticipantsCreatedBeforeDateTime)
-                        </div>
-                    </div>
+            <div class="editor-field col-xs-3 text-center">
+                <div class="number-input">
+                    @Html.EditorFor(m => m.TimeInMinutes, new { @class = "pull-left" })
                 </div>
             </div>
-
-            <div class="row top-buffer">
-                @Html.CheckBoxFor(m => m.ChangeByUser, new { @class="change-time-method-checkbox" })
-                @Html.LabelFor(m => m.ChangeByUser)
-                
-                <div class="row change-time-method-container" id="change-time-by-user" hidden>
-                    <div class="editor-field col-xs-10">
-                        @Html.EditorFor(m => m.UserId)
-                    </div>
-                    <div class="editor-field col-xs-4">
-                        @Html.ValidationMessageFor(m => m.UserId)
-                    </div>
-                </div>
+            <div class="editor-field col-xs-4">
+                @Html.ValidationMessageFor(m => m.TimeInMinutes)
             </div>
+        </div>
+    </div>
 
-            <div class="row top-buffer">
-                <div class="editor-label col-xs-2">
-                    <span id="add-time-for-participants-btn" class="btn btn-success pull-left top-buffer">@Resource.Add_time</span>
-                    <span id="subtract-time-for-participants-btn" class="btn btn-danger pull-left top-buffer hidden">@Resource.Subtract_time</span>
-                </div>
-                <div class="editor-label col-sm-2">
-                    @(Html.ActionLink<OJS.Web.Areas.Contests.Controllers.ContestsController>(
-                        SharedResource.Cancel, c => c.Details(Model.ContesId), null, new { @class = "btn btn-primary top-buffer" }))
-                </div>
-            </div>
-        }
+    <div class="tab-content">
+        @Html.Partial("_ChangeParticipationEndTimeByTimeInterval", Model.ChangeByInterval)
+        @Html.Partial("_ChangeParticipationEndTimeByUser", Model.ChangeByUser)
+    </div>
+
+    <div class="row top-buffer">
+        <div class="editor-label col-xs-2">
+            <span id="add-time-for-participants-btn" class="btn btn-success pull-left top-buffer">@Resource.Add_time</span>
+            <span id="subtract-time-for-participants-btn" class="btn btn-danger pull-left top-buffer hidden">@Resource.Subtract_time</span>
+        </div>
+        <div class="editor-label col-sm-2">
+            @(Html.ActionLink<OJS.Web.Areas.Contests.Controllers.ContestsController>(
+                  SharedResource.Cancel, c => c.Details(Model.ContesId), null, new { @class = "btn btn-primary top-buffer" }))
+        </div>
     </div>
 </div>
 <div id="confirm-window-pop-up-container" style="display: none">
@@ -130,13 +76,6 @@
 @section Scripts{
     <script>
         ($(function () {
-            if ("@Model.ChangeByUser.ToString().ToLower()" === "true") {
-                $('#change-time-by-user').show();
-                $('#change-time-by-interval').hide();
-            } else if ("@Model.ChangeByTimeInterval.ToString().ToLower()" === "true") {
-                $('#change-time-by-interval').show();
-            }
-
             var timeInput = $('#TimeInMinutes');
             changeAddSubractButton(timeInput.val());
 
@@ -202,7 +141,15 @@
 
                     submitFormButton.click(
                         function () {
-                            $('#change-time-for-active-participants>form').submit();
+                            $('form input[name=TimeInMinutes]').val(timeInput.val());
+                            $('form input[name=ContestName]').val($('#ContestName').val());
+                            $('form input[name=ContestId]').val($('#ContestId').val());
+                            console.log($('#ContestId').val());
+                            if ($('#change-time-by-interval').is(':visible')) {
+                                $('#change-time-by-interval-form').submit();
+                            } else {
+                                $('#change-time-by-user-form').submit();
+                            }
                         });
 
                     $('#cancel-btn-confirm-pop-up').click(
@@ -211,13 +158,6 @@
                             changeTimeContainer.css('opacity', 1);
                         });
                 });
-
-            $('.change-time-method-checkbox').change(function () {
-                $('div.change-time-method-container').hide();
-                $('.change-time-method-checkbox').prop('checked', false);
-                $(this).parents().first().children('div.change-time-method-container').show();
-                $(this).prop('checked', true);
-            });
 
             function setConfirmWindowHeader() {
                 var confirmWindowHeader = $('#confirm-window-header');
