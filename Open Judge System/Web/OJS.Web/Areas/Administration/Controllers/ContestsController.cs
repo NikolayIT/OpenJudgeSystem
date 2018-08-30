@@ -17,7 +17,6 @@
     using OJS.Data.Models;
     using OJS.Services.Business.Contests;
     using OJS.Services.Business.Participants;
-    using OJS.Services.Common;
     using OJS.Services.Data.ContestCategories;
     using OJS.Services.Data.Contests;
     using OJS.Services.Data.Ips;

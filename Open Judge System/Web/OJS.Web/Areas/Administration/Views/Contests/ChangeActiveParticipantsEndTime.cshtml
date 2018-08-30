@@ -15,7 +15,7 @@
     <h1>@ViewBag.Title</h1>
     <h2>@Resource.Contest :
         <a href="@ContestsHelper.GetUrl(Model.ContesId, Model.ContestName)">
-            <strong class="text-success"> @Model.ContestName</strong>
+            <strong class="text-success">@Model.ContestName</strong>
         </a>
     </h2>
     <h3>@Resource.Change_time_legend</h3>
@@ -147,7 +147,7 @@
   
                         if ($('#change-time-by-interval').is(':visible')) {
                             $('#change-time-by-interval-form').submit();
-                        } else {
+                        } else if ($('#change-time-by-user').is(':visible')) {
                             $('#change-time-by-user-form').submit();
                         }
                     });
