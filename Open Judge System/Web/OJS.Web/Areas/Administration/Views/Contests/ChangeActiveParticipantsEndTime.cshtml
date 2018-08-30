@@ -13,7 +13,11 @@
 
 <div id="change-time-container">
     <h1>@ViewBag.Title</h1>
-    <h2>@Resource.Contest : <strong class="text-success">@Model.ContestName</strong></h2>
+    <h2>@Resource.Contest :
+        <a href="@ContestsHelper.GetUrl(Model.ContesId, Model.ContestName)">
+            <strong class="text-success"> @Model.ContestName</strong>
+        </a>
+    </h2>
     <h3>@Resource.Change_time_legend</h3>
     
     <ul class="nav nav-tabs nav-justified top-buffer-lg">
@@ -77,87 +81,83 @@
     <script>
         ($(function () {
             var timeInput = $('#TimeInMinutes');
-            changeAddSubractButton(timeInput.val());
-
-            timeInput.on('input',
-                function () {
-                    changeAddSubractButton(timeInput.val());
-                });
-
             var addButtonSelector = '#add-time-for-participants-btn';
             var subtractButtonSelector = '#subtract-time-for-participants-btn';
-
             var buttons = [addButtonSelector, subtractButtonSelector];
 
-            $(buttons.join()).click(
-                function () {
-                    setConfirmWindowHeader();
+            showTabWithError();
+            changeAddSubractButton(timeInput.val());
 
-                    var changeTimeContainer = $('#change-time-container');
-                    var confirmWindow = $('#confirm-window-pop-up-container');
-                    var confirmPopUp = confirmWindow.find('#confirm-window-pop-up');
+            timeInput.on('input', function () {
+                changeAddSubractButton(timeInput.val());
+            });
 
-                    var inputValue = timeInput.val();
-                    var createdBeforeValue = $('#ParticipantsCreatedBeforeDateTime').val();
-                    var createdAfterValue = $('#ParticipantsCreatedAfterDateTime').val();
-                    var participantUsername = $('#UserId').data('kendoComboBox').text();
+            $(buttons.join()).click(function () {
+                setConfirmWindowHeader();
 
-                    var submitFormButton = $('#submit-form-button');
-                    var action = $('#action');
-                    var minutes = $('#minutes');
-                    var preposition = $('#preposition');
-                    var createdBefore = $('#createdBefore');
-                    var createdAfter = $('#createdAfter');
-                    var usernamePlaceholder = $('#username-placeholder');
-                    var headerStrongElements = confirmPopUp.find('h3 strong');
+                var changeTimeContainer = $('#change-time-container');
+                var confirmWindow = $('#confirm-window-pop-up-container');
+                var confirmPopUp = confirmWindow.find('#confirm-window-pop-up');
 
-                    if (inputValue >= 0) {
-                        action.text('@Resource.Add_are_you_sure');
-                        headerStrongElements.css('color', "#13987E");
-                        preposition.text('@Resource.To');
-                    } else {
-                        action.text('@Resource.Subtract_are_you_sure');
-                        headerStrongElements.css('color', "#DF2E1B");
-                        preposition.text('@Resource.From');
-                    }
+                var inputValue = timeInput.val();
+                var createdBeforeValue = $('#ParticipantsCreatedBeforeDateTime').val();
+                var createdAfterValue = $('#ParticipantsCreatedAfterDateTime').val();
+                var participantUsername = $('#UserId').data('kendoComboBox').text();
 
-                    createdBefore.text(createdBeforeValue);
-                    createdAfter.text(createdAfterValue);
-                    usernamePlaceholder.text(participantUsername);
-                    minutes.text(Math.abs(inputValue));
+                var submitFormButton = $('#submit-form-button');
+                var action = $('#action');
+                var minutes = $('#minutes');
+                var preposition = $('#preposition');
+                var createdBefore = $('#createdBefore');
+                var createdAfter = $('#createdAfter');
+                var usernamePlaceholder = $('#username-placeholder');
+                var headerStrongElements = confirmPopUp.find('h3 strong');
 
-                    $('#username-confirmation-input').on('input',
-                        function () {
-                            var value = $(this).val();
-                            if (value === '@this.User.Identity.Name') {
-                                submitFormButton.attr('disabled', false);
-                            } else {
-                                submitFormButton.attr('disabled', true);
-                            }
-                        });
+                if (inputValue >= 0) {
+                    action.text('@Resource.Add_are_you_sure');
+                    headerStrongElements.css('color', "#13987E");
+                    preposition.text('@Resource.To');
+                } else {
+                    action.text('@Resource.Subtract_are_you_sure');
+                    headerStrongElements.css('color', "#DF2E1B");
+                    preposition.text('@Resource.From');
+                }
 
-                    confirmWindow.show();
-                    changeTimeContainer.css('opacity', 0.3);
+                createdBefore.text(createdBeforeValue);
+                createdAfter.text(createdAfterValue);
+                usernamePlaceholder.text(participantUsername);
+                minutes.text(Math.abs(inputValue));
 
-                    submitFormButton.click(
-                        function () {
-                            $('form input[name=TimeInMinutes]').val(timeInput.val());
-                            $('form input[name=ContestName]').val($('#ContestName').val());
-                            $('form input[name=ContestId]').val($('#ContestId').val());
-                            console.log($('#ContestId').val());
-                            if ($('#change-time-by-interval').is(':visible')) {
-                                $('#change-time-by-interval-form').submit();
-                            } else {
-                                $('#change-time-by-user-form').submit();
-                            }
-                        });
+                $('#username-confirmation-input').on('input',
+                    function () {
+                        var value = $(this).val();
+                        if (value === '@this.User.Identity.Name') {
+                            submitFormButton.attr('disabled', false);
+                        } else {
+                            submitFormButton.attr('disabled', true);
+                        }
+                    });
 
-                    $('#cancel-btn-confirm-pop-up').click(
-                        function () {
-                            confirmWindow.hide();
-                            changeTimeContainer.css('opacity', 1);
-                        });
-                });
+                confirmWindow.show();
+                changeTimeContainer.css('opacity', 0.3);
+
+                submitFormButton.click(
+                    function () {
+                        $('form input[name=TimeInMinutes]').val(timeInput.val());
+  
+                        if ($('#change-time-by-interval').is(':visible')) {
+                            $('#change-time-by-interval-form').submit();
+                        } else {
+                            $('#change-time-by-user-form').submit();
+                        }
+                    });
+
+                $('#cancel-btn-confirm-pop-up').click(
+                    function () {
+                        confirmWindow.hide();
+                        changeTimeContainer.css('opacity', 1);
+                    });
+            });
 
             function setConfirmWindowHeader() {
                 var confirmWindowHeader = $('#confirm-window-header');
@@ -186,6 +186,16 @@
                 } else if (value < 0) {
                     addButton.addClass('hidden');
                     subtractButton.removeClass('hidden');
+                }
+            }
+
+            function showTabWithError() {
+                var error = $('span.field-validation-error');
+
+                if (error.length > 0) {
+                    var tabWithError = error.parents('.tab-pane').first();
+                    var tabId = tabWithError.get(0).id;
+                    $('.nav-tabs a[href="#' + tabId + '"]').tab('show');
                 }
             }
         }))

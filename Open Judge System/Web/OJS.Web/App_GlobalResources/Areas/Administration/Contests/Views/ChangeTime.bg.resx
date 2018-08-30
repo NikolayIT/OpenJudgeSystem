@@ -186,4 +186,7 @@
   <data name="To" xml:space="preserve">
     <value>към</value>
   </data>
+  <data name="Username_required" xml:space="preserve">
+    <value>Потребителското име е задължително!</value>
+  </data>
 </root>

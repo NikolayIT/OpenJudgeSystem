@@ -14,9 +14,41 @@
     {
         private static readonly int DefaultBufferTimeInMinutes = 30;
 
+        public ChangeParticipationEndTimeViewModel()
+        {
+        }
+
+        public ChangeParticipationEndTimeViewModel(
+            ChangeParticipationEndTimeByTimeIntervalViewModel changeByIntervalModel)
+        {
+            this.ContesId = changeByIntervalModel.ContesId;
+            this.ContestName = changeByIntervalModel.ContestName;
+            this.TimeInMinutes = changeByIntervalModel.TimeInMinutes;
+            this.ChangeByInterval = changeByIntervalModel;
+            this.ChangeByUser = new ChangeParticipationEndTimeByUserViewModel
+            {
+                ContesId = this.ContesId,
+                ContestName = this.ContestName
+            };
+        }
+
+        public ChangeParticipationEndTimeViewModel(ChangeParticipationEndTimeByUserViewModel changebyUserModel)
+        {
+            this.ContesId = changebyUserModel.ContesId;
+            this.ContestName = changebyUserModel.ContestName;
+            this.TimeInMinutes = changebyUserModel.TimeInMinutes;
+            this.ChangeByUser = changebyUserModel;
+            this.ChangeByInterval = new ChangeParticipationEndTimeByTimeIntervalViewModel
+            {
+                ContesId = this.ContesId,
+                ContestName = this.ContestName
+            };
+        }
+
         public static Expression<Func<Contest, ChangeParticipationEndTimeViewModel>> FromContest =>
             contest => new ChangeParticipationEndTimeViewModel
             {
+                ContesId = contest.Id,
                 ContestName = contest.Name,
                 ChangeByInterval = new ChangeParticipationEndTimeByTimeIntervalViewModel
                 {

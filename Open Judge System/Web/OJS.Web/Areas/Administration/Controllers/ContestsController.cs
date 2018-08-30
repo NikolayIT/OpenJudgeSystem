@@ -348,7 +348,8 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ChangeParticipationEndTimeByTimeInterval(ChangeParticipationEndTimeByTimeIntervalViewModel model)
+        public ActionResult ChangeParticipationEndTimeByTimeInterval(
+            ChangeParticipationEndTimeByTimeIntervalViewModel model)
         {
             if (!this.User.IsAdmin())
             {
@@ -357,67 +358,42 @@
 
             if (!this.ModelState.IsValid)
             {
-                return this.View(model);
+                return this.View("ChangeActiveParticipantsEndTime", new ChangeParticipationEndTimeViewModel(model));
             }
 
-            if (!this.contestsData.GetAllActive().Any(c => c.Id == model.ContesId))
+            if (!this.contestsData.IsActiveById(model.ContesId))
             {
                 this.TempData.AddDangerMessage(Resource.Contest_not_valid);
                 return this.RedirectToAction<ContestsController>(c => c.Index());
             }
-
-            ServiceResult serviceResult;
 
             if (model.ParticipantsCreatedBeforeDateTime < model.ParticipantsCreatedAfterDateTime)
             {
                 this.ModelState.AddModelError(
                     nameof(model.ParticipantsCreatedAfterDateTime),
                     ChangeTimeResource.Participants_created_after_must_be_before_Participants_created_before);
-                return this.View(model);
+                return this.View("ChangeActiveParticipantsEndTime", new ChangeParticipationEndTimeViewModel(model));
             }
 
-                serviceResult = this.participantsBusiness
-                    .UpdateParticipationsEndTimeByContestByParticipationStartTimeRangeAndTimeInMinutes(
-                        model.ContesId,
-                        model.TimeInMinutes,
-                        model.ParticipantsCreatedAfterDateTime.Value,
-                        model.ParticipantsCreatedBeforeDateTime.Value);
+            var result = this.participantsBusiness
+                .UpdateParticipationsEndTimeByContestByParticipationStartTimeRangeAndTimeInMinutes(
+                    model.ContesId,
+                    model.TimeInMinutes,
+                    model.ParticipantsCreatedAfterDateTime.Value,
+                    model.ParticipantsCreatedBeforeDateTime.Value);
 
-                //var participant = this.participantsData
-                //    .GetByContestByUserAndByIsOfficial(model.ContesId, model.UserId, true);
-
-                //if (participant == null)
-                //{
-                //    this.ModelState.AddModelError(nameof(model.UserId), Resource.Participant_not_in_contest);
-                //    return this.View(model);
-                //}
-
-                serviceResult = this.participantsBusiness
-                    .UpdateParticipationEndTimeByIdAndTimeInMinutes(1, model.TimeInMinutes);
-
-            if (!serviceResult.IsError)
+            if (!result.IsError)
             {
-                string systemMessage;
-                if (serviceResult is ServiceResult<ICollection<string>> timeIntervalUpdateResult)
-                {
-                    systemMessage = this.GetMessageForChangedParticipantsEndTimeByTimeInterval(
-                        model.TimeInMinutes,
-                        model.ContestName,
-                        timeIntervalUpdateResult.Data);
-                }
-                else
-                {
-                    systemMessage = this.GetMessageForChangedParticipantsEndTimeByUser(
-                        model.TimeInMinutes,
-                        model.ContestName,
-                        ((ServiceResult<string>)serviceResult).Data);
-                }
+                var systemMessage = this.GetMessageForChangedParticipantsEndTimeByTimeInterval(
+                    model.TimeInMinutes,
+                    model.ContestName,
+                    result.Data);
 
                 this.TempData.AddInfoMessage(systemMessage);
             }
             else
             {
-                this.TempData.AddDangerMessage(serviceResult.Error);
+                this.TempData.AddDangerMessage(result.Error);
             }
 
             return this.RedirectToAction("Details", "Contests", new { id = model.ContesId, area = "Contests" });
@@ -432,10 +408,42 @@
                 return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
-            if (!this.contestsData.GetAllActive().Any(c => c.Id == model.ContesId))
+            if (!this.ModelState.IsValid)
+            {
+                return this.View("ChangeActiveParticipantsEndTime", new ChangeParticipationEndTimeViewModel(model));
+            }
+
+            if (!this.contestsData.IsActiveById(model.ContesId))
             {
                 this.TempData.AddDangerMessage(Resource.Contest_not_valid);
                 return this.RedirectToAction<ContestsController>(c => c.Index());
+            }
+
+            var participant = this.participantsData
+                .GetByContestByUserAndByIsOfficial(model.ContesId, model.UserId, isOfficial: true);
+
+            if (participant == null)
+            {
+                this.ModelState.AddModelError(nameof(model.UserId), Resource.Participant_not_in_contest);
+                return this.View("ChangeActiveParticipantsEndTime", new ChangeParticipationEndTimeViewModel(model));
+            }
+
+            var result = this.participantsBusiness.UpdateParticipationEndTimeByIdAndTimeInMinutes(
+                participant.Id,
+                model.TimeInMinutes);
+
+            if (!result.IsError)
+            {
+                var systemMessage = this.GetMessageForChangedParticipantsEndTimeByUser(
+                    model.TimeInMinutes,
+                    model.ContestName,
+                    result.Data);
+
+                this.TempData.AddInfoMessage(systemMessage);
+            }
+            else
+            {
+                this.TempData.AddDangerMessage(result.Error);
             }
 
             return this.RedirectToAction("Details", "Contests", new { id = model.ContesId, area = "Contests" });

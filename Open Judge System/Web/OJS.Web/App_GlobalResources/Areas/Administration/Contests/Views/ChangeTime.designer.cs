@@ -266,5 +266,14 @@ namespace Resources.Areas.Administration.Contests.Views {
                 return ResourceManager.GetString("To", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The username is required!.
+        /// </summary>
+        public static string Username_required {
+            get {
+                return ResourceManager.GetString("Username_required", resourceCulture);
+            }
+        }
     }
 }
