@@ -3,12 +3,12 @@
     using NUnit.Framework;
 
     using OJS.Common.Extensions;
-    using OJS.Workers.Common;
 
     [TestFixture]
     public class CSharpCompilerTests
     {
         private const string CSharpCompilerPath = @"C:\Windows\Microsoft.NET\Framework\v4.0.30319\csc.exe";
+        private const int CSharpCompilerProcessExitTimeOutMultiplier = 1;
 
         [Test]
         public void CSharpCompilerShouldWorkWhenGivenValidSourceCode()
@@ -22,7 +22,7 @@ class Program
     }
 }";
 
-            var compiler = new CSharpCompiler(Settings.CSharpCompilerProcessExitTimeOutMultiplier);
+            var compiler = new CSharpCompiler(CSharpCompilerProcessExitTimeOutMultiplier);
             var result = compiler.Compile(CSharpCompilerPath, FileHelpers.SaveStringToTempFile(Source), string.Empty);
 
             Assert.IsTrue(result.IsCompiledSuccessfully, "Compilation is not successful");

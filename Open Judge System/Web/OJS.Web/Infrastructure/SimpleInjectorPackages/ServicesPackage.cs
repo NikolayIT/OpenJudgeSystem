@@ -11,9 +11,6 @@
     using OJS.Services.Data.ExamGroups;
     using OJS.Services.Data.SubmissionsForProcessing;
     using OJS.Services.Data.Users;
-    using OJS.Workers.Tools.AntiCheat;
-    using OJS.Workers.Tools.AntiCheat.Contracts;
-    using OJS.Workers.Tools.Similarity;
 
     using SimpleInjector;
     using SimpleInjector.Packaging;
@@ -29,9 +26,6 @@
 
         private void RegisterCustomTypes(Container container)
         {
-            container.Register<ISimilarityFinder, SimilarityFinder>(Lifestyle.Scoped);
-            container.Register<IPlagiarismDetectorFactory, PlagiarismDetectorFactory>(Lifestyle.Scoped);
-
             container.Register<IExamGroupsBusinessService>(
                 () => new ExamGroupsBusinessService(
                     container.GetInstance<IExamGroupsDataService>(),

@@ -7,6 +7,8 @@ namespace OJS.Workers.LocalWorker
     using System.IO;
     using System.ServiceProcess;
 
+    using OJS.Common;
+
     using SimpleInjector;
     using SimpleInjector.Lifestyles;
 
@@ -26,6 +28,8 @@ namespace OJS.Workers.LocalWorker
 
                 var container = new Container();
                 Bootstrap.Start(container);
+
+                ObjectFactory.InitializeServiceProvider(Bootstrap.Container);
 
                 using (ThreadScopedLifestyle.BeginScope(container))
                 {
