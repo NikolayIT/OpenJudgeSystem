@@ -117,7 +117,7 @@
 
             container.Register(
                 () => new SolidityCompiler(
-                    Settings.SolidityCompilerProcessExitTimeOutMultiplier), 
+                    Settings.SolidityCompilerProcessExitTimeOutMultiplier),
                 Lifestyle.Scoped);
         }
 
