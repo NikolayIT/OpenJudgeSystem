@@ -132,6 +132,9 @@
   <data name="Max_points_label" xml:space="preserve">
     <value>max points</value>
   </data>
+  <data name="Max_result_for_problem_group" xml:space="preserve">
+    <value>Max result for every problem group</value>
+  </data>
   <data name="Max_result_for_task" xml:space="preserve">
     <value>Max result for every task</value>
   </data>

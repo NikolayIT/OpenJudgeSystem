@@ -3,6 +3,7 @@
     using System;
     using System.Data.Entity;
     using System.Linq;
+    using System.Linq.Expressions;
 
     using OJS.Common.Models;
     using OJS.Data.Models;
@@ -85,14 +86,11 @@
 
         public IQueryable<Contest> GetAllWithDeleted() => this.contests.AllWithDeleted();
 
+        public int GetMaxPointsById(int id) =>
+            this.GetMaxPointsByIdAndProblemGroupsFilter(id, pg => true);
+
         public int GetMaxPointsForExportById(int id) =>
-            this.GetByIdQuery(id)
-                .Select(c => c.ProblemGroups
-                    .Where(pg =>
-                        pg.Type != ProblemGroupType.ExcludedFromHomework &&
-                        pg.Problems.Any(p => !p.IsDeleted))
-                    .Sum(pg => (int?)pg.Problems.FirstOrDefault().MaximumPoints))
-                .FirstOrDefault() ?? default(int);
+            this.GetMaxPointsByIdAndProblemGroupsFilter(id, pg => pg.Type != ProblemGroupType.ExcludedFromHomework);
 
         public string GetNameById(int id) =>
             this.GetByIdQuery(id)
@@ -141,5 +139,14 @@
             this.contests.Update(contest);
             this.contests.SaveChanges();
         }
+
+        private int GetMaxPointsByIdAndProblemGroupsFilter(int id, Expression<Func<ProblemGroup, bool>> filter) =>
+            this.GetByIdQuery(id)
+                .Select(c => c.ProblemGroups
+                    .AsQueryable()
+                    .Where(pg => pg.Problems.Any(p => !p.IsDeleted))
+                    .Where(filter)
+                    .Sum(pg => (int?)pg.Problems.FirstOrDefault().MaximumPoints))
+                .FirstOrDefault() ?? default(int);
     }
 }

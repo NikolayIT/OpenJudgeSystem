@@ -37,6 +37,8 @@
 
         IQueryable<Contest> GetAllWithDeleted();
 
+        int GetMaxPointsById(int id);
+
         int GetMaxPointsForExportById(int id);
 
         string GetNameById(int id);

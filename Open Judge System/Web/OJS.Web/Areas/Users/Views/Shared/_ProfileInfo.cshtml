@@ -146,9 +146,9 @@
                     @if (userIsProfileOwnerOrAdmin)
                     {
                         <td>
-                            @Resource.Compete: <span class="text-white">@result.CompeteResult / @result.ContestMaximumPoints.GetValueOrDefault()</span>
+                            @Resource.Compete: <span class="text-white">@result.CompeteResult / @result.ContestCompeteMaximumPoints.GetValueOrDefault()</span>
                             <br />
-                            @Resource.Practice: <span class="text-white">@result.PracticeResult / @result.ContestMaximumPoints.GetValueOrDefault()</span>
+                            @Resource.Practice: <span class="text-white">@result.PracticeResult / @result.ContestPracticeMaximumPoints.GetValueOrDefault()</span>
                         </td>
                     }
                 </tr>
