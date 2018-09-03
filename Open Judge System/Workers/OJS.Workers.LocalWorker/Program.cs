@@ -7,6 +7,8 @@ namespace OJS.Workers.LocalWorker
     using System.IO;
     using System.ServiceProcess;
 
+    using OJS.Common;
+
     internal static class Program
     {
         /// <summary>
@@ -23,6 +25,8 @@ namespace OJS.Workers.LocalWorker
 
                 var container = new SimpleInjectorContainer();
                 Bootstrap.Start(container);
+
+                ObjectFactory.InitializeServiceProvider(Bootstrap.Container);
 
                 var localWorkerService = new LocalWorkerService();
 

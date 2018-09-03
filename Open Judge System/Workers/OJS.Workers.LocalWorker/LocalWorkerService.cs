@@ -2,6 +2,8 @@
 {
     using System;
 
+    using OJS.Common.Helpers;
+    using OJS.Common.Models;
     using OJS.Services.Business.SubmissionsForProcessing;
     using OJS.Workers;
     using OJS.Workers.Common;
@@ -28,7 +30,41 @@
                 throw;
             }
 
+            try
+            {
+                this.StartMonitoringService();
+            }
+            catch (Exception ex)
+            {
+                this.Logger.Error(
+                    $"An exception was thrown while attempting to start the {Constants.LocalWorkerMonitoringServiceName}",
+                    ex);
+            }
+
             base.BeforeStartingThreads();
+        }
+
+        private void StartMonitoringService()
+        {
+            const string monitoringServiceName = Constants.LocalWorkerMonitoringServiceName;
+
+            var serviceState = ServicesHelper.GetServiceState(monitoringServiceName);
+            if (serviceState.Equals(ServiceState.Running))
+            {
+                this.Logger.Info($"{monitoringServiceName} is running.");
+                return;
+            }
+
+            this.Logger.Info($"Attempting to start the {monitoringServiceName}...");
+
+            if (serviceState.Equals(ServiceState.NotFound))
+            {
+                ServicesHelper.InstallService(monitoringServiceName, Settings.MonitoringServiceExecutablePath);
+            }
+
+            ServicesHelper.StartService(monitoringServiceName);
+
+            this.Logger.Info($"{monitoringServiceName} started successfully.");
         }
     }
 }

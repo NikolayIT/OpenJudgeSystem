@@ -35,28 +35,25 @@
                 case CompilerType.None:
                     return null;
                 case CompilerType.CSharp:
-                    return new CSharpCompiler(Settings.CSharpCompilerProcessExitTimeOutMultiplier);
+                    return ObjectFactory.GetInstance<CSharpCompiler>();
                 case CompilerType.CSharpDotNetCore:
-                    return new CSharpDotNetCoreCompiler(
-                        Settings.CSharpDotNetCoreCompilerProcessExitTimeOutMultiplier,
-                        Settings.CSharpDotNetCoreCompilerPath,
-                        Settings.DotNetCoreSharedAssembliesPath);
+                    return ObjectFactory.GetInstance<CSharpDotNetCoreCompiler>();
                 case CompilerType.CPlusPlusGcc:
-                    return new CPlusPlusCompiler(Settings.CPlusPlusCompilerProcessExitTimeOutMultiplier);
+                    return ObjectFactory.GetInstance<CPlusPlusCompiler>();
                 case CompilerType.MsBuild:
-                    return new MsBuildCompiler(Settings.MsBuildCompilerProcessExitTimeOutMultiplier);
+                    return ObjectFactory.GetInstance<MsBuildCompiler>();
                 case CompilerType.Java:
-                    return new JavaCompiler(Settings.JavaCompilerProcessExitTimeOutMultiplier);
+                    return ObjectFactory.GetInstance<JavaCompiler>();
                 case CompilerType.JavaZip:
-                    return new JavaZipCompiler(Settings.JavaZipCompilerProcessExitTimeOutMultiplier);
+                    return ObjectFactory.GetInstance<JavaZipCompiler>();
                 case CompilerType.JavaInPlaceCompiler:
-                    return new JavaInPlaceFolderCompiler(Settings.JavaInPlaceCompilerProcessExitTimeOutMultiplier);
+                    return ObjectFactory.GetInstance<JavaInPlaceFolderCompiler>();
                 case CompilerType.MsBuildLibrary:
-                    return new MsBuildLibraryCompiler(Settings.MsBuildLibraryCompilerProcessExitTimeOutMultiplier);
+                    return ObjectFactory.GetInstance<MsBuildLibraryCompiler>();
                 case CompilerType.CPlusPlusZip:
-                    return new CPlusPlusZipCompiler(Settings.CPlusPlusZipCompilerProcessExitTimeOutMultiplier);
-                    case CompilerType.DotNetCompiler:
-                    return new DotNetCompiler(Settings.DotNetCompilerProcessExitTimeOutMultiplier);
+                    return ObjectFactory.GetInstance<CPlusPlusZipCompiler>();
+                case CompilerType.DotNetCompiler:
+                    return ObjectFactory.GetInstance<DotNetCompiler>();
                 default:
                     throw new ArgumentException("Unsupported compiler.");
             }

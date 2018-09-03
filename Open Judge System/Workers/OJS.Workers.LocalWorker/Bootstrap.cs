@@ -14,6 +14,8 @@
     using OJS.Services.Common;
     using OJS.Services.Common.BackgroundJobs;
     using OJS.Services.Data.SubmissionsForProcessing;
+    using OJS.Workers.Common;
+    using OJS.Workers.Compilers;
     using OJS.Workers.Jobs;
 
     using SimpleInjector;
@@ -61,6 +63,62 @@
                 Lifestyle.Scoped);
 
             RegisterServices(container);
+            RegisterCompilers(container);
+        }
+
+        private static void RegisterCompilers(Container container)
+        {
+            container.Register(
+                () => new CSharpCompiler(
+                    Settings.CSharpCompilerProcessExitTimeOutMultiplier),
+                Lifestyle.Scoped);
+
+            container.Register(
+                () => new CSharpDotNetCoreCompiler(
+                    Settings.CSharpDotNetCoreCompilerProcessExitTimeOutMultiplier,
+                    Settings.CSharpDotNetCoreCompilerPath,
+                    Settings.DotNetCoreSharedAssembliesPath),
+                Lifestyle.Scoped);
+
+            container.Register(
+                () => new CPlusPlusCompiler(
+                    Settings.CPlusPlusCompilerProcessExitTimeOutMultiplier),
+                Lifestyle.Scoped);
+
+            container.Register(
+                () => new MsBuildCompiler(
+                    Settings.MsBuildCompilerProcessExitTimeOutMultiplier),
+                Lifestyle.Scoped);
+
+            container.Register(
+                () => new JavaCompiler(
+                    Settings.JavaCompilerProcessExitTimeOutMultiplier),
+                Lifestyle.Scoped);
+
+            container.Register(
+                () => new JavaZipCompiler(
+                    Settings.JavaZipCompilerProcessExitTimeOutMultiplier),
+                Lifestyle.Scoped);
+
+            container.Register(
+                () => new JavaInPlaceFolderCompiler(
+                    Settings.JavaInPlaceCompilerProcessExitTimeOutMultiplier),
+                Lifestyle.Scoped);
+
+            container.Register(
+                () => new MsBuildLibraryCompiler(
+                    Settings.MsBuildLibraryCompilerProcessExitTimeOutMultiplier),
+                Lifestyle.Scoped);
+
+            container.Register(
+                () => new CPlusPlusZipCompiler(
+                    Settings.CPlusPlusZipCompilerProcessExitTimeOutMultiplier),
+                Lifestyle.Scoped);
+
+            container.Register(
+                () => new DotNetCompiler(
+                    Settings.DotNetCompilerProcessExitTimeOutMultiplier),
+                Lifestyle.Scoped);
         }
 
         private static void RegisterServices(Container container)
