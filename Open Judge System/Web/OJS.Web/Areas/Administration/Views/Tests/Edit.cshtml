@@ -1,4 +1,7 @@
-﻿@using Resource = Resources.Areas.Administration.Tests.Views.TestsEdit;
+﻿@using OJS.Web.Areas.Administration.Controllers
+
+@using Resource = Resources.Areas.Administration.Tests.Views.TestsEdit
+
 @model OJS.Web.Areas.Administration.ViewModels.Test.TestViewModel
 
 @{
@@ -49,13 +52,13 @@
                     .Spinners(false))
                 @Html.ValidationMessageFor(m => m.OrderBy)
             </div>
-            <div>
+            <div class="top-buffer-lg">
                 @Html.CheckBoxFor(m => m.RetestTask)
                 @Html.LabelFor(m => m.RetestTask)
             </div>
             <br />
             <button type="submit" class="btn btn-primary">@Resource.Edit</button>
-            <a href="/Administration/Tests/Problem/@Model.ProblemId" class="btn btn-primary">@Resource.Back</a>
+            <a href="@(Url.Action<TestsController>(c => c.Problem(Model.ProblemId)))" class="btn btn-primary">@Resource.Back</a>
         </div>
     }
 </div>

@@ -126,20 +126,15 @@
             {
                 ProblemId = problem.Id,
                 ProblemName = problem.Name,
-                AllTypes = Enum.GetValues(typeof(TestType))
-                    .Cast<TestType>()
-                    .Select(v => new SelectListItem
-                    {
-                        Text = v.GetLocalizedDescription(),
-                        Value = ((int)v).ToString(CultureInfo.InvariantCulture)
-                    }),
                 OrderBy = this.testsData
                     .GetAllNonTrialByProblem(problem.Id)
                     .OrderByDescending(t => t.OrderBy)
                     .Select(t => t.OrderBy)
-                    .FirstOrDefault() + 1
+                    .FirstOrDefault() + 1,
+                RetestTask = true
             };
 
+            ImportAllTypesInTest(test);
             return this.View(test);
         }
 
@@ -155,6 +150,7 @@
         {
             if (test == null || !this.ModelState.IsValid)
             {
+                ImportAllTypesInTest(test);
                 return this.View(test);
             }
 
@@ -179,7 +175,10 @@
                 IsOpenTest = test.Type == TestType.Open
             });
 
-            this.problemsBusiness.RetestById(id);
+            if (test.RetestTask)
+            {
+                this.problemsBusiness.RetestById(id);
+            }
 
             this.TempData.AddInfoMessage(Resource.Test_added_successfully);
             return this.RedirectToAction(c => c.Problem(id));
@@ -209,14 +208,7 @@
                 return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
-            test.AllTypes = Enum.GetValues(typeof(TestType))
-                .Cast<TestType>()
-                .Select(tt => new SelectListItem
-                {
-                    Text = tt.GetLocalizedDescription(),
-                    Value = ((int)tt).ToString(CultureInfo.InvariantCulture),
-                    Selected = tt == test.Type
-                });
+            ImportAllTypesInTest(test);
 
             return this.View(test);
         }
@@ -234,6 +226,7 @@
         {
             if (test == null || !this.ModelState.IsValid)
             {
+                ImportAllTypesInTest(test);
                 return this.View(test);
             }
 
@@ -696,6 +689,16 @@
         [HttpGet]
         public FileResult ExportToExcel([DataSourceRequest] DataSourceRequest request, int id) =>
             this.ExportToExcel(request, this.GetData(id));
+
+        private static void ImportAllTypesInTest(TestViewModel test) =>
+            test.AllTypes = Enum.GetValues(typeof(TestType))
+                .Cast<TestType>()
+                .Select(tt => new SelectListItem
+                {
+                    Text = tt.GetLocalizedDescription(),
+                    Value = ((int)tt).ToString(CultureInfo.InvariantCulture),
+                    Selected = tt == test.Type
+                });
 
         private IEnumerable GetData(int id)
         {
