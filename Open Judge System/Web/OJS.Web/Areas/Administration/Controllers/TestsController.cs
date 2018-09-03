@@ -306,6 +306,7 @@
         /// </summary>
         /// <param name="id">Id for test to be deleted</param>
         /// <returns>Redirects to /Administration/Tests/Problem/{id} after succesful deletion otherwise to /Administration/Test/ with proper error message</returns>
+        [ValidateAntiForgeryToken]
         public ActionResult ConfirmDelete(int? id)
         {
             if (!id.HasValue)

@@ -45,11 +45,7 @@
                 @Html.LabelFor(m => m.OrderBy)
             </div>
             <div class="editor-label">
-                @(Html.Kendo()
-                  .NumericTextBoxFor(m => m.OrderBy)
-                  .Format("#")
-                  .Step(1)
-                  .Spinners(false))
+                @Html.EditorFor(m => m.OrderBy)
                 @Html.ValidationMessageFor(m => m.OrderBy)
             </div>
             <div class="top-buffer-lg">

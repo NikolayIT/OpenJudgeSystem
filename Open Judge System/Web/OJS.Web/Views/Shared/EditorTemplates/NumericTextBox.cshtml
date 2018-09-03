@@ -1,0 +1,8 @@
+﻿@model int?
+
+@(Html.Kendo().NumericTextBoxFor(m => m)
+    .Decimals(0)
+    .Format("#")
+    .Step(1)
+    .Spinners(false)
+)
