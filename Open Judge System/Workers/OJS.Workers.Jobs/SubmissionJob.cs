@@ -63,53 +63,66 @@
                     }
                     catch (Exception exception)
                     {
-                        this.logger.FatalFormat("Unable to get submission for processing. Exception: {0}", exception);
+                        this.logger.Fatal("Unable to get submission for processing.", exception);
                         throw;
                     }
 
                     if (submission != null)
                     {
-                        this.logger.InfoFormat("Work on submission №{0} started.", submission.Id);
-
-                        var executionStrategy = SubmissionJobHelper.CreateExecutionStrategy(
-                            submission.ExecutionStrategyType);
-
-                        var context = new ExecutionContext
-                        {
-                            SubmissionId = submission.Id,
-                            AdditionalCompilerArguments = submission.AdditionalCompilerArguments,
-                            CheckerAssemblyName = submission.CheckerAssemblyName,
-                            CheckerParameter = submission.CheckerParameter,
-                            CheckerTypeName = submission.CheckerTypeName,
-                            FileContent = submission.FileContent,
-                            AllowedFileExtensions = submission.AllowedFileExtensions,
-                            CompilerType = submission.CompilerType,
-                            MemoryLimit = submission.MemoryLimit,
-                            TimeLimit = submission.TimeLimit,
-                            TaskSkeleton = submission.TaskSkeleton,
-                            Tests = submission.Tests
-                        };
-
+                        IExecutionStrategy executionStrategy;
                         ExecutionResult executionResult;
+
+                        this.logger.Info($"Work on submission №{submission.Id} started.");
+
+                        try
+                        {
+                            executionStrategy = SubmissionJobHelper.CreateExecutionStrategy(
+                                submission.ExecutionStrategyType);
+                        }
+                        catch (Exception ex)
+                        {
+                            this.logger.Error(
+                                $"{nameof(SubmissionJobHelper.CreateExecutionStrategy)} has thrown an Exception: ", ex);
+
+                            submission.ProcessingComment = $"Exception in creating execution strategy: {ex.Message}";
+                            jobStrategy.OnError(submission);
+                            continue;
+                        }
 
                         try
                         {
                             jobStrategy.BeforeExecute();
+
+                            var context = new ExecutionContext
+                            {
+                                SubmissionId = submission.Id,
+                                AdditionalCompilerArguments = submission.AdditionalCompilerArguments,
+                                CheckerAssemblyName = submission.CheckerAssemblyName,
+                                CheckerParameter = submission.CheckerParameter,
+                                CheckerTypeName = submission.CheckerTypeName,
+                                FileContent = submission.FileContent,
+                                AllowedFileExtensions = submission.AllowedFileExtensions,
+                                CompilerType = submission.CompilerType,
+                                MemoryLimit = submission.MemoryLimit,
+                                TimeLimit = submission.TimeLimit,
+                                TaskSkeleton = submission.TaskSkeleton,
+                                Tests = submission.Tests
+                            };
 
                             executionResult = executionStrategy.SafeExecute(context);
                         }
                         catch (Exception ex)
                         {
                             this.logger.Error(
-                                $"executionStrategy.Execute on submission №{submission.Id} has thrown an exception:",
+                                $"{nameof(executionStrategy.SafeExecute)} on submission №{submission.Id} has thrown an exception:",
                                 ex);
 
-                            submission.ProcessingComment = $"Exception in executionStrategy.Execute: {ex.Message}";
+                            submission.ProcessingComment = $"Exception in executing the submission: {ex.Message}";
                             jobStrategy.OnError(submission);
                             continue;
                         }
 
-                        this.logger.InfoFormat("Work on submission №{0} ended.", submission.Id);
+                        this.logger.Info($"Work on submission №{submission.Id} ended.");
 
                         try
                         {
@@ -117,17 +130,16 @@
                         }
                         catch (Exception ex)
                         {
-                            this.logger.ErrorFormat(
-                                "ProcessExecutionResult on submission №{0} has thrown an exception: {1}",
-                                submission.Id,
+                            this.logger.Error(
+                                $"{nameof(jobStrategy.ProcessEcexutionResult)} on submission №{submission.Id} has thrown an exception:",
                                 ex);
 
-                            submission.ProcessingComment = $"Exception in ProcessSubmission: {ex.Message}";
+                            submission.ProcessingComment = $"Exception in processing submission: {ex.Message}";
                             jobStrategy.OnError(submission);
                             continue;
                         }
 
-                        this.logger.InfoFormat("Submission №{0} successfully processed", submission.Id);
+                        this.logger.Info($"Submission №{submission.Id} successfully processed.");
                     }
                     else
                     {
