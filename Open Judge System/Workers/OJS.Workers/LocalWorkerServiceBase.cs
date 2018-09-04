@@ -14,7 +14,7 @@
     using OJS.Workers.Common;
     using OJS.Workers.Jobs;
 
-    public class LocalWorkerServiceBase<T> : ServiceBase
+    public class LocalWorkerServiceBase<TSubmission> : ServiceBase
     {
         private readonly ICollection<Thread> threads;
         private readonly ICollection<IJob> jobs;
@@ -39,7 +39,7 @@
 
             this.DependencyContainer = this.GetDependencyContainer();
 
-            this.SpawnJobsAndThreads(this.jobs, this.threads, new ConcurrentQueue<T>());
+            this.SpawnJobsAndThreads(this.jobs, this.threads, new ConcurrentQueue<TSubmission>());
 
             this.BeforeStartingThreads();
 
@@ -76,13 +76,13 @@
         private void SpawnJobsAndThreads(
             ICollection<IJob> jobsToSpawn,
             ICollection<Thread> threadsToSpawn,
-            ConcurrentQueue<T> submissionsForProcessing)
+            ConcurrentQueue<TSubmission> submissionsForProcessing)
         {
             var sharedLockObject = new object();
 
             for (var i = 1; i <= Settings.ThreadsCount; i++)
             {
-                var job = new SubmissionJob<T>(
+                var job = new SubmissionJob<TSubmission>(
                     $"Job №{i}",
                     submissionsForProcessing,
                     sharedLockObject);
