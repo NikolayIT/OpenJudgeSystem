@@ -77,7 +77,8 @@
                 var job = new SubmissionJob(
                     $"Job №{i}",
                     submissionsForProcessing,
-                    sharedLockObject);
+                    sharedLockObject,
+                    Settings.GanacheCliDefaultPort + i);
 
                 var thread = new Thread(job.Start) { Name = $"Thread №{i}" };
 

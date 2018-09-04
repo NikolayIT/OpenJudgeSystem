@@ -8,6 +8,8 @@
 
         public static string DotNetCompilerPath => GetSetting("DotNetCompilerPath");
 
+        public static string SolidityCompilerPath => GetSetting("SolidityCompilerPath");
+
         public static string MavenPath => GetSetting("MavenPath");
 
         public static string CSharpCompilerPath => GetSetting("CSharpCompilerPath");
@@ -79,6 +81,10 @@
         public static string SqlServerLocalDbMasterDbConnectionString =>
             GetSetting("SqlServerLocalDbMasterDbConnectionString");
 
+        public static string GanacheCliNodeExecutablePath => GetSetting("GanacheCliNodeExecutablePath");
+
+        public static string TruffleCliNodeExecutablePath => GetSetting("TruffleCliNodeExecutablePath");
+
         public static string SqlServerLocalDbRestrictedUserId =>
             GetSetting("SqlServerLocalDbRestrictedUserId");
 
@@ -93,9 +99,10 @@
 
         public static int ThreadsCount => GetSettingOrDefault("ThreadsCount", 2);
 
-        // Base time and memory used
-        public static int NodeJsBaseTimeUsedInMilliseconds =>
-            GetSettingOrDefault("NodeJsBaseTimeUsedInMilliseconds", 0);
+        public static int GanacheCliDefaultPort => GetSettingOrDefault("GanacheCliDefaultPort", 8545);
+
+        // Base time/memory used by processes
+        public static int NodeJsBaseTimeUsedInMilliseconds => GetSettingOrDefault("NodeJsBaseTimeUsedInMilliseconds", 0);
 
         public static int NodeJsBaseMemoryUsedInBytes =>
             GetSettingOrDefault("NodeJsBaseMemoryUsedInBytes", 0);
@@ -157,9 +164,12 @@
         public static int PythonBaseMemoryUsedInBytes =>
             GetSettingOrDefault("PythonBaseMemoryUsedInBytes", 0);
 
-        // Compiler time out multipliers
-        public static int CPlusPlusCompilerProcessExitTimeOutMultiplier =>
-            GetSettingOrDefault("CPlusPlusCompilerProcessExitTimeOutMultiplier", 1);
+        public static int SolidityBaseTimeUsedInMilliseconds => GetSettingOrDefault("SolidityBaseTimeUsedInMilliseconds", 0);
+
+        public static int SolidityBaseMemoryUsedInBytes => GetSettingOrDefault("SolidityBaseMemoryUsedInBytes", 0);
+
+        // Compiler exit time out multipliers
+        public static int CPlusPlusCompilerProcessExitTimeOutMultiplier => GetSettingOrDefault("CPlusPlusCompilerProcessExitTimeOutMultiplier", 1);
 
         public static int CPlusPlusZipCompilerProcessExitTimeOutMultiplier =>
             GetSettingOrDefault("CPlusPlusZipCompilerProcessExitTimeOutMultiplier", 1);
@@ -187,5 +197,8 @@
 
         public static int MsBuildLibraryCompilerProcessExitTimeOutMultiplier =>
             GetSettingOrDefault("MsBuildLibraryCompilerProcessExitTimeOutMultiplier", 1);
+
+        public static int SolidityCompilerProcessExitTimeOutMultiplier =>
+            GetSettingOrDefault("SolidityCompilerProcessExitTimeOutMultiplier", 1);
     }
 }

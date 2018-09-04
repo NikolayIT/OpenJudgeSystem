@@ -40,6 +40,7 @@
         DotNetCoreProjectTestsExecutionStrategy = 35,
         PhpProjectWithDbExecutionStrategy = 36,
         DotNetCoreCompileExecuteAndCheck = 37,
-        DotNetCoreUnitTestsExecutionStrategy = 38
+        DotNetCoreUnitTestsExecutionStrategy = 38,
+        SolidityCompileDeployAndRunUnitTestsExecutionStrategy = 39
     }
 }

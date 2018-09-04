@@ -180,11 +180,6 @@
             var compiler = Compiler.CreateCompiler(compilerType);
             var compilerResult = compiler.Compile(compilerPath, submissionFilePath, compilerArguments);
 
-            if (File.Exists(submissionFilePath))
-            {
-                File.Delete(submissionFilePath);
-            }
-
             return compilerResult;
         }
     }

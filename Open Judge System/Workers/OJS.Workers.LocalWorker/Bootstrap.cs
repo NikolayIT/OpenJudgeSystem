@@ -114,6 +114,11 @@
                 () => new DotNetCompiler(
                     Settings.DotNetCompilerProcessExitTimeOutMultiplier),
                 Lifestyle.Scoped);
+
+            container.Register(
+                () => new SolidityCompiler(
+                    Settings.SolidityCompilerProcessExitTimeOutMultiplier),
+                Lifestyle.Scoped);
         }
 
         private static void RegisterServices(Container container)
