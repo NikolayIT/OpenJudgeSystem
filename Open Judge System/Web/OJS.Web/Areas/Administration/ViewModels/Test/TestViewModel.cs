@@ -150,7 +150,10 @@
         public bool RetestTask { get; set; }
 
         [Display(Name = nameof(Resource.Trial_test_name), ResourceType = typeof(Resource))]
-        public string TrialTestName => this.Type == TestType.Trial ? Resource.Practice : Resource.Contest;
+        public string TrialTestName =>
+            this.Type == TestType.Trial
+                ? Resource.Practice
+                : Resource.Contest;
 
         [Display(Name = nameof(Resource.Type_test_name), ResourceType = typeof(Resource))]
         public TestType Type { get; set; }
@@ -164,7 +167,6 @@
         [Required(
             ErrorMessageResourceName = nameof(Resource.Order_required),
             ErrorMessageResourceType = typeof(Resource))]
-        [RegularExpression(@"(0|[1-9]{1}[0-9]{0,8}|[1]{1}[0-9]{1,9}|[-]{1}[2]{1}([0]{1}[0-9]{8}|[1]{1}([0-3]{1}[0-9]{7}|[4]{1}([0-6]{1}[0-9]{6}|[7]{1}([0-3]{1}[0-9]{5}|[4]{1}([0-7]{1}[0-9]{4}|[8]{1}([0-2]{1}[0-9]{3}|[3]{1}([0-5]{1}[0-9]{2}|[6]{1}([0-3]{1}[0-9]{1}|[4]{1}[0-8]{1}))))))))|(\+)?[2]{1}([0]{1}[0-9]{8}|[1]{1}([0-3]{1}[0-9]{7}|[4]{1}([0-6]{1}[0-9]{6}|[7]{1}([0-3]{1}[0-9]{5}|[4]{1}([0-7]{1}[0-9]{4}|[8]{1}([0-2]{1}[0-9]{3}|[3]{1}([0-5]{1}[0-9]{2}|[6]{1}([0-3]{1}[0-9]{1}|[4]{1}[0-7]{1})))))))))")]
         [UIHint("NumericTextBox")]
         public int OrderBy { get; set; }
 
