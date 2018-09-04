@@ -17,7 +17,7 @@
 
         void BeforeExecute();
 
-        void ProcessEcexutionResult(ExecutionResult executionResult);
+        void ProcessExecutionResult(ExecutionResult executionResult);
 
         void OnError(SubmissionModel submission);
     }

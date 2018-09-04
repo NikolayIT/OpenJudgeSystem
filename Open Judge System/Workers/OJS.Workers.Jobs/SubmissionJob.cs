@@ -126,12 +126,12 @@
 
                         try
                         {
-                            jobStrategy.ProcessEcexutionResult(executionResult);
+                            jobStrategy.ProcessExecutionResult(executionResult);
                         }
                         catch (Exception ex)
                         {
                             this.logger.Error(
-                                $"{nameof(jobStrategy.ProcessEcexutionResult)} on submission №{submission.Id} has thrown an exception:",
+                                $"{nameof(jobStrategy.ProcessExecutionResult)} on submission №{submission.Id} has thrown an exception:",
                                 ex);
 
                             submission.ProcessingComment = $"Exception in processing submission: {ex.Message}";

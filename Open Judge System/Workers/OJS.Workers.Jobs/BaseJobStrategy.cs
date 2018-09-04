@@ -30,7 +30,7 @@
 
         public abstract SubmissionModel RetrieveSubmission();
 
-        public abstract void ProcessEcexutionResult(ExecutionResult executionResult);
+        public abstract void ProcessExecutionResult(ExecutionResult executionResult);
 
         public abstract void OnError(SubmissionModel submission);
     }

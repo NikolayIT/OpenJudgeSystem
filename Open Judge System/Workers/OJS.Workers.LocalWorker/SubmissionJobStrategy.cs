@@ -115,7 +115,7 @@
             this.testRunsData.DeleteBySubmission(this.submission.Id);
         }
 
-        public override void ProcessEcexutionResult(ExecutionResult executionResult)
+        public override void ProcessExecutionResult(ExecutionResult executionResult)
         {
             this.submission.IsCompiledSuccessfully = executionResult.IsCompiledSuccessfully;
             this.submission.CompilerComment = executionResult.CompilerComment;

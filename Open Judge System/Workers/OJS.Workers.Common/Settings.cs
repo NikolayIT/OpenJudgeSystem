@@ -4,7 +4,8 @@
 
     public static class Settings
     {
-        public static string MonitoringServiceExecutablePath => SettingsHelper.GetSetting("MonitoringServiceExecutablePath");
+        public static string MonitoringServiceExecutablePath =>
+            SettingsHelper.GetSetting("MonitoringServiceExecutablePath");
 
         public static string DotNetCompilerPath => SettingsHelper.GetSetting("DotNetCompilerPath");
 
@@ -14,7 +15,8 @@
 
         public static string CSharpDotNetCoreCompilerPath => SettingsHelper.GetSetting("CSharpDotNetCoreCompilerPath");
 
-        public static string DotNetCoreSharedAssembliesPath => SettingsHelper.GetSetting("DotNetCoreSharedAssembliesPath");
+        public static string DotNetCoreSharedAssembliesPath =>
+            SettingsHelper.GetSetting("DotNetCoreSharedAssembliesPath");
 
         public static string CPlusPlusGccCompilerPath => SettingsHelper.GetSetting("CPlusPlusGccCompilerPath");
 
