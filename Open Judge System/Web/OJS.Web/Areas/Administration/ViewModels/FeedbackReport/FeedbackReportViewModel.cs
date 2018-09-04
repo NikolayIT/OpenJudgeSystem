@@ -73,7 +73,7 @@
         public string Content { get; set; }
 
         [Display(Name = nameof(Resource.UserName), ResourceType = typeof(Resource))]
-        [UIHint(NonEditableTextBox)]
+        [UIHint(NonEditable)]
         public string Username { get; set; }
 
         [DatabaseProperty]

@@ -33,7 +33,7 @@
         public int ContestQuestionId { get; set; }
 
         [Display(Name = nameof(Resource.Question), ResourceType = typeof(Resource))]
-        [UIHint(NonEditableTextBox)]
+        [UIHint(NonEditable)]
         public string QuestionText { get; set; }
 
         [Display(Name = nameof(Resource.Answer), ResourceType = typeof(Resource))]

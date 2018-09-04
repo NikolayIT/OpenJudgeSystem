@@ -5,7 +5,7 @@
         public const string SingleLineText = "SingleLineText";
         public const string MultiLineText = "MultiLineText";
         public const string HtmlContent = "HtmlContent";
-        public const string NonEditableTextBox = "NonEditable";
+        public const string NonEditable = "NonEditable";
         public const string FileUpload = "FileUpload";
         public const string EnumDropDown = "EnumDropDown";
 

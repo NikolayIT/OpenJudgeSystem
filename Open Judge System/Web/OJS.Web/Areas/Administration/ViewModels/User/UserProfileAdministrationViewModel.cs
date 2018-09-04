@@ -46,7 +46,7 @@
         public string Id { get; set; }
 
         [Display(Name = nameof(Resource.UserName), ResourceType = typeof(Resource))]
-        [UIHint(NonEditableTextBox)]
+        [UIHint(NonEditable)]
         public string UserName { get; set; }
 
         [DataType(DataType.EmailAddress)]
@@ -159,7 +159,7 @@
             NullDisplayTextResourceName = nameof(Resource.Null_display_text),
             NullDisplayTextResourceType = typeof(Resource),
             ConvertEmptyStringToNull = true)]
-        [UIHint(NonEditableTextBox)]
+        [UIHint(NonEditable)]
         public byte Age => Calculator.Age(this.DateOfBirth) ?? default(byte);
 
         public override UserProfile GetEntityModel(UserProfile model = null)

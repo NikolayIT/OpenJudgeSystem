@@ -52,7 +52,7 @@
         public int ContestId { get; set; }
 
         [Display(Name = nameof(ProblemResource.Contest), ResourceType = typeof(ProblemResource))]
-        [UIHint(NonEditableTextBox)]
+        [UIHint(NonEditable)]
         public string ContestName { get; set; }
     }
 }
