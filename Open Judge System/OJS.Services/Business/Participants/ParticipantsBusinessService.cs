@@ -10,10 +10,11 @@
     using OJS.Services.Data.Contests;
     using OJS.Services.Data.Participants;
 
+    using SharedResource = Resources.Contests.ContestsGeneral;
+    using Resource = Resources.Services.Participants.ParticipantsBusiness;
+
     public class ParticipantsBusinessService : IParticipantsBusinessService
     {
-        private const string ContestDoesNotExistErrorMessage = "Contest does not exist!";
-        private const string ContestDoesNotHaveDurationErrorMessage = "The contest does not have duration set!";
         private readonly IParticipantsDataService participantsData;
         private readonly IContestsDataService contestsData;
 
@@ -54,18 +55,18 @@
             var participant = this.participantsData.GetById(id);
             if (participant == null)
             {
-                throw new ArgumentException("Participant does not exist!");
+                throw new ArgumentException(Resource.Participant_does_not_exist);
             }
 
             if (!participant.Contest.Duration.HasValue)
             {
-                return new ServiceResult<string>(ContestDoesNotHaveDurationErrorMessage);
+                return new ServiceResult<string>(Resource.Contest_duration_not_set);
             }
 
             if (!participant.ParticipationEndTime.HasValue ||
                 !participant.ParticipationStartTime.HasValue)
             {
-                throw new ArgumentException("Participant does not have compete time set!");
+                throw new ArgumentException(Resource.Participant_participation_time_not_set);
             }
 
             var newEndTime = participant.ParticipationEndTime.Value.AddMinutes(minutes);
@@ -74,7 +75,7 @@
 
             if (newEndTime < minAllowedEndTime)
             {
-                return new ServiceResult<string>("Participant time would be reduced below the contest duration!");
+                return new ServiceResult<string>(Resource.Participation_time_reduce_below_duration_warning);
             }
 
             participant.ParticipationEndTime = newEndTime;
@@ -96,12 +97,12 @@
 
             if (contest == null)
             {
-                return new ServiceResult<ICollection<string>>(ContestDoesNotExistErrorMessage);
+                return new ServiceResult<ICollection<string>>(SharedResource.Contest_does_not_exist);
             }
 
             if (!contest.Duration.HasValue)
             {
-                return new ServiceResult<ICollection<string>>(ContestDoesNotHaveDurationErrorMessage);
+                return new ServiceResult<ICollection<string>>(Resource.Contest_duration_not_set);
             }
 
             var contestTotalDurationInMinutes = contest.Duration.Value.TotalMinutes;

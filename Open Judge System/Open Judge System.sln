@@ -95,6 +95,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Data.Archives", "OJS.Da
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Workers.LocalWorkerMonitoring", "Workers\OJS.Workers.LocalWorkerMonitoring\OJS.Workers.LocalWorkerMonitoring.csproj", "{91080721-1B4B-49E6-BB1B-3684268D12DD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Resources", "OJS.Resources\OJS.Resources.csproj", "{A89A7071-F099-4730-9876-7B1FDADF1412}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -300,6 +302,12 @@ Global
 		{91080721-1B4B-49E6-BB1B-3684268D12DD}.Dev|Any CPU.Build.0 = Debug|Any CPU
 		{91080721-1B4B-49E6-BB1B-3684268D12DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91080721-1B4B-49E6-BB1B-3684268D12DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A89A7071-F099-4730-9876-7B1FDADF1412}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A89A7071-F099-4730-9876-7B1FDADF1412}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A89A7071-F099-4730-9876-7B1FDADF1412}.Dev|Any CPU.ActiveCfg = Debug|Any CPU
+		{A89A7071-F099-4730-9876-7B1FDADF1412}.Dev|Any CPU.Build.0 = Debug|Any CPU
+		{A89A7071-F099-4730-9876-7B1FDADF1412}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A89A7071-F099-4730-9876-7B1FDADF1412}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
