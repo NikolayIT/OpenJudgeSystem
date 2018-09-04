@@ -131,7 +131,7 @@
                     .OrderByDescending(t => t.OrderBy)
                     .Select(t => t.OrderBy)
                     .FirstOrDefault() + 1,
-                RetestTask = true
+                RetestProblem = true
             };
 
             ImportAllTypesInTest(test);
@@ -175,7 +175,7 @@
                 IsOpenTest = test.Type == TestType.Open
             });
 
-            if (test.RetestTask)
+            if (test.RetestProblem)
             {
                 this.problemsBusiness.RetestById(id);
             }
@@ -256,7 +256,7 @@
                 this.submissionsData.RemoveTestRunsCacheByProblem(existingTest.ProblemId);
                 this.testRunsData.DeleteByProblem(existingTest.ProblemId);
 
-                if (test.RetestTask)
+                if (test.RetestProblem)
                 {
                     this.problemsBusiness.RetestById(existingTest.ProblemId);
                 }

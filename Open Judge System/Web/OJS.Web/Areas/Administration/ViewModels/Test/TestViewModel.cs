@@ -147,7 +147,7 @@
         }
 
         [Display(Name = nameof(Resource.Retest_problem), ResourceType = typeof(Resource))]
-        public bool RetestTask { get; set; }
+        public bool RetestProblem { get; set; }
 
         [Display(Name = nameof(Resource.Trial_test_name), ResourceType = typeof(Resource))]
         public string TrialTestName =>
