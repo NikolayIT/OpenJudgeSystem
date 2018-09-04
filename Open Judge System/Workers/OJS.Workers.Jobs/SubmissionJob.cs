@@ -13,19 +13,19 @@
 
     using ExecutionContext = ExecutionStrategies.ExecutionContext;
 
-    public class SubmissionJob<T> : IJob
+    public class SubmissionJob<TSubmission> : IJob
     {
         private readonly object sharedLockObject;
 
         private readonly ILog logger;
 
-        private readonly ConcurrentQueue<T> submissionsForProcessing;
+        private readonly ConcurrentQueue<TSubmission> submissionsForProcessing;
 
         private bool stopping;
 
         public SubmissionJob(
             string name,
-            ConcurrentQueue<T> submissionsForProcessing,
+            ConcurrentQueue<TSubmission> submissionsForProcessing,
             object sharedLockObject)
         {
             this.Name = name;
@@ -51,7 +51,7 @@
             {
                 using (dependencyContainer.BeginDefaultScope())
                 {
-                    var jobStrategy = dependencyContainer.GetInstance<IJobStrategy<T>>();
+                    var jobStrategy = dependencyContainer.GetInstance<IJobStrategy<TSubmission>>();
 
                     jobStrategy.Initialize(this.logger, this.submissionsForProcessing, this.sharedLockObject);
 

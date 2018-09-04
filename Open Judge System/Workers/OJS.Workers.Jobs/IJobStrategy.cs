@@ -7,11 +7,14 @@
     using OJS.Workers.ExecutionStrategies;
     using OJS.Workers.Jobs.Models;
 
-    public interface IJobStrategy<T>
+    public interface IJobStrategy<TSubmission>
     {
         int JobLoopWaitTimeInMilliseconds { get; }
 
-        void Initialize(ILog logger, ConcurrentQueue<T> queue, object sharedLockObject = null);
+        void Initialize(
+            ILog logger,
+            ConcurrentQueue<TSubmission> submissionsForProcessing,
+            object sharedLockObject);
 
         SubmissionModel RetrieveSubmission();
 

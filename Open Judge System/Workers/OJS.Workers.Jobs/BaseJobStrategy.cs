@@ -8,21 +8,24 @@
     using OJS.Workers.ExecutionStrategies;
     using OJS.Workers.Jobs.Models;
 
-    public abstract class BaseJobStrategy<T> : IJobStrategy<T>
+    public abstract class BaseJobStrategy<TSubmission> : IJobStrategy<TSubmission>
     {
         protected ILog Logger { get; private set; }
 
-        protected ConcurrentQueue<T> SubmissionsForProcessing { get; private set; }
+        protected ConcurrentQueue<TSubmission> SubmissionsForProcessing { get; private set; }
 
         protected object SharedLockObject { get; private set; }
 
         public int JobLoopWaitTimeInMilliseconds { get; protected set; } =
             Constants.DefaultJobLoopWaitTimeInMilliseconds;
 
-        public virtual void Initialize(ILog logger, ConcurrentQueue<T> queue, object sharedLockObject = null)
+        public virtual void Initialize(
+            ILog logger,
+            ConcurrentQueue<TSubmission> submissionsForProcessing,
+            object sharedLockObject)
         {
             this.Logger = logger;
-            this.SubmissionsForProcessing = queue;
+            this.SubmissionsForProcessing = submissionsForProcessing;
             this.SharedLockObject = sharedLockObject;
         }
 
