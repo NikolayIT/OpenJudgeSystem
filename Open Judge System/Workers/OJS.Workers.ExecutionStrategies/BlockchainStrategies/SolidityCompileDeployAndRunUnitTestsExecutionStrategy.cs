@@ -95,8 +95,10 @@
             ProcessExecutionResult processExecutionResult;
 
             // Run tests in the Ethereum Virtual Machine scope
-            using (new GanacheCliScope(this.nodeJsExecutablePath, this.ganacheCliNodeExecutablePath, this.portNumber))
+            using (var ganache = new GanacheCli(this.nodeJsExecutablePath, this.ganacheCliNodeExecutablePath))
             {
+                ganache.Listen(this.portNumber);
+
                 processExecutionResult = executor.Execute(
                     this.nodeJsExecutablePath,
                     string.Empty,

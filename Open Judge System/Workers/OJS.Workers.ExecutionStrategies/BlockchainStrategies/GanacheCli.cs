@@ -8,37 +8,28 @@
 
     using OJS.Common;
 
-    internal class GanacheCliScope : IDisposable
+    internal class GanacheCli : IDisposable
     {
         private const int MaxOutputLinesToReadOnStartUp = 1000;
+        private const string GanacheCliListeningPattern = @"^Listening\s+on[^\r?\n]*\s+127\.0\.0\.1:";
         private const string ErrorRegexPattern = @"^Error:[.|\r|\n|\r\n|\w|\W]*";
         private const string PortInUseErrorKey = "EADDRINUSE";
         private readonly string nodeJsExecutablePath;
         private readonly string ganacheNodeCliPath;
-        private readonly int portNumber;
-        private readonly int accountsCount;
-        private readonly int processId;
+        private int processId;
         private string errorMessage;
 
-        public GanacheCliScope(
-            string nodeJsExecutablePath,
-            string ganacheNodeCliPath,
-            int portNumber,
-            int accountsCount = 10)
+        public GanacheCli(string nodeJsExecutablePath, string ganacheNodeCliPath)
         {
             this.nodeJsExecutablePath = nodeJsExecutablePath;
             this.ganacheNodeCliPath = ganacheNodeCliPath;
-            this.portNumber = portNumber;
-            this.accountsCount = accountsCount;
-
-            this.processId = this.RunGanacheCli();
         }
-
-        private string GanacheCliListeningPattern => $@"^Listening\s+on[^\r?\n]*\s+127\.0\.0\.1:{this.portNumber}";
 
         public void Dispose()
         {
-            var process = Process.GetProcesses(Environment.MachineName).FirstOrDefault(p => p.Id == this.processId);
+            var process = Process
+                .GetProcesses(Environment.MachineName)
+                .FirstOrDefault(p => p.Id == this.processId);
 
             if (process != null && !process.HasExited)
             {
@@ -46,13 +37,13 @@
             }
         }
 
-        private int RunGanacheCli()
+        public void Listen(int portNumber)
         {
             using (var process = new Process())
             {
                 process.StartInfo = new ProcessStartInfo(this.nodeJsExecutablePath)
                 {
-                    Arguments = $"{this.ganacheNodeCliPath} -p {this.portNumber} -a {this.accountsCount}",
+                    Arguments = $"{this.ganacheNodeCliPath} -p {portNumber}",
                     WindowStyle = ProcessWindowStyle.Hidden,
                     CreateNoWindow = true,
                     UseShellExecute = false,
@@ -64,13 +55,17 @@
 
                 if (!started)
                 {
-                    this.errorMessage = "ganache-cli cannot be started";
+                    throw new Exception("ganache-cli cannot be started.");
                 }
-                else if (this.VerifyGanacheCliIsListening(process))
+
+                this.processId = process.Id;
+
+                if (this.VerifyGanacheCliIsListening(process, portNumber))
                 {
-                    return process.Id;
+                    return;
                 }
-                else if (!process.HasExited)
+
+                if (!process.HasExited)
                 {
                     process.Kill();
                 }
@@ -79,13 +74,13 @@
             }
         }
 
-        private bool VerifyGanacheCliIsListening(Process process)
+        private bool VerifyGanacheCliIsListening(Process process, int portNumber)
         {
             var isListening = false;
 
             try
             {
-                var successRegex = new Regex(this.GanacheCliListeningPattern, RegexOptions.Multiline);
+                var successRegex = new Regex(GanacheCliListeningPattern + portNumber, RegexOptions.Multiline);
                 var errorRegex = new Regex(ErrorRegexPattern, RegexOptions.Multiline);
                 var errorOutput = string.Empty;
 
