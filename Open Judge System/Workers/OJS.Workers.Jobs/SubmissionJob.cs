@@ -16,16 +16,16 @@
     public class SubmissionJob<TSubmission> : IJob
     {
         private readonly object sharedLockObject;
-
         private readonly ILog logger;
-
         private readonly ConcurrentQueue<TSubmission> submissionsForProcessing;
+        private readonly int portNumber;
 
         private bool stopping;
 
         public SubmissionJob(
             string name,
             ConcurrentQueue<TSubmission> submissionsForProcessing,
+            int portnumber,
             object sharedLockObject)
         {
             this.Name = name;
@@ -36,7 +36,9 @@
             this.stopping = false;
 
             this.submissionsForProcessing = submissionsForProcessing;
+            this.portNumber = portnumber;
             this.sharedLockObject = sharedLockObject;
+
 
             this.logger.Info("SubmissionJob initialized.");
         }
@@ -77,7 +79,7 @@
                         try
                         {
                             executionStrategy = SubmissionJobHelper.CreateExecutionStrategy(
-                                submission.ExecutionStrategyType);
+                                submission.ExecutionStrategyType, this.portNumber);
                         }
                         catch (Exception ex)
                         {

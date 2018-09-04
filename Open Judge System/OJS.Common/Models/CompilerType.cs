@@ -12,6 +12,7 @@
         CPlusPlusZip = 7,
         JavaInPlaceCompiler = 8,
         DotNetCompiler = 9,
-        CSharpDotNetCore = 10
+        CSharpDotNetCore = 10,
+        SolidityCompiler = 11
     }
 }

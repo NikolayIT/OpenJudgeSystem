@@ -85,6 +85,7 @@
                 var job = new SubmissionJob<TSubmission>(
                     $"Job №{i}",
                     submissionsForProcessing,
+                    Settings.GanacheCliDefaultPortNumber + i,
                     sharedLockObject);
 
                 var thread = new Thread(() => job.Start(this.DependencyContainer)) { Name = $"Thread №{i}" };

@@ -78,6 +78,12 @@
 
         public static string PhpCliExecutablePath => SettingsHelper.GetSetting("PhpCliExecutablePath");
 
+        public static string SolidityCompilerPath => SettingsHelper.GetSetting("SolidityCompilerPath");
+
+        public static string GanacheCliNodeExecutablePath => SettingsHelper.GetSetting("SettingsHelper.GetSetting");
+
+        public static string TruffleCliNodeExecutablePath => SettingsHelper.GetSetting("TruffleCliNodeExecutablePath");
+
         public static string SqlServerLocalDbMasterDbConnectionString =>
             SettingsHelper.GetSetting("SqlServerLocalDbMasterDbConnectionString");
 
@@ -94,6 +100,9 @@
         public static string MySqlRestrictedUserPassword => SettingsHelper.GetSetting("MySqlRestrictedUserPassword");
 
         public static int ThreadsCount => SettingsHelper.GetSettingOrDefault("ThreadsCount", 2);
+
+        public static int GanacheCliDefaultPortNumber =>
+            SettingsHelper.GetSettingOrDefault("GanacheCliDefaultPortNumber", 8545);
 
         // Base time and memory used
         public static int NodeJsBaseTimeUsedInMilliseconds =>
@@ -159,6 +168,12 @@
         public static int PythonBaseMemoryUsedInBytes =>
             SettingsHelper.GetSettingOrDefault("PythonBaseMemoryUsedInBytes", 0);
 
+        public static int SolidityBaseTimeUsedInMilliseconds =>
+            SettingsHelper.GetSettingOrDefault("SolidityBaseTimeUsedInMilliseconds", 0);
+
+        public static int SolidityBaseMemoryUsedInBytes =>
+            SettingsHelper.GetSettingOrDefault("SolidityBaseTimeUsedInMilliseconds", 0);
+
         // Compiler time out multipliers
         public static int CPlusPlusCompilerProcessExitTimeOutMultiplier =>
             SettingsHelper.GetSettingOrDefault("CPlusPlusCompilerProcessExitTimeOutMultiplier", 1);
@@ -189,5 +204,8 @@
 
         public static int MsBuildLibraryCompilerProcessExitTimeOutMultiplier =>
             SettingsHelper.GetSettingOrDefault("MsBuildLibraryCompilerProcessExitTimeOutMultiplier", 1);
+
+        public static int SolidityCompilerProcessExitTimeOutMultiplier =>
+            SettingsHelper.GetSettingOrDefault("SolidityCompilerProcessExitTimeOutMultiplier", 1);
     }
 }

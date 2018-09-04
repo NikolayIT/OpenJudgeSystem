@@ -198,7 +198,7 @@
                 false,
                 true);
 
-            var(totalTestsCount, failedTestsCount) =
+            var (totalTestsCount, failedTestsCount) =
                 this.ExtractTotalFailedTestsCount(processExecutionResult.ReceivedOutput);
 
             var errorsByFiles = this.GetTestErrors(processExecutionResult.ReceivedOutput);
@@ -294,7 +294,7 @@
             File.Delete(submissionFilePath);
         }
 
-        protected(int totalTestsCount, int failedTestsCount) ExtractTotalFailedTestsCount(string testsOutput)
+        protected (int totalTestsCount, int failedTestsCount) ExtractTotalFailedTestsCount(string testsOutput)
         {
             var testsSummaryMatcher = new Regex(TestResultsRegex);
             var testsSummaryMatches = testsSummaryMatcher.Matches(testsOutput);
