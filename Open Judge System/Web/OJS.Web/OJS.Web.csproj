@@ -2434,15 +2434,14 @@
     <Content Include="Areas\Administration\Views\Resources\Edit.cshtml" />
     <Content Include="Areas\Contests\Views\List\BySubmissionType.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\NonEditable.cshtml" />
-    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\MultiLineText.cshtml" />
-    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\SingleLineText.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\MultiLineText.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\SingleLineText.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\PositiveInteger.cshtml" />
-    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\DateAndTime.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\DateAndTime.cshtml" />
     <Content Include="Areas\Contests\Views\Submissions\View.cshtml" />
     <Content Include="Areas\Administration\Views\Settings\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\DisabledCheckbox.cshtml" />
     <Content Include="Areas\Administration\Views\Users\Index.cshtml" />
-    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\Date.cshtml" />
     <Content Include="Areas\Administration\Views\Submissions\Index.cshtml" />
     <Content Include="Areas\Contests\Views\Shared\_AllContestSubmissionsByUser.cshtml" />
     <Content Include="Areas\Administration\Views\Submissions\EditorTemplates\ParticipantDropDownList.cshtml" />
@@ -2465,7 +2464,6 @@
     <Content Include="Areas\Contests\Views\Labs\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Lecturers\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\LecturerInContest.cshtml" />
-    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\DropDownListCustom.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\_CopyQuestionsFromContest.cshtml" />
     <Content Include="Areas\Administration\Views\Submissions\EditorTemplates\SubmissionAdministrationViewModel.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\_DownloadSubmissionsPopupWindow.cshtml" />
@@ -2504,7 +2502,7 @@
     <Content Include="Dependencies\diff_match_patch\package.json" />
     <Content Include="Dependencies\diff_match_patch\README.markdown" />
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\PositiveShortInteger.cshtml" />
-    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\TimeSpan.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\TimeSpan.cshtml" />
     <Content Include="Areas\Administration\Views\Contests\ChangeActiveParticipantsEndTime.cshtml" />
     <Content Include="Areas\Contests\Views\Compete\ConfirmCompete.cshtml" />
     <Content Include="Areas\Contests\Views\Results\_SimpleResultsPagedList.cshtml" />
@@ -3425,12 +3423,9 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Currency.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Date.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\DateTime.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\GridForeignKey.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Integer.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Number.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\String.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\Time.cshtml" />
     <Content Include="webpack.config.js" />
     <Content Include="Xapp_offline.htm" />
     <Content Include="_ViewStart.cshtml" />
@@ -3444,7 +3439,6 @@
     <Content Include="Views\Account\ChangePassword.cshtml" />
     <Content Include="Views\Account\ChangeEmail.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Password.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\MultilineText.cshtml" />
     <Content Include="Views\Search\Results.cshtml" />
     <Content Include="Views\Search\Index.cshtml" />
     <Content Include="Views\Shared\_Pagination.cshtml" />

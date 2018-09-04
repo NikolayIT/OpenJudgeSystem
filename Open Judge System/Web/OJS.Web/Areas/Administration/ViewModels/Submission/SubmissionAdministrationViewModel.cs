@@ -14,6 +14,8 @@
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
 
+    using static OJS.Common.Constants.EditorTemplateConstants;
+
     using Resource = Resources.Areas.Administration.Submissions.ViewModels.SubmissionAdministration;
 
     public class SubmissionAdministrationViewModel : AdministrationViewModel<Submission>
@@ -47,27 +49,27 @@
         public int? Id { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Problem", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Problem), ResourceType = typeof(Resource))]
         [Required(
-            ErrorMessageResourceName = "Problem_required",
+            ErrorMessageResourceName = nameof(Resource.Problem_required),
             ErrorMessageResourceType = typeof(Resource))]
-        [UIHint("ProblemComboBox")]
+        [UIHint(ProblemsComboBox)]
         public int? ProblemId { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Participant", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Participant), ResourceType = typeof(Resource))]
         [Required(
-            ErrorMessageResourceName = "Participant_required",
+            ErrorMessageResourceName = nameof(Resource.Participant_required),
             ErrorMessageResourceType = typeof(Resource))]
-        [UIHint("ParticipantDropDownList")]
+        [UIHint(ParticipantDropDownList)]
         public int? ParticipantId { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Type", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Type), ResourceType = typeof(Resource))]
         [Required(
-            ErrorMessageResourceName = "Type_required",
+            ErrorMessageResourceName = nameof(Resource.Type_required),
             ErrorMessageResourceType = typeof(Resource))]
-        [UIHint("SubmissionTypesDropDownList")]
+        [UIHint(SubmissionTypesDropDownList)]
         public int? SubmissionTypeId { get; set; }
 
         public bool? AllowBinaryFilesUpload { get; set; }
@@ -75,13 +77,13 @@
         [DatabaseProperty]
         [ScaffoldColumn(false)]
         [Required(
-            ErrorMessageResourceName = "Content_required",
+            ErrorMessageResourceName = nameof(Resource.Content_required),
             ErrorMessageResourceType = typeof(Resource))]
         public byte[] Content { get; set; }
 
         [AllowHtml]
-        [Display(Name = "Content_as_string", ResourceType = typeof(Resource))]
-        [UIHint("MultiLineText")]
+        [Display(Name = nameof(Resource.Content_as_string), ResourceType = typeof(Resource))]
+        [UIHint(MultiLineText)]
         public string ContentAsString
         {
             get
@@ -100,7 +102,7 @@
             }
         }
 
-        [Display(Name = "File_submission", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.File_submission), ResourceType = typeof(Resource))]
         [ScaffoldColumn(false)]
         public HttpPostedFileBase FileSubmission
         {

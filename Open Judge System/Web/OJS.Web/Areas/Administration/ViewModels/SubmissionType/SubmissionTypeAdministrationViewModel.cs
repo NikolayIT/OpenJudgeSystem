@@ -11,6 +11,8 @@
     using OJS.Common.Models;
     using OJS.Data.Models;
 
+    using static OJS.Common.Constants.EditorTemplateConstants;
+
     using Resource = Resources.Areas.Administration.SubmissionTypes.ViewModels.SubmissionTypeAdministration;
 
     public class SubmissionTypeAdministrationViewModel
@@ -42,50 +44,50 @@
         public int Id { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Name", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Name), ResourceType = typeof(Resource))]
         [Required(
             AllowEmptyStrings = false,
-            ErrorMessageResourceName = "Name_required",
+            ErrorMessageResourceName = nameof(Resource.Name_required),
             ErrorMessageResourceType = typeof(Resource))]
         [StringLength(
             GlobalConstants.SubmissionTypeNameMaxLength,
             MinimumLength = GlobalConstants.SubmissionTypeNameMinLength,
-            ErrorMessageResourceName = "Name_length",
+            ErrorMessageResourceName = nameof(Resource.Name_length),
             ErrorMessageResourceType = typeof(Resource))]
-        [UIHint("SingleLineText")]
+        [UIHint(SingleLineText)]
         public string Name { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Is_selected", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Is_selected), ResourceType = typeof(Resource))]
         public bool IsSelectedByDefault { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Execution_strategy_type", ResourceType = typeof(Resource))]
-        [UIHint("Enum")]
+        [Display(Name = nameof(Resource.Execution_strategy_type), ResourceType = typeof(Resource))]
+        [UIHint(EnumDropDown)]
         public ExecutionStrategyType ExecutionStrategyType { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Compiler_type", ResourceType = typeof(Resource))]
-        [UIHint("Enum")]
+        [Display(Name = nameof(Resource.Compiler_type), ResourceType = typeof(Resource))]
+        [UIHint(EnumDropDown)]
         public CompilerType CompilerType { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Additional_compiler_arguments", ResourceType = typeof(Resource))]
-        [UIHint("SingleLineText")]
+        [Display(Name = nameof(Resource.Additional_compiler_arguments), ResourceType = typeof(Resource))]
+        [UIHint(SingleLineText)]
         public string AdditionalCompilerArguments { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Description", ResourceType = typeof(Resource))]
-        [UIHint("MultiLineText")]
+        [Display(Name = nameof(Resource.Description), ResourceType = typeof(Resource))]
+        [UIHint(MultiLineText)]
         public string Description { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Allow_binary_files_upload", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Allow_binary_files_upload), ResourceType = typeof(Resource))]
         public bool AllowBinaryFilesUpload { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Allowed_file_extensions", ResourceType = typeof(Resource))]
-        [UIHint("SingleLineText")]
+        [Display(Name = nameof(Resource.Allowed_file_extensions), ResourceType = typeof(Resource))]
+        [UIHint(SingleLineText)]
         public string AllowedFileExtensions { get; set; }
 
         public SubmissionType GetEntityModel(SubmissionType model = null)

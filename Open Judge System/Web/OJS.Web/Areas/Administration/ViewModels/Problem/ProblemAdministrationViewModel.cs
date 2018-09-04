@@ -19,9 +19,10 @@
     using OJS.Web.Areas.Administration.ViewModels.ProblemResource;
     using OJS.Web.Areas.Administration.ViewModels.SubmissionType;
 
-    using Resources.Areas.Administration.Contests.ViewModels;
+    using static OJS.Common.Constants.EditorTemplateConstants;
 
     using Resource = Resources.Areas.Administration.Problems.ViewModels.DetailedProblem;
+    using SharedResource = Resources.Areas.Administration.Contests.ViewModels.ContestAdministration;
 
     public class ProblemAdministrationViewModel : AdministrationViewModel<Problem>
     {
@@ -62,74 +63,74 @@
         public int Id { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Name", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Name), ResourceType = typeof(Resource))]
         [Required(
             AllowEmptyStrings = false,
-            ErrorMessageResourceName = "Name_required",
+            ErrorMessageResourceName = nameof(Resource.Name_required),
             ErrorMessageResourceType = typeof(Resource))]
         [MaxLength(
             GlobalConstants.ProblemNameMaxLength,
-            ErrorMessageResourceName = "Name_length",
+            ErrorMessageResourceName = nameof(Resource.Name_length),
             ErrorMessageResourceType = typeof(Resource))]
         [DefaultValue(GlobalConstants.ProblemDefaultName)]
         public string Name { get; set; } = GlobalConstants.ProblemDefaultName;
 
         [DatabaseProperty]
-        [Display(Name = "Group_number", ResourceType = typeof(Resource))]
-        [UIHint("DropDownList")]
+        [Display(Name = nameof(Resource.Group_number), ResourceType = typeof(Resource))]
+        [UIHint(KendoDropDownList)]
         public int ProblemGroupId { get; set; }
 
         [ExcludeFromExcel]
-        [Display(Name = "Problem_group_type", ResourceType = typeof(Resource))]
-        [UIHint("DropDownListCustom")]
+        [Display(Name = nameof(Resource.Problem_group_type), ResourceType = typeof(Resource))]
+        [UIHint(KendoDropDownList)]
         public int? ProblemGroupType { get; set; }
 
         [HiddenInput(DisplayValue = false)]
-        [Display(Name = "Problem_group_type", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Problem_group_type), ResourceType = typeof(Resource))]
         public string ProblemGroupTypeName =>
             ((ProblemGroupType?)this.ProblemGroupType)?.GetDescription() ?? string.Empty;
 
-        [Display(Name = "Contest", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Contest), ResourceType = typeof(Resource))]
         public int ContestId { get; set; }
 
-        [Display(Name = "Contest", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Contest), ResourceType = typeof(Resource))]
         public string ContestName { get; set; }
 
-        [Display(Name = "Trial_tests", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Trial_tests), ResourceType = typeof(Resource))]
         public int TrialTests { get; set; }
 
-        [Display(Name = "Compete_tests", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Compete_tests), ResourceType = typeof(Resource))]
         public int CompeteTests { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Max_points", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Max_points), ResourceType = typeof(Resource))]
         [Required(
-            ErrorMessageResourceName = "Max_points_required",
+            ErrorMessageResourceName = nameof(Resource.Max_points_required),
             ErrorMessageResourceType = typeof(Resource))]
         [DefaultValue(GlobalConstants.ProblemDefaultMaximumPoints)]
         public short MaximumPoints { get; set; } = GlobalConstants.ProblemDefaultMaximumPoints;
 
         [DatabaseProperty]
-        [Display(Name = "Time_limit", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Time_limit), ResourceType = typeof(Resource))]
         [Required(
-            ErrorMessageResourceName = "Time_limit_required",
+            ErrorMessageResourceName = nameof(Resource.Time_limit_required),
             ErrorMessageResourceType = typeof(Resource))]
         [DefaultValue(GlobalConstants.ProblemDefaultTimeLimit)]
         public int TimeLimit { get; set; } = GlobalConstants.ProblemDefaultTimeLimit;
 
         [DatabaseProperty]
-        [Display(Name = "Memory_limit", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Memory_limit), ResourceType = typeof(Resource))]
         [Required(
-            ErrorMessageResourceName = "Memory_limit_required",
+            ErrorMessageResourceName = nameof(Resource.Memory_limit_required),
             ErrorMessageResourceType = typeof(Resource))]
         [DefaultValue(GlobalConstants.ProblemDefaultMemoryLimit)]
         public int MemoryLimit { get; set; } = GlobalConstants.ProblemDefaultMemoryLimit;
 
-        [Display(Name = "Checker", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Checker), ResourceType = typeof(Resource))]
         public string Checker { get; set; }
 
         [ExcludeFromExcel]
-        [UIHint("FileUpload")]
+        [UIHint(FileUpload)]
         public HttpPostedFileBase AdditionalFiles { get; set; }
 
         [ExcludeFromExcel]
@@ -139,9 +140,9 @@
         public bool HasAdditionalFiles { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Order", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Order), ResourceType = typeof(Resource))]
         [Required(
-            ErrorMessageResourceName = "Order_required",
+            ErrorMessageResourceName = nameof(Resource.Order_required),
             ErrorMessageResourceType = typeof(Resource))]
         [DefaultValue(0)]
         public int OrderBy { get; set; }
@@ -150,21 +151,21 @@
         public int ProblemGroupOrderBy { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Source_code_size_limit", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Source_code_size_limit), ResourceType = typeof(Resource))]
         [DefaultValue(GlobalConstants.ProblemDefaultSourceLimit)]
         public int? SourceCodeSizeLimit { get; set; } = GlobalConstants.ProblemDefaultSourceLimit;
 
         [DatabaseProperty]
-        [Display(Name = "Show_results", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Show_results), ResourceType = typeof(Resource))]
         [DefaultValue(GlobalConstants.ProblemDefaultShowResults)]
         public bool ShowResults { get; set; } = GlobalConstants.ProblemDefaultShowResults;
 
         [DatabaseProperty]
-        [Display(Name = "Show_detailed_feedback", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Show_detailed_feedback), ResourceType = typeof(Resource))]
         [DefaultValue(GlobalConstants.ProblemDefaultShowDetailedFeedback)]
         public bool ShowDetailedFeedback { get; set; } = GlobalConstants.ProblemDefaultShowDetailedFeedback;
 
-        [Display(Name = "Submision_types", ResourceType = typeof(ContestAdministration))]
+        [Display(Name = nameof(SharedResource.Submision_types), ResourceType = typeof(SharedResource))]
         [ExcludeFromExcel]
         public IList<SubmissionTypeViewModel> SubmissionTypes { get; set; } = new List<SubmissionTypeViewModel>();
 
@@ -175,8 +176,8 @@
         public IEnumerable<ProblemResourceViewModel> Resources { get; set; }
 
         [AllowHtml]
-        [Display(Name = "Solution_skeleton", ResourceType = typeof(Resource))]
-        [UIHint("MultiLineText")]
+        [Display(Name = nameof(Resource.Solution_skeleton), ResourceType = typeof(Resource))]
+        [UIHint(MultiLineText)]
         public string SolutionSkeleton
         {
             get => this.SolutionSkeletonData.Decompress();
@@ -201,7 +202,7 @@
         }
 
         [ExcludeFromExcel]
-        [UIHint("FileUpload")]
+        [UIHint(FileUpload)]
         public HttpPostedFileBase Tests { get; set; }
 
         [AllowHtml]

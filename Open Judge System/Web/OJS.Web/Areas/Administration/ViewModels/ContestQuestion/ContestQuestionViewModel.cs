@@ -7,10 +7,13 @@
     using System.Web.Mvc;
 
     using OJS.Common;
+    using OJS.Common.Constants;
     using OJS.Common.DataAnnotations;
     using OJS.Common.Models;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
+
+    using static OJS.Common.Constants.EditorTemplateConstants;
 
     using Resource = Resources.Areas.Administration.Contests.ViewModels.ContestQuestion;
 
@@ -47,36 +50,36 @@
         public int? ContestId { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Text", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Text), ResourceType = typeof(Resource))]
         [Required(
             AllowEmptyStrings = false,
-            ErrorMessageResourceName = "Text_required",
+            ErrorMessageResourceName = nameof(Resource.Text_required),
             ErrorMessageResourceType = typeof(Resource))]
         [StringLength(
             GlobalConstants.ContestQuestionMaxLength,
             MinimumLength = GlobalConstants.ContestQuestionMinLength,
-            ErrorMessageResourceName = "Text_length",
+            ErrorMessageResourceName = nameof(Resource.Text_length),
             ErrorMessageResourceType = typeof(Resource))]
-        [UIHint("SingleLineText")]
+        [UIHint(SingleLineText)]
         public string Text { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Question_type", ResourceType = typeof(Resource))]
-        [UIHint("ContestQuestionType")]
+        [Display(Name = nameof(Resource.Question_type), ResourceType = typeof(Resource))]
+        [UIHint(EditorTemplateConstants.ContestQuestionType)]
         public ContestQuestionType Type { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Regex_validation", ResourceType = typeof(Resource))]
-        [UIHint("SingleLineText")]
+        [Display(Name = nameof(Resource.Regex_validation), ResourceType = typeof(Resource))]
+        [UIHint(SingleLineText)]
         public string RegularExpressionValidation { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Ask_in_contest", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Ask_in_contest), ResourceType = typeof(Resource))]
         [DefaultValue(true)]
         public bool AskOfficialParticipants { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Ask_in_practice", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Ask_in_practice), ResourceType = typeof(Resource))]
         [DefaultValue(true)]
         public bool AskPracticeParticipants { get; set; }
     }

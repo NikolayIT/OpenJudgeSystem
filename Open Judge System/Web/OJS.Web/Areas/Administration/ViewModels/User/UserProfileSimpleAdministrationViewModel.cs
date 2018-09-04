@@ -9,6 +9,8 @@
     using OJS.Common.DataAnnotations;
     using OJS.Data.Models;
 
+    using static OJS.Common.Constants.EditorTemplateConstants;
+
     using Resource = Resources.Areas.Administration.Users.ViewModels.UserProfileAdministration;
 
     public class UserProfileSimpleAdministrationViewModel
@@ -28,30 +30,30 @@
         [HiddenInput(DisplayValue = false)]
         public string UserId { get; set; }
 
-        [Display(Name = "UserName", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.UserName), ResourceType = typeof(Resource))]
         [Required(
-            ErrorMessageResourceName = "Username_required",
+            ErrorMessageResourceName = nameof(Resource.Username_required),
             ErrorMessageResourceType = typeof(Resource))]
         public string Username { get; set; }
 
         [DataType(DataType.EmailAddress)]
-        [UIHint("SingleLineText")]
+        [UIHint(SingleLineText)]
         public string Email { get; set; }
 
-        [Display(Name = "First_name", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.First_name), ResourceType = typeof(Resource))]
         [LocalizedDisplayFormat(
-            NullDisplayTextResourceName = "Null_display_text",
+            NullDisplayTextResourceName = nameof(Resource.Null_display_text),
             NullDisplayTextResourceType = typeof(Resource),
             ConvertEmptyStringToNull = true)]
-        [UIHint("SingleLineText")]
+        [UIHint(SingleLineText)]
         public string FirstName { get; set; }
 
-        [Display(Name = "Last_name", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Last_name), ResourceType = typeof(Resource))]
         [LocalizedDisplayFormat(
-            NullDisplayTextResourceName = "Null_display_text",
+            NullDisplayTextResourceName = nameof(Resource.Null_display_text),
             NullDisplayTextResourceType = typeof(Resource),
             ConvertEmptyStringToNull = true)]
-        [UIHint("SingleLineText")]
+        [UIHint(SingleLineText)]
         public string LastName { get; set; }
     }
 }

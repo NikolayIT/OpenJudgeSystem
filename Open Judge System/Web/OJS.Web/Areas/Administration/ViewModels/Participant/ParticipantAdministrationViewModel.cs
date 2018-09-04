@@ -9,6 +9,8 @@
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
 
+    using static OJS.Common.Constants.EditorTemplateConstants;
+
     using Resource = Resources.Areas.Administration.Participants.ViewModels.ParticipantViewModels;
 
     public class ParticipantAdministrationViewModel : AdministrationViewModel<Participant>
@@ -35,39 +37,39 @@
         public int Id { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Contest", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Contest), ResourceType = typeof(Resource))]
         [Required(
-            ErrorMessageResourceName = "Contest_required",
+            ErrorMessageResourceName = nameof(Resource.Contest_required),
             ErrorMessageResourceType = typeof(Resource))]
-        [UIHint("ContestsComboBox")]
+        [UIHint(ContestsComboBox)]
         public int ContestId { get; set; }
 
-        [Display(Name = "Contest_name", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Contest_name), ResourceType = typeof(Resource))]
         [HiddenInput(DisplayValue = false)]
         public string ContestName { get; set; }
 
-        [Display(Name = "Participation_start_time", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Participation_start_time), ResourceType = typeof(Resource))]
         [HiddenInput(DisplayValue = false)]
         public DateTime? ParticipationStartTime { get; set; }
 
-        [Display(Name = "Participation_end_time", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Participation_end_time), ResourceType = typeof(Resource))]
         [HiddenInput(DisplayValue = false)]
         public DateTime? ParticipationEndTime { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "User", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.User), ResourceType = typeof(Resource))]
         [Required(
-            ErrorMessageResourceName = "User_required",
+            ErrorMessageResourceName = nameof(Resource.User_required),
             ErrorMessageResourceType = typeof(Resource))]
-        [UIHint("UsersComboBox")]
+        [UIHint(UsersComboBox)]
         public string UserId { get; set; }
 
-        [Display(Name = "UserName", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.UserName), ResourceType = typeof(Resource))]
         [HiddenInput(DisplayValue = false)]
         public string UserName { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Is_official", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Is_official), ResourceType = typeof(Resource))]
         public bool IsOfficial { get; set; }
     }
 }
