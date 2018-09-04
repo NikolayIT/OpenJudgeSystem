@@ -1,5 +1,6 @@
 ﻿namespace OJS.Workers.LocalWorker
 {
+    using System;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.IO;
@@ -9,6 +10,8 @@
     using log4net;
 
     using OJS.Common;
+    using OJS.Common.Helpers;
+    using OJS.Common.Models;
     using OJS.Services.Business.SubmissionsForProcessing;
     using OJS.Workers.Common;
 
@@ -44,6 +47,8 @@
 
             this.StartThreads(this.threads);
 
+            this.TryStartMonitoringService();
+
             logger.Info("LocalWorkerService started.");
         }
 
@@ -72,7 +77,8 @@
                 var job = new SubmissionJob(
                     $"Job №{i}",
                     submissionsForProcessing,
-                    sharedLockObject);
+                    sharedLockObject,
+                    Settings.GanacheCliDefaultPort + i);
 
                 var thread = new Thread(job.Start) { Name = $"Thread №{i}" };
 
@@ -121,6 +127,36 @@
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
+            }
+        }
+
+        private void TryStartMonitoringService()
+        {
+            const string monitoringServiceName = Constants.LocalWorkerMonitoringServiceName;
+
+            try
+            {
+                var serviceState = ServicesHelper.GetServiceState(monitoringServiceName);
+                if (serviceState.Equals(ServiceState.Running))
+                {
+                    logger.Info($"{monitoringServiceName} is running.");
+                    return;
+                }
+
+                logger.Info($"Attempting to start the {monitoringServiceName}...");
+
+                if (serviceState.Equals(ServiceState.NotFound))
+                {
+                    ServicesHelper.InstallService(monitoringServiceName, Settings.MonitoringServiceExecutablePath);
+                }
+
+                ServicesHelper.StartService(monitoringServiceName);
+
+                logger.Info($"{monitoringServiceName} started successfully.");
+            }
+            catch (Exception ex)
+            {
+                logger.Error($"An exception was thrown while attempting to start the {monitoringServiceName}", ex);
             }
         }
     }

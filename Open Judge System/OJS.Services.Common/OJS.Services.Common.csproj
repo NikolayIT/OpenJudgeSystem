@@ -49,6 +49,9 @@
     <Reference Include="Hangfire.Core, Version=1.6.15.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Hangfire.Core.1.6.15\lib\net45\Hangfire.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Kendo.Mvc">
+      <HintPath>..\External Libraries\Kendo.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.0.0\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
     </Reference>
@@ -89,6 +92,8 @@
   <ItemGroup>
     <Compile Include="BackgroundJobs\IHangfireBackgroundJobService.cs" />
     <Compile Include="BackgroundJobs\HangfireBackgroundJobService.cs" />
+    <Compile Include="Emails\IEmailSenderService.cs" />
+    <Compile Include="Emails\EmailSenderService.cs" />
     <Compile Include="HttpRequester\Models\Users\ExternalUserInfoModel.cs" />
     <Compile Include="IService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -108,5 +113,6 @@
       <Name>OJS.Data.Models</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1862,6 +1862,7 @@
     <Compile Include="Infrastructure\SimpleInjectorPackages\ActionFiltersPackage.cs" />
     <Compile Include="Infrastructure\SimpleInjectorPackages\DataPackage.cs" />
     <Compile Include="Infrastructure\SimpleInjectorPackages\ServicesPackage.cs" />
+    <Compile Include="Infrastructure\SimpleInjectorPackages\ToolsPackage.cs" />
     <Compile Include="ViewModels\Account\ChangeUsernameViewModel.cs" />
     <Compile Include="Areas\Users\ViewModels\UserParticipationViewModel.cs" />
     <Compile Include="Areas\Users\ViewModels\UserSettingsViewModel.cs" />
@@ -4002,6 +4003,10 @@
     <ProjectReference Include="..\..\OJS.Services\OJS.Services.csproj">
       <Project>{44659a90-f81e-4007-8729-c37f4f650a81}</Project>
       <Name>OJS.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Workers\OJS.Workers.Compilers\OJS.Workers.Compilers.csproj">
+      <Project>{8570183B-9D7A-408D-9EA6-F86F59B05A10}</Project>
+      <Name>OJS.Workers.Compilers</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Workers\OJS.Workers.Tools\OJS.Workers.Tools.csproj">
       <Project>{a1f48412-495a-434c-bdd0-e70aedad6897}</Project>

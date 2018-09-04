@@ -142,6 +142,7 @@ class _$SandboxSecurityManager extends SecurityManager {
                     permission.getName().equals(""accessSystemModules"") ||
                     permission.getName().startsWith(""accessClassInPackage.sun."") ||
                     permission.getName().equals(""accessDeclaredMembers"") ||
+                    permission.getName().equals(""accessClassInPackage.jdk.internal.reflect"") ||
                     permission.getName().equals(""getProtectionDomain"") ||
                     permission.getName().equals(""localeServiceProvider"")) {
                 // Allow createClassLoader, getClassLoader, accessClassInPackage.sun,

@@ -126,7 +126,7 @@
             return result;
         }
 
-        protected(string csProjTemplate, string csProjPath) CreateNunitLiteConsoleApp(
+        protected (string csProjTemplate, string csProjPath) CreateNunitLiteConsoleApp(
             IEnumerable<string> projectsToTestCsProjPaths)
         {
             var consoleAppEntryPointPath =

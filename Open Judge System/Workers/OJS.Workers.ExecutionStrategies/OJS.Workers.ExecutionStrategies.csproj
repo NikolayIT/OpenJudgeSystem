@@ -91,6 +91,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BlockchainStrategies\GanacheCli.cs" />
+    <Compile Include="BlockchainStrategies\SolidityCompileDeployAndRunUnitTestsExecutionStrategy.cs" />
+    <Compile Include="BlockchainStrategies\TruffleProjectManager.cs" />
     <Compile Include="CPlusPlusCompileExecuteAndCheckExecutionStrategy.cs" />
     <Compile Include="CPlusPlusZipFileExecutionStrategy.cs" />
     <Compile Include="CheckOnlyExecutionStrategy.cs" />
@@ -171,7 +174,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
