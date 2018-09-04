@@ -130,8 +130,7 @@
                     .GetAllNonTrialByProblem(problem.Id)
                     .OrderByDescending(t => t.OrderBy)
                     .Select(t => t.OrderBy)
-                    .FirstOrDefault() + 1,
-                RetestProblem = true
+                    .FirstOrDefault() + 1
             };
 
             ImportAllTypesInTest(test);
