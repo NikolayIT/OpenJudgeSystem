@@ -97,7 +97,7 @@
 
             if (contest == null)
             {
-                return new ServiceResult<ICollection<string>>(SharedResource.Contest_does_not_exist);
+                return new ServiceResult<ICollection<string>>(SharedResource.Contest_not_found);
             }
 
             if (!contest.Duration.HasValue)

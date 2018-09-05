@@ -61,11 +61,11 @@ namespace Resources.Contests {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The contest does not exist!.
+        ///   Looks up a localized string similar to The contest cannot be found!.
         /// </summary>
-        public static string Contest_does_not_exist {
+        public static string Contest_not_found {
             get {
-                return ResourceManager.GetString("Contest_does_not_exist", resourceCulture);
+                return ResourceManager.GetString("Contest_not_found", resourceCulture);
             }
         }
     }
