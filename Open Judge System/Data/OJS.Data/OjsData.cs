@@ -28,8 +28,6 @@
 
         public IDeletableEntityRepository<Problem> Problems => this.GetDeletableEntityRepository<Problem>();
 
-        public ITestRepository Tests => (TestRepository)this.GetRepository<Test>();
-
         public IDeletableEntityRepository<Event> Events => this.GetDeletableEntityRepository<Event>();
 
         public IDeletableEntityRepository<ContestCategory> ContestCategories =>
@@ -54,8 +52,6 @@
         public IRepository<Ip> Ips => this.GetRepository<Ip>();
 
         public IRepository<AccessLog> AccessLogs => this.GetRepository<AccessLog>();
-
-        public ITestRunsRepository TestRuns => (TestRunsRepository)this.GetRepository<TestRun>();
 
         public IParticipantsRepository Participants => (ParticipantsRepository)this.GetRepository<Participant>();
 
@@ -104,16 +100,6 @@
                 if (typeof(T).IsAssignableFrom(typeof(Submission)))
                 {
                     type = typeof(SubmissionsRepository);
-                }
-
-                if (typeof(T).IsAssignableFrom(typeof(Test)))
-                {
-                    type = typeof(TestRepository);
-                }
-
-                if (typeof(T).IsAssignableFrom(typeof(TestRun)))
-                {
-                    type = typeof(TestRunsRepository);
                 }
 
                 if (typeof(T).IsAssignableFrom(typeof(UserProfile)))

@@ -116,8 +116,6 @@
     <Compile Include="Repositories\Contracts\IEfDeletableEntityRepository.cs" />
     <Compile Include="Repositories\Contracts\IEfGenericRepository.cs" />
     <Compile Include="Repositories\Contracts\ISubmissionsRepository.cs" />
-    <Compile Include="Repositories\Contracts\ITestRepository.cs" />
-    <Compile Include="Repositories\Contracts\ITestRunsRepository.cs" />
     <Compile Include="Repositories\Contracts\IUsersRepository.cs" />
     <Compile Include="OjsDbContext.cs" />
     <Compile Include="OjsData.cs" />
@@ -125,8 +123,6 @@
     <Compile Include="Repositories\Contracts\IParticipantsRepository.cs" />
     <Compile Include="Repositories\ParticipantsRepository.cs" />
     <Compile Include="Repositories\SubmissionsRepository.cs" />
-    <Compile Include="Repositories\TestRepository.cs" />
-    <Compile Include="Repositories\TestRunsRepository.cs" />
     <Compile Include="Repositories\UsersRepository.cs" />
   </ItemGroup>
   <ItemGroup>

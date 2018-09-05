@@ -15,6 +15,7 @@
     using OJS.Services.Business.ParticipantScores;
     using OJS.Services.Data.ParticipantScores;
     using OJS.Services.Data.SubmissionsForProcessing;
+    using OJS.Services.Data.TestRuns;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Common.Attributes;
     using OJS.Web.Common.Extensions;
@@ -34,6 +35,7 @@
         private readonly ISubmissionsForProcessingDataService submissionsForProcessingData;
         private readonly IParticipantScoresBusinessService participantScoresBusiness;
         private readonly IParticipantScoresDataService participantScoresData;
+        private readonly ITestRunsDataService testRunsData;
 
         private int? contestId;
 
@@ -41,12 +43,14 @@
             IOjsData data,
             ISubmissionsForProcessingDataService submissionsForProcessingData,
             IParticipantScoresBusinessService participantScoresBusiness,
-            IParticipantScoresDataService participantScoresData)
+            IParticipantScoresDataService participantScoresData,
+            ITestRunsDataService testRunsData)
             : base(data)
         {
             this.submissionsForProcessingData = submissionsForProcessingData;
             this.participantScoresBusiness = participantScoresBusiness;
             this.participantScoresData = participantScoresData;
+            this.testRunsData = testRunsData;
         }
 
         public override IEnumerable GetData()
@@ -310,7 +314,7 @@
 
             using (var scope = TransactionsHelper.CreateTransactionScope())
             {
-                this.Data.TestRuns.Delete(tr => tr.SubmissionId == id);
+                this.testRunsData.DeleteBySubmission(id);
 
                 this.Data.Submissions.Delete(id);
                 this.submissionsForProcessingData.RemoveBySubmission(submission.Id);
