@@ -53,8 +53,6 @@
 
         public IRepository<AccessLog> AccessLogs => this.GetRepository<AccessLog>();
 
-        public IParticipantsRepository Participants => (ParticipantsRepository)this.GetRepository<Participant>();
-
         public IDeletableEntityRepository<FeedbackReport> FeedbackReports =>
             this.GetDeletableEntityRepository<FeedbackReport>();
 
@@ -105,11 +103,6 @@
                 if (typeof(T).IsAssignableFrom(typeof(UserProfile)))
                 {
                     type = typeof(UsersRepository);
-                }
-
-                if (typeof(T).IsAssignableFrom(typeof(Participant)))
-                {
-                    type = typeof(ParticipantsRepository);
                 }
 
                 this.repositories.Add(typeof(T), Activator.CreateInstance(type, this.context));

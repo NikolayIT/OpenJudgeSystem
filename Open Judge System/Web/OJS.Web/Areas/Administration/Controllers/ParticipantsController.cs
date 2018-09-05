@@ -70,7 +70,7 @@
         [HttpPost]
         public ActionResult ReadParticipants([DataSourceRequest]DataSourceRequest request, int? id)
         {
-            if (id == null)
+            if (!id.HasValue)
             {
                 return this.Read(request);
             }
@@ -80,9 +80,8 @@
                 return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
             }
 
-            var participants = this.Data.Participants
-                .All()
-                .Where(p => p.ContestId == id)
+            var participants = this.participantsData
+                .GetAllByContest(id.Value)
                 .Select(ViewModelType.ViewModel);
 
             var serializationSettings = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
@@ -162,15 +161,17 @@
             return this.Json(answers.ToDataSourceResult(request));
         }
 
-        public JsonResult UpdateParticipantAnswer([DataSourceRequest]DataSourceRequest request, AnswerViewModelType model)
+        public JsonResult UpdateParticipantAnswer(
+            [DataSourceRequest]DataSourceRequest request,
+            AnswerViewModelType model)
         {
-            var participantAnswer = this.Data.Participants
+            var participantAnswer = this.participantsData
                 .GetById(model.ParticipantId)
                 .Answers
                 .First(a => a.ContestQuestionId == model.ContestQuestionId);
 
             participantAnswer.Answer = model.Answer;
-            participantAnswer.Participant = this.Data.Participants.GetById(model.ParticipantId);
+            participantAnswer.ParticipantId = this.participantsData.GetById(model.ParticipantId).Id;
             participantAnswer.ContestQuestion = this.Data.ContestQuestions.GetById(model.ContestQuestionId);
             this.Data.SaveChanges();
 

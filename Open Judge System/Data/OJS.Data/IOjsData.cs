@@ -32,8 +32,6 @@
 
         IRepository<IdentityRole> Roles { get; }
 
-        IParticipantsRepository Participants { get; }
-
         IRepository<Setting> Settings { get; }
 
         ISubmissionsRepository Submissions { get; }

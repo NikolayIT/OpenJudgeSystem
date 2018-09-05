@@ -13,6 +13,7 @@
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Services.Business.ParticipantScores;
+    using OJS.Services.Data.Participants;
     using OJS.Services.Data.ParticipantScores;
     using OJS.Services.Data.SubmissionsForProcessing;
     using OJS.Services.Data.TestRuns;
@@ -35,6 +36,7 @@
         private readonly ISubmissionsForProcessingDataService submissionsForProcessingData;
         private readonly IParticipantScoresBusinessService participantScoresBusiness;
         private readonly IParticipantScoresDataService participantScoresData;
+        private readonly IParticipantsDataService participantsData;
         private readonly ITestRunsDataService testRunsData;
 
         private int? contestId;
@@ -44,12 +46,14 @@
             ISubmissionsForProcessingDataService submissionsForProcessingData,
             IParticipantScoresBusinessService participantScoresBusiness,
             IParticipantScoresDataService participantScoresData,
+            IParticipantsDataService participantsData,
             ITestRunsDataService testRunsData)
             : base(data)
         {
             this.submissionsForProcessingData = submissionsForProcessingData;
             this.participantScoresBusiness = participantScoresBusiness;
             this.participantScoresData = participantScoresData;
+            this.participantsData = participantsData;
             this.testRunsData = testRunsData;
         }
 
@@ -531,7 +535,7 @@
         {
             var selectedProblem = this.Data.Problems.All().FirstOrDefault(pr => pr.Id == problem);
 
-            var dropDownData = this.Data.Participants.All().Where(part => part.ContestId == selectedProblem.ProblemGroup.ContestId);
+            var dropDownData = this.participantsData.GetAllByContest(selectedProblem.ProblemGroup.ContestId);
 
             if (!string.IsNullOrEmpty(text))
             {
@@ -582,7 +586,7 @@
         {
             if (participantId.HasValue)
             {
-                if (!this.Data.Participants.All().Any(participant => participant.Id == participantId.Value && participant.ContestId == contestId))
+                if (!this.participantsData.ExistsByIdAndContest(participantId.Value, contestId))
                 {
                     this.ModelState.AddModelError("ParticipantId", Resource.Invalid_task_for_participant);
                 }

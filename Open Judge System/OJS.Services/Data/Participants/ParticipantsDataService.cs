@@ -32,28 +32,39 @@
 
         public IQueryable<Participant> GetAll() => this.participants.All();
 
+        public IQueryable<Participant> GetAllByUser(string userId) =>
+            this.GetAll()
+                .Where(p => p.UserId == userId);
+
+        public IQueryable<Participant> GetAllByContest(int contestId) =>
+            this.GetAll()
+                .Where(p => p.ContestId == contestId);
+
         public IQueryable<Participant> GetByIdQuery(int id) =>
             this.GetAll()
                 .Where(p => p.Id == id);
+
+        public IQueryable<Participant> GetAllOfficialByContest(int contestId) =>
+            this.GetAllByContest(contestId)
+                .Where(p => p.IsOfficial);
 
         public IQueryable<Participant> GetAllOfficialInOnlineContestByContestAndContestStartTimeRange(
             int contestId,
             DateTime contestStartTimeRangeStart,
             DateTime contestStartTimeRangeEnd) =>
-            this.GetAll()
+            this.GetAllOfficialByContest(contestId)
                 .Where(p =>
                     p.ParticipationStartTime >= contestStartTimeRangeStart &&
                     p.ParticipationStartTime <= contestStartTimeRangeEnd &&
-                    p.ContestId == contestId &&
-                    p.IsOfficial &&
                     p.Contest.Type == ContestType.OnlinePracticalExam);
 
+        public bool ExistsByIdAndContest(int id, int contestId) =>
+            this.GetByIdQuery(id)
+                .Any(p => p.ContestId == contestId);
+
         public IQueryable<Participant> GetAllByContestAndIsOfficial(int contestId, bool isOfficial) =>
-            this.participants
-                .All()
-                .Where(p =>
-                    p.ContestId == contestId &&
-                    p.IsOfficial == isOfficial);
+            this.GetAllByContest(contestId)
+                .Where(p => p.IsOfficial == isOfficial);
 
         public bool ExistsByContestAndUser(int contestId, string userId) =>
             this.GetAllByContestAndUser(contestId, userId)
@@ -64,9 +75,7 @@
                 .Any();
 
         public bool IsOfficialById(int id) =>
-            this.participants
-                .All()
-                .Where(p => p.Id == id)
+            this.GetByIdQuery(id)
                 .Select(p => p.IsOfficial)
                 .FirstOrDefault();
 
@@ -105,9 +114,8 @@
                 });
 
         private IQueryable<Participant> GetAllByContestAndUser(int contestId, string userId) =>
-            this.participants
-                .All()
-                .Where(p => p.ContestId == contestId && p.UserId == userId);
+            this.GetAllByContest(contestId)
+                .Where(p => p.UserId == userId);
 
         private IQueryable<Participant> GetAllByContestByUserAndIsOfficial(
             int contestId,

@@ -13,6 +13,7 @@
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Services.Data.Contests;
+    using OJS.Services.Data.Participants;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.Models;
     using OJS.Web.Areas.Contests.Models;
@@ -22,11 +23,17 @@
     public class ContestsExportController : LecturerBaseController
     {
         private readonly IContestsDataService contestsData;
+        private readonly IParticipantsDataService participantsData;
 
         public ContestsExportController(
             IOjsData data,
-            IContestsDataService contestsData)
-            : base(data) => this.contestsData = contestsData;
+            IContestsDataService contestsData,
+            IParticipantsDataService participantsData)
+            : base(data)
+        {
+            this.contestsData = contestsData;
+            this.participantsData = participantsData;
+        }
 
         public ActionResult Solutions(int id, bool compete, SubmissionExportType exportType)
         {
@@ -174,9 +181,8 @@
 
         private IList<ParticipantModel> GetContestParticipants(int contestId, bool isOfficialContest)
         {
-            var participants = this.Data.Participants
-                .All()
-                .Where(x => x.ContestId == contestId && x.IsOfficial == isOfficialContest)
+            var participants = this.participantsData
+                .GetAllByContestAndIsOfficial(contestId, isOfficialContest)
                 .Select(ParticipantModel.Model)
                 .OrderBy(x => x.UserName)
                 .ToList();
