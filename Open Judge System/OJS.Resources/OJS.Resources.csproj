@@ -41,12 +41,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\Contests\ContestsGeneral.bg.Designer.cs">
+    <Compile Include="Contests\ContestsGeneral.bg.Designer.cs">
       <DependentUpon>ContestsGeneral.bg.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Common\Contests\ContestsGeneral.Designer.cs">
+    <Compile Include="Contests\ContestsGeneral.Designer.cs">
       <DependentUpon>ContestsGeneral.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -65,15 +65,15 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <EmbeddedResource Include="Common\Contests\ContestsGeneral.bg.resx">
+    <EmbeddedResource Include="Contests\ContestsGeneral.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ContestsGeneral.bg.Designer.cs</LastGenOutput>
-      <CustomToolNamespace>Resources.Common.Contests</CustomToolNamespace>
+      <CustomToolNamespace>Resources.Contests</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="Common\Contests\ContestsGeneral.resx">
+    <EmbeddedResource Include="Contests\ContestsGeneral.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ContestsGeneral.Designer.cs</LastGenOutput>
-      <CustomToolNamespace>Resources.Common.Contests</CustomToolNamespace>
+      <CustomToolNamespace>Resources.Contests</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="Services\Participants\ParticipantsBusiness.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
