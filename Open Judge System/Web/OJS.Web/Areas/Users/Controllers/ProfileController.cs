@@ -7,6 +7,7 @@
 
     using OJS.Data;
     using OJS.Services.Data.Participants;
+    using OJS.Services.Data.Users;
     using OJS.Web.Areas.Users.ViewModels;
     using OJS.Web.Controllers;
 
@@ -15,12 +16,17 @@
     public class ProfileController : BaseController
     {
         private readonly IParticipantsDataService participantsData;
+        private readonly IUsersDataService usersData;
 
         public ProfileController(
             IOjsData data,
-            IParticipantsDataService participantsData)
-            : base(data) =>
-                this.participantsData = participantsData;
+            IParticipantsDataService participantsData,
+            IUsersDataService usersData)
+            : base(data)
+        {
+            this.participantsData = participantsData;
+            this.usersData = usersData;
+        }
 
         public ActionResult Index(string id)
         {
@@ -29,7 +35,7 @@
                 id = this.User.Identity.Name;
             }
 
-            var profile = this.Data.Users.GetByUsername(id);
+            var profile = this.usersData.GetByUsername(id);
 
             if (profile == null)
             {
