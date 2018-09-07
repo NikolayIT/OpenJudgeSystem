@@ -127,19 +127,10 @@
                 setConfirmWindowHeaderPrefix();
 
                 var inputValue = timeInput.val();
-                var createdBeforeValue = $('#ParticipantsCreatedBeforeDateTime').val();
-                var createdAfterValue = $('#ParticipantsCreatedAfterDateTime').val();
-                var participantUsername = $('#UserId').data('kendoComboBox').text();
 
                 var action = $('#action');
-                var minutes = $('#minutes');
                 var preposition = $('#preposition');
-                var createdBefore = $('#createdBefore');
-                var createdAfter = $('#createdAfter');
-                var usernamePlaceholder = $('#username-placeholder');
-
-                var confirmPopUp = confirmWindow.find('#confirm-window-pop-up');
-                var headerStrongElements = confirmPopUp.find('h3 strong');
+                var headerStrongElements = confirmWindow.find('#confirm-window-pop-up h3 strong');
 
                 if (inputValue >= 0) {
                     action.text('@Resource.Add_are_you_sure');
@@ -151,10 +142,14 @@
                     preposition.text('@Resource.From');
                 }
 
-                createdBefore.text(createdBeforeValue);
-                createdAfter.text(createdAfterValue);
-                usernamePlaceholder.text(participantUsername);
-                minutes.text(Math.abs(inputValue));
+                var createdBeforeValue = $('#ParticipantsCreatedBeforeDateTime').val();
+                var createdAfterValue = $('#ParticipantsCreatedAfterDateTime').val();
+                var participantUsername = $('#UserId').data('kendoComboBox').text();
+
+                $('#createdBefore').text(createdBeforeValue);
+                $('#createdAfter').text(createdAfterValue);
+                $('#username-placeholder').text(participantUsername);
+                $('#minutes').text(Math.abs(inputValue));
 
                 confirmWindow.show();
                 changeTimeContainer.addClass('faded');
