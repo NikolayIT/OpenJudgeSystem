@@ -91,7 +91,7 @@
             DateTime participationStartTimeRangeStart,
             DateTime participationStartTimeRangeEnd)
         {
-            const string minute = "minute";
+            const string minuteParamName = "minute";
 
             var contest = this.contestsData.GetById(contestId);
 
@@ -114,8 +114,8 @@
                         participationStartTimeRangeStart,
                         participationStartTimeRangeEnd)
                     .Where(p =>
-                        SqlFunctions.DateAdd(minute, timeInMinutes, p.ParticipationEndTime) <
-                        SqlFunctions.DateAdd(minute, contestTotalDurationInMinutes, p.ParticipationStartTime))
+                        SqlFunctions.DateAdd(minuteParamName, timeInMinutes, p.ParticipationEndTime) <
+                        SqlFunctions.DateAdd(minuteParamName, contestTotalDurationInMinutes, p.ParticipationStartTime))
                     .Select(p => p.User.UserName)
                     .ToList();
 
@@ -128,12 +128,12 @@
             this.participantsData.Update(
                 participantsInTimeRange
                     .Where(p =>
-                        SqlFunctions.DateAdd(minute, timeInMinutes, p.ParticipationEndTime) >=
-                        SqlFunctions.DateAdd(minute, contestTotalDurationInMinutes, p.ParticipationStartTime)),
+                        SqlFunctions.DateAdd(minuteParamName, timeInMinutes, p.ParticipationEndTime) >=
+                        SqlFunctions.DateAdd(minuteParamName, contestTotalDurationInMinutes, p.ParticipationStartTime)),
                 p => new Participant
                 {
                     ParticipationEndTime = SqlFunctions.DateAdd(
-                        minute,
+                        minuteParamName,
                         timeInMinutes,
                         p.ParticipationEndTime)
                 });

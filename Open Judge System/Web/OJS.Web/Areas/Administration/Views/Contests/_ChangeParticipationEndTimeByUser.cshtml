@@ -4,11 +4,7 @@
 @model ChangeParticipationEndTimeByUserViewModel
 
 <div class="tab-pane" role="tabpanel" id="change-time-by-user">
-    @using (Html.BeginForm<ContestsController>(
-        c => c.ChangeParticipationEndTimeByUser((ChangeParticipationEndTimeByUserViewModel)null),
-        FormMethod.Post,
-        null,
-        new { id = "change-time-by-user-form" }))
+    @using (Html.BeginForm<ContestsController>(c => c.ChangeParticipationEndTimeByUser(null), FormMethod.Post))
     {
         @Html.AntiForgeryToken()
         @Html.HiddenFor(m => m.ContesId)

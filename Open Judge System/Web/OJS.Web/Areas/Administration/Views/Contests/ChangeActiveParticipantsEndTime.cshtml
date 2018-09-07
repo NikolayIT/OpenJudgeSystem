@@ -79,38 +79,66 @@
 
 @section Scripts{
     <script>
-        ($(function () {
-            var timeInput = $('#TimeInMinutes');
+        $(function () {
             var addButtonSelector = '#add-time-for-participants-btn';
             var subtractButtonSelector = '#subtract-time-for-participants-btn';
-            var buttons = [addButtonSelector, subtractButtonSelector];
+            var timeInput = $('#TimeInMinutes');
+            var changeTimeContainer = $('#change-time-container');
+            var confirmWindow = $('#confirm-window-pop-up-container');
+            var submitFormButton = $('#submit-form-button');
+            var changeTimeByInterval = $('#change-time-by-interval');
+            var changeTimeByUser = $('#change-time-by-user');
 
             showTabWithError();
             changeAddSubractButton(timeInput.val());
+
+            $([addButtonSelector, subtractButtonSelector].join(',')).click(setConfirmWindow);
+
+            submitFormButton.click(submitForm);
 
             timeInput.on('input', function () {
                 changeAddSubractButton(timeInput.val());
             });
 
-            $(buttons.join()).click(function () {
-                setConfirmWindowHeader();
+            $('#username-confirmation-input').on('input', function () {
+                var value = $(this).val();
+                var submitFormButtonState = value !== '@this.User.Identity.Name';
+                submitFormButton.attr('disabled', submitFormButtonState);
+            });
 
-                var changeTimeContainer = $('#change-time-container');
-                var confirmWindow = $('#confirm-window-pop-up-container');
-                var confirmPopUp = confirmWindow.find('#confirm-window-pop-up');
+            $('#cancel-btn-confirm-pop-up').click(function () {
+                confirmWindow.hide();
+                changeTimeContainer.removeClass('faded');
+            });
+
+            function submitForm() {
+                $('form input[name=TimeInMinutes]').val(timeInput.val());
+
+                var formContainer = changeTimeByInterval;
+
+                if (changeTimeByUser.is(':visible')) {
+                    formContainer = changeTimeByUser;
+                }
+
+                formContainer.find('form').submit();
+            }
+
+            function setConfirmWindow() {
+                setConfirmWindowHeaderPrefix();
 
                 var inputValue = timeInput.val();
                 var createdBeforeValue = $('#ParticipantsCreatedBeforeDateTime').val();
                 var createdAfterValue = $('#ParticipantsCreatedAfterDateTime').val();
                 var participantUsername = $('#UserId').data('kendoComboBox').text();
 
-                var submitFormButton = $('#submit-form-button');
                 var action = $('#action');
                 var minutes = $('#minutes');
                 var preposition = $('#preposition');
                 var createdBefore = $('#createdBefore');
                 var createdAfter = $('#createdAfter');
                 var usernamePlaceholder = $('#username-placeholder');
+
+                var confirmPopUp = confirmWindow.find('#confirm-window-pop-up');
                 var headerStrongElements = confirmPopUp.find('h3 strong');
 
                 if (inputValue >= 0) {
@@ -128,49 +156,20 @@
                 usernamePlaceholder.text(participantUsername);
                 minutes.text(Math.abs(inputValue));
 
-                $('#username-confirmation-input').on('input',
-                    function () {
-                        var value = $(this).val();
-                        if (value === '@this.User.Identity.Name') {
-                            submitFormButton.attr('disabled', false);
-                        } else {
-                            submitFormButton.attr('disabled', true);
-                        }
-                    });
-
                 confirmWindow.show();
-                changeTimeContainer.css('opacity', 0.3);
+                changeTimeContainer.addClass('faded');
+            }
 
-                submitFormButton.click(
-                    function () {
-                        $('form input[name=TimeInMinutes]').val(timeInput.val());
-  
-                        if ($('#change-time-by-interval').is(':visible')) {
-                            $('#change-time-by-interval-form').submit();
-                        } else if ($('#change-time-by-user').is(':visible')) {
-                            $('#change-time-by-user-form').submit();
-                        }
-                    });
-
-                $('#cancel-btn-confirm-pop-up').click(
-                    function () {
-                        confirmWindow.hide();
-                        changeTimeContainer.css('opacity', 1);
-                    });
-            });
-
-            function setConfirmWindowHeader() {
+            function setConfirmWindowHeaderPrefix() {
                 var confirmWindowHeader = $('#confirm-window-header');
                 var headerPrefix = '@Resource.Confirmation_message_header_prefix ';
-                var headerText = '';
+                var headerText = '@Resource.Confirmation_message_header_change_by_interval';
 
-                if ($('#change-time-by-interval').is(':visible')) {
-                    headerText = '@Resource.Confirmation_message_header_change_by_interval';
-                } else if ($('#change-time-by-user').is(':visible')) {
+                if (changeTimeByUser.is(':visible')) {
                     headerText = '@Resource.Confirmation_message_header_change_by_user';
                 }
 
-                var parser = new DOMParser;
+                var parser = new DOMParser();
                 var header = parser.parseFromString(headerPrefix + headerText, 'text/html');
 
                 confirmWindowHeader.html(header.body.textContent);
@@ -180,13 +179,11 @@
                 var addButton = $(addButtonSelector);
                 var subtractButton = $(subtractButtonSelector);
 
-                if (value >= 0) {
-                    addButton.removeClass('hidden');
-                    subtractButton.addClass('hidden');
-                } else if (value < 0) {
-                    addButton.addClass('hidden');
-                    subtractButton.removeClass('hidden');
-                }
+                var isSubtraction = value < 0;
+                var isAddition = !isSubtraction;
+
+                addButton.toggleClass('hidden', isSubtraction);
+                subtractButton.toggleClass('hidden', isAddition);
             }
 
             function showTabWithError() {
@@ -198,6 +195,6 @@
                     $('.nav-tabs a[href="#' + tabId + '"]').tab('show');
                 }
             }
-        }))
+        })
     </script>
 }

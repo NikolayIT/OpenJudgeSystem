@@ -616,20 +616,15 @@
             ICollection<string> notUpdatedParticipantUsernames)
         {
             var minutesForDisplay = timeInMinutes.ToString();
+            var formatString = Resource.Added_time_to_participants_online;
 
-            var sb = new StringBuilder();
+            if (timeInMinutes < 0)
+            {
+                formatString = Resource.Subtracted_time_from_participants_online;
+                minutesForDisplay = minutesForDisplay.Substring(1, minutesForDisplay.Length - 1);
+            }
 
-            var message = timeInMinutes >= 0
-                ? string.Format(
-                    Resource.Added_time_to_participants_online,
-                    minutesForDisplay,
-                    contestName)
-                : string.Format(
-                    Resource.Subtracted_time_from_participants_online,
-                    minutesForDisplay.Substring(1, minutesForDisplay.Length - 1),
-                    contestName);
-
-            sb.AppendLine(message);
+            var message = string.Format(formatString, minutesForDisplay, contestName);
 
             if (notUpdatedParticipantUsernames.Any())
             {
@@ -637,10 +632,10 @@
                     Resource.Failed_to_update_participants_duration,
                     string.Join(", ", notUpdatedParticipantUsernames));
 
-                sb.AppendLine(warningMessage);
+                message += Environment.NewLine + warningMessage;
             }
 
-            return sb.ToString();
+            return message;
         }
 
         private string GetMessageForChangedParticipantsEndTimeByUser(
@@ -650,17 +645,15 @@
         {
             var minutesForDisplay = timeInMinutes.ToString();
 
-            var message = timeInMinutes >= 0
-                ? string.Format(
-                    Resource.Added_time_to_single_participant_online,
-                    minutesForDisplay,
-                    username,
-                    contestName)
-                : string.Format(
-                    Resource.Subtracted_time_from_single_participant_online,
-                    minutesForDisplay.Substring(1, minutesForDisplay.Length - 1),
-                    username,
-                    contestName);
+            var formatString = Resource.Added_time_to_single_participant_online;
+
+            if (timeInMinutes < 0)
+            {
+                formatString = Resource.Subtracted_time_from_single_participant_online;
+                minutesForDisplay = minutesForDisplay.Substring(1, minutesForDisplay.Length - 1);
+            }
+
+            var message = string.Format(formatString, minutesForDisplay, username, contestName);
 
             return message;
         }
