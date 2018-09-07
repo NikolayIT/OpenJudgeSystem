@@ -83,12 +83,13 @@
             for (var i = 1; i <= Settings.ThreadsCount; i++)
             {
                 var job = new SubmissionJob<TSubmission>(
-                    $"Job №{i}",
+                    $"Job #{i}",
+                    this.DependencyContainer,
                     submissionsForProcessing,
                     Settings.GanacheCliDefaultPortNumber + i,
                     sharedLockObject);
 
-                var thread = new Thread(() => job.Start(this.DependencyContainer)) { Name = $"Thread №{i}" };
+                var thread = new Thread(job.Start) { Name = $"Thread #{i}" };
 
                 jobsToSpawn.Add(job);
                 threadsToSpawn.Add(thread);
