@@ -83,6 +83,7 @@
       <HintPath>..\packages\System.Net.Http.2.0.20126.16343\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -92,6 +93,8 @@
   <ItemGroup>
     <Compile Include="BackgroundJobs\IHangfireBackgroundJobService.cs" />
     <Compile Include="BackgroundJobs\HangfireBackgroundJobService.cs" />
+    <Compile Include="Cache\ICacheService.cs" />
+    <Compile Include="Cache\MemoryCacheService.cs" />
     <Compile Include="Emails\IEmailSenderService.cs" />
     <Compile Include="Emails\EmailSenderService.cs" />
     <Compile Include="HttpRequester\Models\Users\ExternalUserInfoModel.cs" />
