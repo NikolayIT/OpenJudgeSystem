@@ -165,13 +165,13 @@
             [DataSourceRequest]DataSourceRequest request,
             AnswerViewModelType model)
         {
-            var participantAnswer = this.participantsData
-                .GetById(model.ParticipantId)
-                .Answers
+            var participant = this.participantsData.GetById(model.ParticipantId);
+
+            var participantAnswer = participant.Answers
                 .First(a => a.ContestQuestionId == model.ContestQuestionId);
 
             participantAnswer.Answer = model.Answer;
-            participantAnswer.ParticipantId = this.participantsData.GetById(model.ParticipantId).Id;
+            participantAnswer.ParticipantId = participant.Id;
             participantAnswer.ContestQuestion = this.Data.ContestQuestions.GetById(model.ContestQuestionId);
             this.Data.SaveChanges();
 
