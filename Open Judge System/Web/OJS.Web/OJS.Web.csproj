@@ -1852,6 +1852,8 @@
     <Compile Include="Controllers\TempController.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
     <Compile Include="Infrastructure\Filters\ActionFilterDispatcher.cs" />
+    <Compile Include="Infrastructure\Filters\Attributes\ClearMainContestCategoriesCacheAttribute.cs" />
+    <Compile Include="Infrastructure\Filters\ClearMainContestCategoriesCacheFilter.cs" />
     <Compile Include="Infrastructure\Filters\Attributes\LogAccessAttribute.cs" />
     <Compile Include="Infrastructure\Filters\Attributes\PopulateMainContestCategoriesIntoViewBagAttribute.cs" />
     <Compile Include="Infrastructure\Filters\Attributes\ValidateRemoteDataApiKeyAttribute.cs" />
