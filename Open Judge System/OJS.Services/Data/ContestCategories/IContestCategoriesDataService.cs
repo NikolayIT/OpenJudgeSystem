@@ -9,8 +9,6 @@
     {
         IQueryable<ContestCategory> GetAllVisible();
 
-        IQueryable<ContestCategory> GetVisibleByIdQuery(int id);
-
         IQueryable<ContestCategory> GetAllVisibleByLecturer(string lecturerId);
 
         string GetNameById(int id);

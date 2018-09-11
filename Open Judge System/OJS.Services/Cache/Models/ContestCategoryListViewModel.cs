@@ -1,9 +1,8 @@
-﻿namespace OJS.Web.Areas.Contests.ViewModels.Contests
+﻿namespace OJS.Services.Cache.Models
 {
     using System;
     using System.Linq;
     using System.Linq.Expressions;
-
     using OJS.Common.Extensions;
     using OJS.Data.Models;
 
