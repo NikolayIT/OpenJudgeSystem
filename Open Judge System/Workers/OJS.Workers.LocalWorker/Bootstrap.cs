@@ -14,16 +14,18 @@
     using OJS.Services.Common;
     using OJS.Services.Common.BackgroundJobs;
     using OJS.Services.Data.SubmissionsForProcessing;
+    using OJS.Workers.Common;
     using OJS.Workers.Compilers;
+    using OJS.Workers.Jobs;
 
     using SimpleInjector;
     using SimpleInjector.Lifestyles;
 
     internal class Bootstrap
     {
-        public static Container Container;
+        public static SimpleInjectorContainer Container { get; private set; }
 
-        public static void Start(Container container)
+        public static void Start(SimpleInjectorContainer container)
         {
             container.Options.DefaultScopedLifestyle = new ThreadScopedLifestyle();
 
@@ -36,11 +38,14 @@
 
         private static void RegisterTypes(Container container)
         {
-            container.Register<LocalWorkerService>(Lifestyle.Scoped);
             container.Register<OjsDbContext>(Lifestyle.Scoped);
             container.Register<ArchivesDbContext>(Lifestyle.Scoped);
-
             container.Register<DbContext>(container.GetInstance<OjsDbContext>, Lifestyle.Scoped);
+
+            container.Register(
+                typeof(IJobStrategy<>),
+                typeof(SubmissionJobStrategy),
+                Lifestyle.Scoped);
 
             container.Register(
                 typeof(IEfGenericRepository<>),
