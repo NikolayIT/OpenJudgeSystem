@@ -25,10 +25,11 @@
             int? categoryId,
             int? cacheSeconds = null)
         {
-            return this.cache.Get(
-                string.Format(CacheConstants.ContestCategoriesTreeFormat, categoryId),
-                GetSubCategories,
-                cacheSeconds);
+            var cacheId = categoryId.HasValue
+                ? string.Format(CacheConstants.ContestCategoriesTreeFormat, categoryId.Value)
+                : CacheConstants.ContestCategoriesTree;
+
+            return this.cache.Get(cacheId, GetSubCategories, cacheSeconds);
 
             IEnumerable<ContestCategoryListViewModel> GetSubCategories() =>
                 this.contestCategoriesData

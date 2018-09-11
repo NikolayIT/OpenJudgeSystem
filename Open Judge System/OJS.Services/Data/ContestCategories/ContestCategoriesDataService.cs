@@ -12,6 +12,8 @@
         public ContestCategoriesDataService(IEfDeletableEntityRepository<ContestCategory> contestCategories) =>
             this.contestCategories = contestCategories;
 
+        public ContestCategory GetById(int id) => this.contestCategories.GetById(id);
+
         public IQueryable<ContestCategory> GetAllVisible() =>
             this.contestCategories
                 .All()

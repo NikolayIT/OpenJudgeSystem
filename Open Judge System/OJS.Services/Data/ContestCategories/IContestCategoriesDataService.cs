@@ -7,6 +7,8 @@
 
     public interface IContestCategoriesDataService : IService
     {
+        ContestCategory GetById(int id);
+
         IQueryable<ContestCategory> GetAllVisible();
 
         IQueryable<ContestCategory> GetAllVisibleByLecturer(string lecturerId);

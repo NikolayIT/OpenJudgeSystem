@@ -101,6 +101,7 @@
     <Compile Include="Business\Submissions\Models\ParticipantScoreModel.cs" />
     <Compile Include="Business\Submissions\SubmissionsBusinessService.cs" />
     <Compile Include="Cache\CacheItemsProviderService.cs" />
+    <Compile Include="Cache\Models\CategoryMenuItemViewModel.cs" />
     <Compile Include="Cache\Models\ContestCategoryListViewModel.cs" />
     <Compile Include="Data\Checkers\CheckersDataService.cs" />
     <Compile Include="Data\Checkers\ICheckersDataService.cs" />
