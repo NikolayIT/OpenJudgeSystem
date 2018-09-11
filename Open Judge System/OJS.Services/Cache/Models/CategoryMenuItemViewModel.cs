@@ -1,4 +1,4 @@
-﻿namespace OJS.Web.ViewModels
+﻿namespace OJS.Services.Cache.Models
 {
     using System;
     using System.Linq.Expressions;

@@ -1,29 +1,18 @@
 ﻿namespace OJS.Web.Infrastructure.Filters
 {
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Web.Mvc;
 
-    using OJS.Common.Constants;
-    using OJS.Services.Common.Cache;
-    using OJS.Services.Data.ContestCategories;
+    using OJS.Services.Cache;
     using OJS.Web.Infrastructure.Filters.Attributes;
     using OJS.Web.Infrastructure.Filters.Contracts;
-    using OJS.Web.ViewModels;
 
     public class PopulateMainContestCategoriesIntoViewBagFilter
         : IActionFilter<PopulateMainContestCategoriesIntoViewBagAttribute>
     {
-        private readonly IContestCategoriesDataService contestCategoeriesData;
-        private readonly ICacheService cache;
+        private readonly ICacheItemsProviderService cacheItems;
 
-        public PopulateMainContestCategoriesIntoViewBagFilter(
-            IContestCategoriesDataService contestCategoeriesData,
-            ICacheService cache)
-        {
-            this.contestCategoeriesData = contestCategoeriesData;
-            this.cache = cache;
-        }
+        public PopulateMainContestCategoriesIntoViewBagFilter(ICacheItemsProviderService cacheItems) =>
+            this.cacheItems = cacheItems;
 
         public void OnActionExecuting(
             PopulateMainContestCategoriesIntoViewBagAttribute attribute,
@@ -45,19 +34,9 @@
                 return;
             }
 
-            var mainContestCategories = this.cache.Get(
-                CacheConstants.MainContestCategoriesDropDown,
-                this.GetMainContestCategoeriesDropDown);
+            var mainContestCategories = this.cacheItems.GetMainContestCategoeries();
 
             viewResult.ViewBag.MainCategories = mainContestCategories;
         }
-
-        private IEnumerable<CategoryMenuItemViewModel> GetMainContestCategoeriesDropDown() =>
-            this.contestCategoeriesData
-                .GetAllVisible()
-                .Where(x => !x.ParentId.HasValue)
-                .OrderBy(x => x.OrderBy)
-                .Select(CategoryMenuItemViewModel.FromCategory)
-                .ToList();
     }
 }
