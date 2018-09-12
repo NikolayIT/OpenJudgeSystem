@@ -56,20 +56,7 @@
                 throw new HttpException((int)HttpStatusCode.NotFound, Resource.Test_not_found_message);
             }
 
-            var hasPermissions = this.CheckIfUserHasProblemPermissions(testInfo.ProblemId);
-            var isParticipant = this.participantsData
-                .ExistsByContestAndUser(testInfo.ContestId, this.UserProfile.Id);
-                
-            var isUnofficialSubmission = !this.submissionsData.IsOfficialById(submissionId);
-
-            var shouldDisplayDetailedTestInfo = hasPermissions ||
-                ((testInfo.IsTrialTest ||
-                    testInfo.ShowDetailedFeedback ||
-                    testInfo.IsOpenTest) &&
-                    isParticipant) ||
-                (testInfo.AutoChangeTestsFeedbackVisibility && isUnofficialSubmission);
-
-            if (!shouldDisplayDetailedTestInfo)
+            if (!ShouldDisplayDetailedTestInfo())
             {
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.No_rights_message);
             }
@@ -81,6 +68,23 @@
             };
 
             return this.PartialView("_GetInputDataPartial", inputDataViewModel);
+
+            bool ShouldDisplayDetailedTestInfo()
+            {
+                var userHasProblemPermissions = this.CheckIfUserHasProblemPermissions(testInfo.ProblemId);
+
+                var userIsParticipant = this.participantsData
+                    .ExistsByContestAndUser(testInfo.ContestId, this.UserProfile.Id);
+
+                var userHasTestPermissions = userIsParticipant &&
+                    (testInfo.IsTrialTest || testInfo.ShowDetailedFeedback || testInfo.IsOpenTest);
+
+                var isUnofficialSubmission = !this.submissionsData.IsOfficialById(submissionId);
+
+                var testIsOpenForEveryone = testInfo.AutoChangeTestsFeedbackVisibility && isUnofficialSubmission;
+
+                return userHasProblemPermissions || userHasTestPermissions || testIsOpenForEveryone;
+            }
         }
     }
 }

@@ -52,11 +52,11 @@
             int contestId,
             DateTime contestStartTimeRangeStart,
             DateTime contestStartTimeRangeEnd) =>
-            this.GetAllOfficialByContest(contestId)
-                .Where(p =>
-                    p.ParticipationStartTime >= contestStartTimeRangeStart &&
-                    p.ParticipationStartTime <= contestStartTimeRangeEnd &&
-                    p.Contest.Type == ContestType.OnlinePracticalExam);
+                this.GetAllOfficialByContest(contestId)
+                    .Where(p =>
+                        p.ParticipationStartTime >= contestStartTimeRangeStart &&
+                        p.ParticipationStartTime <= contestStartTimeRangeEnd &&
+                        p.Contest.Type == ContestType.OnlinePracticalExam);
 
         public bool ExistsByIdAndContest(int id, int contestId) =>
             this.GetByIdQuery(id)
