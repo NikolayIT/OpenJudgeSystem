@@ -42,7 +42,8 @@
         public ActionResult Index() => this.View();
 
         [HttpPost]
-        [ClearContestCategoriesCache]
+        [ClearMainContestCategoriesCache]
+        [ClearContestCategoryCache(queryKeyForCategoryId: nameof(ViewModelType.Id))]
         public ActionResult Create([DataSourceRequest]DataSourceRequest request, ViewModelType model)
         {
             var databaseModel = model.GetEntityModel();
@@ -52,7 +53,8 @@
         }
 
         [HttpPost]
-        [ClearContestCategoriesCache]
+        [ClearMainContestCategoriesCache]
+        [ClearContestCategoryCache(queryKeyForCategoryId: nameof(ViewModelType.Id))]
         public ActionResult Update([DataSourceRequest]DataSourceRequest request, ViewModelType model)
         {
             var entity = this.GetById(model.Id) as DatabaseModelType;
@@ -62,7 +64,8 @@
         }
 
         [HttpPost]
-        [ClearContestCategoriesCache]
+        [ClearMainContestCategoriesCache]
+        [ClearContestCategoryCache(queryKeyForCategoryId: nameof(ViewModelType.Id))]
         public ActionResult Destroy([DataSourceRequest]DataSourceRequest request, ViewModelType model)
         {
             var contest = this.Data.ContestCategories.GetById(model.Id.Value);
@@ -84,7 +87,8 @@
             return this.Json(categories, JsonRequestBehavior.AllowGet);
         }
 
-        [ClearContestCategoriesCache]
+        [ClearMainContestCategoriesCache]
+        [ClearMovedContestCategoryCache("id", "to")]
         public void MoveCategory(int id, int? to)
         {
             if (id != to)

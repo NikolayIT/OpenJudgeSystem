@@ -1851,11 +1851,15 @@
     <Compile Include="Controllers\TempController.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
     <Compile Include="Infrastructure\Filters\ActionFilterDispatcher.cs" />
-    <Compile Include="Infrastructure\Filters\Attributes\ClearContestCategoriesCacheAttribute.cs" />
-    <Compile Include="Infrastructure\Filters\ClearContestCategoriesCacheFilter.cs" />
+    <Compile Include="Infrastructure\Filters\Attributes\ClearMainContestCategoriesCacheAttribute.cs" />
+    <Compile Include="Infrastructure\Filters\Attributes\ClearContestCategoryCacheAttribute.cs" />
+    <Compile Include="Infrastructure\Filters\Attributes\ClearMovedContestCategoryCacheAttribute.cs" />
+    <Compile Include="Infrastructure\Filters\ClearMainContestCategoriesCacheFilter.cs" />
     <Compile Include="Infrastructure\Filters\Attributes\LogAccessAttribute.cs" />
     <Compile Include="Infrastructure\Filters\Attributes\PopulateMainContestCategoriesIntoViewBagAttribute.cs" />
     <Compile Include="Infrastructure\Filters\Attributes\ValidateRemoteDataApiKeyAttribute.cs" />
+    <Compile Include="Infrastructure\Filters\ClearContestCategoryCacheFilter.cs" />
+    <Compile Include="Infrastructure\Filters\ClearMovedContestCategoryCacheFilter.cs" />
     <Compile Include="Infrastructure\Filters\Contracts\IActionFilter.cs" />
     <Compile Include="Infrastructure\Filters\LogAccessFilter.cs" />
     <Compile Include="Infrastructure\Filters\PopulateMainContestCategoriesIntoViewBagFilter.cs" />

@@ -23,10 +23,10 @@
 
         public IEnumerable<ContestCategoryListViewModel> GetContestSubCategoriesList(
             int? categoryId,
-            int? cacheSeconds = null)
+            int? cacheSeconds)
         {
             var cacheId = categoryId.HasValue
-                ? string.Format(CacheConstants.ContestCategoriesTreeFormat, categoryId.Value)
+                ? string.Format(CacheConstants.ContestSubCategoriesFormat, categoryId.Value)
                 : CacheConstants.ContestCategoriesTree;
 
             return this.cache.Get(cacheId, GetSubCategories, cacheSeconds);
@@ -40,7 +40,7 @@
                     .ToList();
         }
 
-        public IEnumerable<CategoryMenuItemViewModel> GetMainContestCategoeries(int? cacheSeconds = null) =>
+        public IEnumerable<CategoryMenuItemViewModel> GetMainContestCategoeries(int? cacheSeconds) =>
             this.cache.Get(
                 string.Format(CacheConstants.MainContestCategoriesDropDown),
                 () =>
@@ -53,10 +53,36 @@
                 cacheSeconds);
             
 
-        public string GetContestCategoryName(int categoryId, int? cacheSeconds = null) =>
+        public string GetContestCategoryName(int categoryId, int? cacheSeconds) =>
             this.cache.Get(
                 string.Format(CacheConstants.ContestCategoryNameFormat, categoryId),
                 () => this.contestCategoriesData.GetNameById(categoryId),
                 cacheSeconds);
+
+        public void ClearContestCategory(int categoryId)
+        {
+            var contestCategory = this.contestCategoriesData.GetById(categoryId);
+
+            if (contestCategory == null)
+            {
+                return;
+            }
+
+            while (contestCategory != null)
+            {
+                var categoryNamecacheId = string.Format(
+                    CacheConstants.ContestCategoryNameFormat,
+                    contestCategory.Id);
+
+                var subCategoriesCacheId = string.Format(
+                    CacheConstants.ContestSubCategoriesFormat,
+                    contestCategory.Id);
+
+                this.cache.Remove(categoryNamecacheId);
+                this.cache.Remove(subCategoriesCacheId);
+
+                contestCategory = contestCategory.Parent;
+            }
+        }
     }
 }

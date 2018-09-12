@@ -3,7 +3,7 @@
     using System;
 
     [AttributeUsage(AttributeTargets.Method)]
-    public class ClearContestCategoriesCacheAttribute : Attribute
+    public class ClearMainContestCategoriesCacheAttribute : Attribute
     {
     }
 }
