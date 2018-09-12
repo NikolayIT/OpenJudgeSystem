@@ -1,4 +1,4 @@
-﻿namespace OJS.Common.Extensions
+﻿namespace OJS.Workers.Common.Helpers
 {
     using System;
     using System.Collections.Generic;

@@ -5,9 +5,8 @@
     using System.Linq;
     using System.Text;
 
-    using OJS.Common;
-    using OJS.Common.Extensions;
     using OJS.Workers.Common;
+    using OJS.Workers.Common.Helpers;
 
     public class MsBuildLibraryCompiler : Compiler
     {
@@ -21,7 +20,7 @@
         public override string ChangeOutputFileAfterCompilation(string outputFolder)
         {
             var compiledFileName = Path.GetFileNameWithoutExtension(this.InputFile);
-            compiledFileName = $"{compiledFileName}{GlobalConstants.ClassLibraryFileExtension}";
+            compiledFileName = $"{compiledFileName}{Constants.ClassLibraryFileExtension}";
             var newOutputFile = Directory
                 .EnumerateFiles(outputFolder)
                 .FirstOrDefault(x => x.EndsWith(compiledFileName));

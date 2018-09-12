@@ -1,4 +1,4 @@
-﻿namespace OJS.Common.Models
+﻿namespace OJS.Workers.Common.Models
 {
     public enum ServiceState
     {

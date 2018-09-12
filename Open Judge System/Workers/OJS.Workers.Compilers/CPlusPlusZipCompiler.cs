@@ -5,8 +5,8 @@
     using System.Linq;
     using System.Text;
 
-    using OJS.Common;
-    using OJS.Common.Extensions;
+    using OJS.Workers.Common;
+    using OJS.Workers.Common.Helpers;
 
     public class CPlusPlusZipCompiler : Compiler
     {
@@ -20,12 +20,12 @@
 
         public override string RenameInputFile(string inputFile)
         {
-            if (inputFile.EndsWith(GlobalConstants.ZipFileExtension, StringComparison.InvariantCultureIgnoreCase))
+            if (inputFile.EndsWith(Constants.ZipFileExtension, StringComparison.InvariantCultureIgnoreCase))
             {
                 return inputFile;
             }
 
-            return $"{inputFile}{GlobalConstants.ZipFileExtension}";
+            return $"{inputFile}{Constants.ZipFileExtension}";
         }
 
         public override string BuildCompilerArguments(string inputFile, string outputFile, string additionalArguments)

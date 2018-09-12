@@ -8,9 +8,10 @@
     using Ionic.Zip;
 
     using OJS.Common;
-    using OJS.Common.Extensions;
     using OJS.Data.Models;
     using OJS.Web.Common.Extensions;
+    using OJS.Workers.Common;
+    using OJS.Workers.Common.Helpers;
 
     public class ZippedTestsParser
     {
@@ -293,7 +294,7 @@
 
                 foreach (var entry in inputEntries)
                 {
-                    inputAsText.Append(GlobalConstants.ClassDelimiter);
+                    inputAsText.Append(Constants.ClassDelimiter);
                     inputAsText.AppendLine($"//{entry.FileName}");
                     inputAsText.AppendLine(ExtractFileFromStream(entry));
                 }

@@ -5,10 +5,9 @@
 
     using Ionic.Zip;
 
-    using OJS.Common;
-    using OJS.Common.Extensions;
-    using OJS.Common.Models;
     using OJS.Workers.Common;
+    using OJS.Workers.Common.Helpers;
+    using OJS.Workers.Common.Models;
 
     public class JavaZipFileCompileExecuteAndCheckExecutionStrategy : JavaPreprocessCompileExecuteAndCheckExecutionStrategy
     {
@@ -31,7 +30,7 @@
                 ? $".{trimmedAllowedFileExtensions}"
                 : trimmedAllowedFileExtensions;
 
-            if (allowedFileExtensions != GlobalConstants.ZipFileExtension)
+            if (allowedFileExtensions != Constants.ZipFileExtension)
             {
                 throw new ArgumentException("Submission file is not a zip file!");
             }

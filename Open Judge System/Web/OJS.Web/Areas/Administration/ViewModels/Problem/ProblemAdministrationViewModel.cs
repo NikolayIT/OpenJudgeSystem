@@ -18,7 +18,7 @@
     using OJS.Web.Areas.Administration.ViewModels.Common;
     using OJS.Web.Areas.Administration.ViewModels.ProblemResource;
     using OJS.Web.Areas.Administration.ViewModels.SubmissionType;
-
+    using OJS.Workers.Common.Extensions;
     using Resources.Areas.Administration.Contests.ViewModels;
 
     using Resource = Resources.Areas.Administration.Problems.ViewModels.DetailedProblem;

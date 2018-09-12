@@ -1,4 +1,4 @@
-﻿namespace OJS.Common.Extensions
+﻿namespace OJS.Workers.Common.Extensions
 {
     using System.IO;
     using System.IO.Compression;

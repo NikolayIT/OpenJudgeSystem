@@ -2,8 +2,8 @@
 {
     using System;
 
-    using OJS.Common.Models;
     using OJS.Workers.Common;
+    using OJS.Workers.Common.Models;
     using OJS.Workers.Executors;
 
     public class CompileExecuteAndCheckExecutionStrategy : ExecutionStrategy

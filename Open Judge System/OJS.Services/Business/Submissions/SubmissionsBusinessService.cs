@@ -11,13 +11,13 @@
     using OJS.Common;
     using OJS.Common.Extensions;
     using OJS.Common.Helpers;
-    using OJS.Common.Models;
     using OJS.Data.Models;
     using OJS.Data.Repositories.Contracts;
     using OJS.Services.Business.Submissions.Models;
     using OJS.Services.Data.ParticipantScores;
     using OJS.Services.Data.Submissions;
     using OJS.Services.Data.Submissions.ArchivedSubmissions;
+    using OJS.Workers.Common.Models;
 
     public class SubmissionsBusinessService : ISubmissionsBusinessService
     {

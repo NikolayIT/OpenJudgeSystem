@@ -1,6 +1,6 @@
-﻿namespace OJS.Common.Extensions
+﻿namespace OJS.Workers.Common.Extensions
 {
-    using OJS.Common.Models;
+    using OJS.Workers.Common.Models;
 
     public static class CompilerTypeExtensions
     {

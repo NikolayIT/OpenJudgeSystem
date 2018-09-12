@@ -18,6 +18,7 @@
     using OJS.Web.Common;
     using OJS.Web.Common.Extensions;
     using OJS.Web.ViewModels;
+    using OJS.Workers.Common;
 
     public class BaseController : Controller
     {

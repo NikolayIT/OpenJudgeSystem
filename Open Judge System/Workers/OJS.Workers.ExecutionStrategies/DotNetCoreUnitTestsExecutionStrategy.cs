@@ -5,11 +5,10 @@
     using System.IO;
     using System.Linq;
 
-    using OJS.Common;
-    using OJS.Common.Extensions;
-    using OJS.Common.Models;
     using OJS.Workers.Checkers;
     using OJS.Workers.Common;
+    using OJS.Workers.Common.Helpers;
+    using OJS.Workers.Common.Models;
     using OJS.Workers.ExecutionStrategies.Helpers;
     using OJS.Workers.Executors;
 
@@ -22,7 +21,7 @@
             "Microsoft.EntityFrameworkCore.InMemory"
         };
 
-        private readonly string csFileSearchPattern = $"*{GlobalConstants.CSharpFileExtension}";
+        private readonly string csFileSearchPattern = $"*{Constants.CSharpFileExtension}";
 
         private string nUnitLiteConsoleAppCsProjTemplate;
 

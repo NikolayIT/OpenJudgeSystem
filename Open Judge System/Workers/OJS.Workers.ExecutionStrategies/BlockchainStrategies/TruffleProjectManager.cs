@@ -8,7 +8,7 @@
 
     using OJS.Workers.Executors;
 
-    using static OJS.Common.GlobalConstants;
+    using static OJS.Workers.Common.Constants;
 
     internal class TruffleProjectManager
     {
@@ -105,8 +105,8 @@
             var result = executor.Execute(
                 compilerPath,
                 string.Empty,
-                ProblemDefaultTimeLimit,
-                ProblemDefaultMemoryLimit,
+                DefaultTimeLimitInMilliseconds,
+                DefaultMemoryLimitInBytes,
                 arguments);
 
             if (!string.IsNullOrEmpty(result.ErrorOutput))

@@ -11,7 +11,6 @@ namespace OJS.Workers.Executors
 
     using log4net;
 
-    using OJS.Common;
     using OJS.Workers.Common;
     using OJS.Workers.Executors.Process;
 
@@ -126,7 +125,7 @@ namespace OJS.Workers.Executors
                     restrictedProcess.Kill();
 
                     // Wait for the associated process to exit before continuing
-                    restrictedProcess.WaitForExit(GlobalConstants.DefaultProcessExitTimeOutMilliseconds);
+                    restrictedProcess.WaitForExit(Constants.DefaultProcessExitTimeOutMilliseconds);
 
                     result.ProcessWasKilled = true;
                     result.Type = ProcessExecutionResultType.TimeLimit;

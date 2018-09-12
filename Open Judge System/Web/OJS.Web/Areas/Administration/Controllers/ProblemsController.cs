@@ -42,6 +42,7 @@
     using OJS.Web.Common.Extensions;
     using OJS.Web.Common.ZippedTestManipulator;
     using OJS.Web.ViewModels.Common;
+    using OJS.Workers.Common.Extensions;
 
     using GeneralResource = Resources.Areas.Administration.AdministrationGeneral;
     using GlobalResource = Resources.Areas.Administration.Problems.ProblemsControllers;

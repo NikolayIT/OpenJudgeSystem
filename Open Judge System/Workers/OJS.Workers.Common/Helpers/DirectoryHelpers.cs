@@ -1,4 +1,4 @@
-﻿namespace OJS.Common.Extensions
+﻿namespace OJS.Workers.Common.Helpers
 {
     using System;
     using System.IO;
@@ -31,7 +31,7 @@
             while (!isDirectoryCreated)
             {
                 var randomDirectoryName = Path.GetRandomFileName();
-                path = Path.Combine(GlobalConstants.ExecutionStrategiesWorkingDirectoryPath, randomDirectoryName);
+                path = Path.Combine(Constants.ExecutionStrategiesWorkingDirectoryPath, randomDirectoryName);
                 if (Directory.Exists(path))
                 {
                     continue;
@@ -57,7 +57,7 @@
 
         public static void DeleteExecutionStrategyWorkingDirectories()
         {
-            var executionStrategiesDirectoryPath = GlobalConstants.ExecutionStrategiesWorkingDirectoryPath;
+            var executionStrategiesDirectoryPath = Constants.ExecutionStrategiesWorkingDirectoryPath;
 
             if (!Directory.Exists(executionStrategiesDirectoryPath))
             {

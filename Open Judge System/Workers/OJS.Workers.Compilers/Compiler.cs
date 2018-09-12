@@ -6,9 +6,8 @@
     using System.Text;
     using System.Threading;
 
-    using OJS.Common;
-    using OJS.Common.Models;
     using OJS.Workers.Common;
+    using OJS.Workers.Common.Models;
 
     /// <summary>
     /// Defines the base of the work with compilers algorithm and allow the subclasses to implement some of the algorithm parts.
@@ -20,7 +19,7 @@
 
         protected Compiler(int processExitTimeOutMultiplier) =>
             this.MaxProcessExitTimeOutInMilliseconds =
-                GlobalConstants.DefaultProcessExitTimeOutMilliseconds * processExitTimeOutMultiplier;
+                Constants.DefaultProcessExitTimeOutMilliseconds * processExitTimeOutMultiplier;
 
         public virtual bool ShouldDeleteSourceFile => true;
 

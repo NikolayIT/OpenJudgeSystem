@@ -1,4 +1,4 @@
-﻿namespace OJS.Common.Helpers
+﻿namespace OJS.Workers.Common.Helpers
 {
     using System;
     using System.Configuration;

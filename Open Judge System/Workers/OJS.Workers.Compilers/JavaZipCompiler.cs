@@ -5,7 +5,7 @@
     using System.Linq;
     using System.Text;
 
-    using OJS.Common.Extensions;
+    using OJS.Workers.Common.Helpers;
 
     public class JavaZipCompiler : Compiler
     {

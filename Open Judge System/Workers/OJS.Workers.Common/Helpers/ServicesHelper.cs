@@ -1,11 +1,11 @@
-﻿namespace OJS.Common.Helpers
+﻿namespace OJS.Workers.Common.Helpers
 {
     using System;
     using System.Configuration.Install;
     using System.Linq;
     using System.ServiceProcess;
 
-    using OJS.Common.Models;
+    using OJS.Workers.Common.Models;
 
     public static class ServicesHelper
     {

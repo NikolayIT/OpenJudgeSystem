@@ -2,9 +2,9 @@
 {
     using System.Collections.Generic;
 
-    using Common.Models;
-
     using NUnit.Framework;
+
+    using OJS.Workers.Common.Models;
 
     [TestFixture]
     public class SubmissionTests

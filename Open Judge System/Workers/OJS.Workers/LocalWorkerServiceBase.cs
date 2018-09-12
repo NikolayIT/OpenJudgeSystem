@@ -10,7 +10,6 @@
 
     using log4net;
 
-    using OJS.Common;
     using OJS.Workers.Common;
     using OJS.Workers.Jobs;
 
@@ -132,7 +131,7 @@
         /// </summary>
         private void CreateExecutionStrategiesWorkingDirectory()
         {
-            var path = GlobalConstants.ExecutionStrategiesWorkingDirectoryPath;
+            var path = Constants.ExecutionStrategiesWorkingDirectoryPath;
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);

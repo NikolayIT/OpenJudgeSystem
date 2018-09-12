@@ -1,4 +1,4 @@
-﻿namespace OJS.Common
+﻿namespace OJS.Workers.Common
 {
     using System;
 

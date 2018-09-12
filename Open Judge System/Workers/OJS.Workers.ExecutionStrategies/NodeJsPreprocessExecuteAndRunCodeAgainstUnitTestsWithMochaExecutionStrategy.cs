@@ -6,9 +6,9 @@
     using System.Linq;
     using System.Text.RegularExpressions;
 
-    using OJS.Common.Extensions;
     using OJS.Workers.Checkers;
     using OJS.Workers.Common;
+    using OJS.Workers.Common.Helpers;
     using OJS.Workers.Executors;
 
     public class NodeJsPreprocessExecuteAndRunCodeAgainstUnitTestsWithMochaExecutionStrategy :

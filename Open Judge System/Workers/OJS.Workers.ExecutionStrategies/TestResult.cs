@@ -1,7 +1,7 @@
 ﻿namespace OJS.Workers.ExecutionStrategies
 {
-    using OJS.Common.Models;
     using OJS.Workers.Common;
+    using OJS.Workers.Common.Models;
 
     public class TestResult
     {

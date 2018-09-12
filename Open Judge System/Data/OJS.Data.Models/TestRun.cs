@@ -2,7 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    using OJS.Common.Models;
+    using OJS.Workers.Common.Models;
 
     public class TestRun
     {

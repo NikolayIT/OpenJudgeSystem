@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    using OJS.Common.Models;
+    using OJS.Workers.Common.Models;
     using OJS.Workers.ExecutionStrategies;
 
     public class SubmissionModel

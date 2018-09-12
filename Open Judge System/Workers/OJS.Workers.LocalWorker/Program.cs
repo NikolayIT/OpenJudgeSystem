@@ -7,7 +7,7 @@ namespace OJS.Workers.LocalWorker
     using System.IO;
     using System.ServiceProcess;
 
-    using OJS.Common;
+    using OJS.Workers.Common;
 
     internal static class Program
     {

@@ -5,8 +5,8 @@
     using System.Linq;
     using System.Text;
 
-    using OJS.Common;
-    using OJS.Common.Extensions;
+    using OJS.Workers.Common;
+    using OJS.Workers.Common.Helpers;
 
     public class MsBuildCompiler : Compiler
     {
@@ -20,16 +20,16 @@
         {
         }
 
-        public override string RenameInputFile(string inputFile) => $"{inputFile}{GlobalConstants.ZipFileExtension}";
+        public override string RenameInputFile(string inputFile) => $"{inputFile}{Constants.ZipFileExtension}";
 
         public override string ChangeOutputFileAfterCompilation(string outputFile)
         {
             var newOutputFile = Directory
                 .EnumerateFiles(this.CompilationDirectory)
-                .FirstOrDefault(x => x.EndsWith(GlobalConstants.ExecutableFileExtension));
+                .FirstOrDefault(x => x.EndsWith(Constants.ExecutableFileExtension));
 
             var tempFile = Path.GetTempFileName();
-            var tempExeFile = $"{Path.GetDirectoryName(outputFile)}\\{Path.GetFileName(tempFile)}{GlobalConstants.ExecutableFileExtension}";
+            var tempExeFile = $"{Path.GetDirectoryName(outputFile)}\\{Path.GetFileName(tempFile)}{Constants.ExecutableFileExtension}";
             File.Move(newOutputFile, tempExeFile);
             File.Delete(tempFile);
             return tempExeFile;

@@ -2,11 +2,11 @@
 {
     using System;
 
-    using OJS.Common.Helpers;
-    using OJS.Common.Models;
     using OJS.Services.Business.SubmissionsForProcessing;
     using OJS.Workers;
     using OJS.Workers.Common;
+    using OJS.Workers.Common.Helpers;
+    using OJS.Workers.Common.Models;
 
     internal class LocalWorkerService : LocalWorkerServiceBase<int>
     {

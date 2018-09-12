@@ -9,9 +9,9 @@
 
     using OJS.Common;
     using OJS.Common.DataAnnotations;
-    using OJS.Common.Extensions;
     using OJS.Data.Models;
     using OJS.Web.Common;
+    using OJS.Workers.Common.Extensions;
 
     using Resource = Resources.Areas.Administration.Tests.ViewModels.TestAdministration;
 
