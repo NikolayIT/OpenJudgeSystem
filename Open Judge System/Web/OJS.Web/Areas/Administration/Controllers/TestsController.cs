@@ -35,7 +35,10 @@
     using OJS.Web.Common;
     using OJS.Web.Common.Extensions;
     using OJS.Web.Common.ZippedTestManipulator;
+    using OJS.Workers.Common;
+
     using static OJS.Web.Common.WebConstants;
+
     using GeneralResource = Resources.Areas.Administration.AdministrationGeneral;
     using Resource = Resources.Areas.Administration.Tests.TestsControllers;
 
@@ -682,7 +685,7 @@
             zipFile.Save(stream);
             stream.Position = 0;
 
-            var exportedTests = this.File(stream, MediaTypeNames.Application.Zip, $"{zipFileName}{GlobalConstants.ZipFileExtension}");
+            var exportedTests = this.File(stream, MediaTypeNames.Application.Zip, $"{zipFileName}{Constants.ZipFileExtension}");
             return exportedTests;
         }
 

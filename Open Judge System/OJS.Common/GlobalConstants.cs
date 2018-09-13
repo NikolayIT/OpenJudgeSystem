@@ -1,11 +1,5 @@
 ﻿namespace OJS.Common
 {
-    using System;
-    using System.IO;
-
-    using OJS.Common.Extensions;
-    using OJS.Common.Models;
-
     public static class GlobalConstants
     {
         // User Profile Constants
@@ -73,8 +67,6 @@
         public const string BulgarianCultureCookieValue = "bg";
         public const string EnglishCultureCookieValue = "en";
 
-        public const int DefaultProcessExitTimeOutMilliseconds = 5000; // ms
-
         public const int DefaultProblemGroupsCountForOnlineContest = 2;
 
         public const int BatchOperationsChunkSize = 3000;
@@ -83,22 +75,10 @@
         public const int NonBestSubmissionEligibleForArchiveAgeInYears = 1;
 
         // File extensions
-        public const string JavaCompiledFileExtension = ".class";
-        public const string ZipFileExtension = ".zip";
-        public const string ExecutableFileExtension = ".exe";
-        public const string ClassLibraryFileExtension = ".dll";
         public const string TxtFileExtension = ".txt";
         public const string SolFileExtension = ".sol";
         public const string InputFileExtension = ".in";
         public const string OutputFileExtension = ".out";
-        public const string SolidityFileExtension = ".sol";
-        public const string JavaScriptFileExtension = ".js";
-        public const string JsonFileExtension = ".json";
-        public const string ByteCodeFileExtension = ".bin";
-        public const string AbiFileExtension = ".abi";
-
-        // Folder names
-        public const string ExecutionStrategiesFolderName = "ExecutionStrategies";
 
         // Contests
         public const int ContestNameMaxLength = 100;
@@ -145,11 +125,5 @@
 
         // Date and time formats
         public const string DefaultDateTimeFormatString = "{0:dd/MM/yyyy HH:mm}";
-
-        // Temp Directory folder paths
-        public static readonly string ExecutionStrategiesWorkingDirectoryPath =
-            Path.Combine(
-                Environment.GetEnvironmentVariable("TEMP", EnvironmentVariableTarget.Machine),
-                ExecutionStrategiesFolderName);
     }
 }
