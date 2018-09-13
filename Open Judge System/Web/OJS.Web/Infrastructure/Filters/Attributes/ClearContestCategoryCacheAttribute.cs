@@ -6,8 +6,8 @@
     public class ClearContestCategoryCacheAttribute : Attribute
     {
         public ClearContestCategoryCacheAttribute(string queryKeyForCategoryId) =>
-            this.QuerykeyForCategoryId = queryKeyForCategoryId;
+            this.QuerKeyForCategoryId = queryKeyForCategoryId;
 
-        public string QuerykeyForCategoryId { get; }
+        public string QuerKeyForCategoryId { get; }
     }
 }

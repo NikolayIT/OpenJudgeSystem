@@ -70,7 +70,7 @@
 
             while (contestCategory != null)
             {
-                var categoryNamecacheId = string.Format(
+                var categoryNameCacheId = string.Format(
                     CacheConstants.ContestCategoryNameFormat,
                     contestCategory.Id);
 
@@ -78,7 +78,7 @@
                     CacheConstants.ContestSubCategoriesFormat,
                     contestCategory.Id);
 
-                this.cache.Remove(categoryNamecacheId);
+                this.cache.Remove(categoryNameCacheId);
                 this.cache.Remove(subCategoriesCacheId);
 
                 contestCategory = contestCategory.Parent;

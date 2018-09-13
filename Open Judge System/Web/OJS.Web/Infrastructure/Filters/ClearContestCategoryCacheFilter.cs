@@ -26,7 +26,7 @@
             var categoryIdAsString = filterContext
                 .HttpContext
                 .Request
-                .Params[attribute.QuerykeyForCategoryId];
+                .Params[attribute.QuerKeyForCategoryId];
 
             if (int.TryParse(categoryIdAsString, out var categoryId))
             {

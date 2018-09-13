@@ -35,7 +35,6 @@
         public bool HasContestsById(int id) =>
             this.GetAllVisible()
                 .Where(cc => cc.Id == id)
-                .Select(c => c.Contests.Any())
-                .FirstOrDefault();
+                .Any(cc => cc.Contests.Any());
     }
 }
