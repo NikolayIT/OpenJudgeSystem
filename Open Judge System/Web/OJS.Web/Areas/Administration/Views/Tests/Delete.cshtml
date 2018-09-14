@@ -1,29 +1,38 @@
-﻿@using Resource = Resources.Areas.Administration.Tests.Views.TestsDelete;
+﻿@using OJS.Web.Areas.Administration.Controllers
+
+@using Resource = Resources.Areas.Administration.Tests.Views.TestsDelete
+
 @model OJS.Web.Areas.Administration.ViewModels.Test.TestViewModel
 
 @{
     ViewBag.Title = Resource.Page_title;
 }
+
 <h2>@ViewBag.Title</h2>
 <div class="container">
-    <div class="editor-label">
-        @Html.LabelFor(m => m.Input)
-    </div>
-    <div class="panel-body bordered-content editor-field">
-        <pre class="monospace-font">@(Model.InputFull.Length > 200 ? Model.InputFull.Substring(0,200) + "..." : Model.InputFull)</pre>
-    </div>
-    <br />
-    <div class="editor-label">
-        @Html.LabelFor(m => m.Output)
-    </div>
-    <div class="panel-body bordered-content editor-field">
-        <pre class="monospace-font">@(Model.OutputFull.Length > 200 ? Model.OutputFull.Substring(0, 200) + "..." : Model.OutputFull)</pre>
-    </div>
-    <br />
-    <div class="editor-label">
-        <strong class="text-white">@Model.TrialTestName @Resource.Test</strong>
-    </div>
-    <br />
-    <a href="/Administration/Tests/ConfirmDelete/@Model.Id" class="btn btn-primary">@Resource.Delete</a>
-    <a href="/Administration/Tests/Problem/@Model.ProblemId" class="btn btn-primary">@Resource.Back</a>
+    @using (Html.BeginForm<TestsController>(c => c.ConfirmDelete(Model.Id), FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="editor-label">
+            @Html.LabelFor(m => m.Input)
+        </div>
+        <div class="panel-body bordered-content editor-field">
+            <pre class="monospace-font">@(Model.InputFull.Length > 200 ? Model.InputFull.Substring(0, 200) + "..." : Model.InputFull)</pre>
+        </div>
+        <br />
+        <div class="editor-label">
+            @Html.LabelFor(m => m.Output)
+        </div>
+        <div class="panel-body bordered-content editor-field">
+            <pre class="monospace-font">@(Model.OutputFull.Length > 200 ? Model.OutputFull.Substring(0, 200) + "..." : Model.OutputFull)</pre>
+        </div>
+        <br />
+        <div class="editor-label">
+            <strong class="text-white">@Model.TrialTestName @Resource.Test</strong>
+        </div>
+        <br />
+        <button type="submit" class="btn btn-primary">@Resource.Delete</button>
+        <a href="@(Url.Action<TestsController>(c => c.Problem(Model.ProblemId)))" class="btn btn-primary">@Resource.Back</a>
+    }
 </div>

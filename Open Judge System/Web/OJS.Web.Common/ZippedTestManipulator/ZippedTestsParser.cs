@@ -111,15 +111,17 @@
 
         public static string ExtractFileFromStream(ZipEntry entry)
         {
-            var reader = new MemoryStream();
-            entry.Extract(reader);
-            reader = new MemoryStream(reader.ToArray());
+            using (var memoryStream = new MemoryStream())
+            {
+                entry.Extract(memoryStream);
 
-            var streamReader = new StreamReader(reader);
-
-            var text = streamReader.ReadToEnd();
-            reader.Dispose();
-            return text;
+                memoryStream.Position = 0;
+                using (var streamReader = new StreamReader(memoryStream))
+                {
+                    var text = streamReader.ReadToEnd();
+                    return text;
+                }
+            }
         }
 
         public static bool AreTestsParsedCorrectly(TestsParseResult tests)

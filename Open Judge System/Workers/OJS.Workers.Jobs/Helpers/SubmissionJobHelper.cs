@@ -1,8 +1,9 @@
-﻿namespace OJS.Workers.LocalWorker.Helpers
+﻿namespace OJS.Workers.Jobs.Helpers
 {
     using System;
 
     using OJS.Common.Models;
+    using OJS.Workers.Common;
     using OJS.Workers.ExecutionStrategies;
     using OJS.Workers.ExecutionStrategies.BlockchainStrategies;
     using OJS.Workers.ExecutionStrategies.SqlStrategies.MySql;

@@ -9,9 +9,6 @@ namespace OJS.Workers.LocalWorker
 
     using OJS.Common;
 
-    using SimpleInjector;
-    using SimpleInjector.Lifestyles;
-
     internal static class Program
     {
         /// <summary>
@@ -26,17 +23,14 @@ namespace OJS.Workers.LocalWorker
                 Environment.CurrentDirectory = Path.GetDirectoryName(typeof(Program).Assembly.Location);
                 AppDomain.CurrentDomain.SetData("APP_CONFIG_FILE", "OJS.Workers.LocalWorker.exe.config");
 
-                var container = new Container();
+                var container = new SimpleInjectorContainer();
                 Bootstrap.Start(container);
 
                 ObjectFactory.InitializeServiceProvider(Bootstrap.Container);
 
-                using (ThreadScopedLifestyle.BeginScope(container))
-                {
-                    var localWorkerService = container.GetInstance<LocalWorkerService>();
+                var localWorkerService = new LocalWorkerService();
 
-                    ServiceBase.Run(localWorkerService);
-                }
+                ServiceBase.Run(localWorkerService);
             }
             catch (Exception exception)
             {
