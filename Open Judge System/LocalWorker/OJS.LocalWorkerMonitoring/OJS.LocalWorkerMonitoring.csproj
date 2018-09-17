@@ -73,7 +73,7 @@
       <Project>{A7DE52AC-62E7-43F0-8F73-047728EB5AF2}</Project>
       <Name>OJS.Services.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OJS.Workers.Common\OJS.Workers.Common.csproj">
+    <ProjectReference Include="..\..\Workers\OJS.Workers.Common\OJS.Workers.Common.csproj">
       <Project>{7F714D0B-CE81-4DD7-B6B2-62080FE22CD8}</Project>
       <Name>OJS.Workers.Common</Name>
     </ProjectReference>
