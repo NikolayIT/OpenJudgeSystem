@@ -1,4 +1,4 @@
-﻿namespace OJS.Workers.LocalWorkerMonitoring
+﻿namespace OJS.LocalWorkerMonitoring
 {
     using static OJS.Workers.Common.Helpers.SettingsHelper;
 

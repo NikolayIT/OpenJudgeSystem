@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{91080721-1B4B-49E6-BB1B-3684268D12DD}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>OJS.Workers.LocalWorkerMonitoring</RootNamespace>
-    <AssemblyName>OJS.Workers.LocalWorkerMonitoring</AssemblyName>
+    <RootNamespace>OJS.LocalWorkerMonitoring</RootNamespace>
+    <AssemblyName>OJS.LocalWorkerMonitoring</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

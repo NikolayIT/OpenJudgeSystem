@@ -1,4 +1,4 @@
-﻿namespace OJS.Workers.LocalWorkerMonitoring
+﻿namespace OJS.LocalWorkerMonitoring
 {
     using System.ComponentModel;
     using System.Configuration.Install;
