@@ -1,6 +1,6 @@
 ﻿[assembly: log4net.Config.XmlConfigurator(Watch = true)]
 
-namespace OJS.Workers.LocalWorker
+namespace OJS.LocalWorker
 {
     using System;
     using System.Diagnostics;
