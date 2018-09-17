@@ -35,6 +35,7 @@
     using OJS.Web.Areas.Contests.ViewModels.Results;
     using OJS.Web.Areas.Contests.ViewModels.Submissions;
     using OJS.Web.Common.Attributes;
+    using OJS.Web.Common.Exceptions;
     using OJS.Web.Common.Extensions;
     using OJS.Web.Controllers;
 
@@ -138,7 +139,7 @@
                     this.User.IsAdmin(),
                     allowToAdminAlways: true))
             {
-                throw new HttpException(
+                throw new ContestCannotBeCompetedException(
                     (int)HttpStatusCode.Forbidden,
                     Resource.ContestsGeneral.Contest_cannot_be_competed);
             }
@@ -167,8 +168,13 @@
             }
             catch (HttpException httpEx)
             {
+                if (httpEx is ContestCannotBeCompetedException && contest.CanBePracticed)
+                {
+                    return this.RedirectToAction(c => c.Index(id, false, null));
+                }
+
                 this.TempData.AddDangerMessage(httpEx.Message);
-                return this.RedirectToAction<HomeController>(c => c.Index(), new { area = string.Empty });
+                return this.RedirectToHome();
             }
 
             var isUserAdminOrLecturerInContest = this.IsUserAdminOrLecturerInContest(contest);
