@@ -145,10 +145,10 @@
                 }
                 else
                 {
-                    var coefficient = this.submission.CorrectTestRunsWithoutTrialTestsCount /
-                                      this.submission.TestsWithoutTrialTestsCount;
+                    var coefficient = (double)this.submission.CorrectTestRunsWithoutTrialTestsCount /
+                        this.submission.TestsWithoutTrialTestsCount;
 
-                    this.submission.Points = coefficient * this.submission.Problem.MaximumPoints;
+                    this.submission.Points = (int)(coefficient * this.submission.Problem.MaximumPoints);
                 }
             }
             catch (Exception ex)
