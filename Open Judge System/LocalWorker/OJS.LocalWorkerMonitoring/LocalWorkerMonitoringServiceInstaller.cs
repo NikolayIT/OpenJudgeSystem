@@ -1,4 +1,4 @@
-﻿namespace OJS.Workers.LocalWorker
+﻿namespace OJS.LocalWorkerMonitoring
 {
     using System.ComponentModel;
     using System.Configuration.Install;
@@ -7,9 +7,9 @@
     using OJS.Workers.Common;
 
     [RunInstaller(true)]
-    public class LocalWorkerServiceInstaller : Installer
+    public class LocalWorkerMonitoringServiceInstaller : Installer
     {
-        public LocalWorkerServiceInstaller()
+        public LocalWorkerMonitoringServiceInstaller()
         {
             var serviceProcessInstaller = new ServiceProcessInstaller
             {
@@ -21,10 +21,10 @@
             var serviceInstaller = new ServiceInstaller
             {
                 StartType = ServiceStartMode.Automatic,
-                DisplayName = Constants.LocalWorkerServiceName,
-                ServiceName = Constants.LocalWorkerServiceName,
+                DisplayName = Constants.LocalWorkerMonitoringServiceName,
+                ServiceName = Constants.LocalWorkerMonitoringServiceName,
                 Description =
-                    "Evaluates submissions for the Open Judge System and executes processes in a sandboxed environment. Processes are executed on the current machine.",
+                    $"Monitors the {Constants.LocalWorkerServiceName} and restarts it or sends email if not running"
             };
 
             this.Installers.AddRange(new Installer[] { serviceProcessInstaller, serviceInstaller });

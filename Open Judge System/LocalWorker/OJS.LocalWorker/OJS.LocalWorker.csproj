@@ -7,8 +7,8 @@
     <ProjectGuid>{5D3361F8-F50B-415F-826A-724DCDAA4A89}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OJS.Workers.LocalWorker</RootNamespace>
-    <AssemblyName>OJS.Workers.LocalWorker</AssemblyName>
+    <RootNamespace>OJS.LocalWorker</RootNamespace>
+    <AssemblyName>OJS.LocalWorker</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>
@@ -149,31 +149,31 @@
       <Project>{44659A90-F81E-4007-8729-C37F4F650A81}</Project>
       <Name>OJS.Services</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OJS.Workers.Checkers\OJS.Workers.Checkers.csproj">
+    <ProjectReference Include="..\..\Workers\OJS.Workers.Checkers\OJS.Workers.Checkers.csproj">
       <Project>{93ec1d66-2ce1-4682-ac09-c8c40178a9ad}</Project>
       <Name>OJS.Workers.Checkers</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OJS.Workers.Common\OJS.Workers.Common.csproj">
+    <ProjectReference Include="..\..\Workers\OJS.Workers.Common\OJS.Workers.Common.csproj">
       <Project>{7f714d0b-ce81-4dd7-b6b2-62080fe22cd8}</Project>
       <Name>OJS.Workers.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OJS.Workers.Compilers\OJS.Workers.Compilers.csproj">
+    <ProjectReference Include="..\..\Workers\OJS.Workers.Compilers\OJS.Workers.Compilers.csproj">
       <Project>{8570183b-9d7a-408d-9ea6-f86f59b05a10}</Project>
       <Name>OJS.Workers.Compilers</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OJS.Workers.ExecutionStrategies\OJS.Workers.ExecutionStrategies.csproj">
+    <ProjectReference Include="..\..\Workers\OJS.Workers.ExecutionStrategies\OJS.Workers.ExecutionStrategies.csproj">
       <Project>{69966098-E5B2-46CD-88E9-1F79B245ADE0}</Project>
       <Name>OJS.Workers.ExecutionStrategies</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OJS.Workers.Executors\OJS.Workers.Executors.csproj">
+    <ProjectReference Include="..\..\Workers\OJS.Workers.Executors\OJS.Workers.Executors.csproj">
       <Project>{cda78d62-7210-45ca-b3e5-9f6a5dea5734}</Project>
       <Name>OJS.Workers.Executors</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OJS.Workers.Jobs\OJS.Workers.Jobs.csproj">
+    <ProjectReference Include="..\..\Workers\OJS.Workers.Jobs\OJS.Workers.Jobs.csproj">
       <Project>{6E2902A5-E47F-4888-953E-4F81467B40C7}</Project>
       <Name>OJS.Workers.Jobs</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OJS.Workers\OJS.Workers.csproj">
+    <ProjectReference Include="..\..\Workers\OJS.Workers\OJS.Workers.csproj">
       <Project>{2CD6D71C-26BB-478B-8FF3-691A59B51D51}</Project>
       <Name>OJS.Workers</Name>
     </ProjectReference>

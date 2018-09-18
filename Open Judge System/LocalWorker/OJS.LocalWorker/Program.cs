@@ -1,6 +1,6 @@
 ﻿[assembly: log4net.Config.XmlConfigurator(Watch = true)]
 
-namespace OJS.Workers.LocalWorker
+namespace OJS.LocalWorker
 {
     using System;
     using System.Diagnostics;
@@ -21,7 +21,7 @@ namespace OJS.Workers.LocalWorker
                 // Explicitly set App.config file location to prevent confusion
                 // ReSharper disable once AssignNullToNotNullAttribute
                 Environment.CurrentDirectory = Path.GetDirectoryName(typeof(Program).Assembly.Location);
-                AppDomain.CurrentDomain.SetData("APP_CONFIG_FILE", "OJS.Workers.LocalWorker.exe.config");
+                AppDomain.CurrentDomain.SetData("APP_CONFIG_FILE", "OJS.LocalWorker.exe.config");
 
                 var container = new SimpleInjectorContainer();
                 Bootstrap.Start(container);
@@ -34,7 +34,7 @@ namespace OJS.Workers.LocalWorker
             }
             catch (Exception exception)
             {
-                const string Source = "OJS.Workers.LocalWorker";
+                const string Source = "OJS.LocalWorker";
                 if (!EventLog.SourceExists(Source))
                 {
                     EventLog.CreateEventSource(Source, "Application");
