@@ -20,12 +20,22 @@
 
         IQueryable<Participant> GetAll();
 
+        IQueryable<Participant> GetAllByUser(string userId);
+
+        IQueryable<Participant> GetAllByContest(int contestId);
+
         IQueryable<Participant> GetAllByContestAndIsOfficial(int contestId, bool isOfficial);
+
+        IQueryable<Participant> GetAllOfficialByContest(int contestId);
 
         IQueryable<Participant> GetAllOfficialInOnlineContestByContestAndContestStartTimeRange(
             int contestId,
             DateTime contestStartTimeRangeStart,
             DateTime contestStartTimeRangeEnd);
+
+        bool ExistsByIdAndContest(int id, int contestId);
+
+        bool ExistsByContestAndUser(int contestId, string userId);
 
         bool ExistsByContestByUserAndIsOfficial(int contestId, string userId, bool isOfficial);
 
