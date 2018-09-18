@@ -1,162 +1,70 @@
 ﻿namespace OJS.Workers.LocalWorker
 {
     using System;
-    using System.Collections.Concurrent;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.ServiceProcess;
-    using System.Threading;
 
-    using log4net;
-
-    using OJS.Common;
     using OJS.Common.Helpers;
     using OJS.Common.Models;
     using OJS.Services.Business.SubmissionsForProcessing;
+    using OJS.Workers;
     using OJS.Workers.Common;
 
-    internal class LocalWorkerService : ServiceBase
+    internal class LocalWorkerService : LocalWorkerServiceBase<int>
     {
-        private static ILog logger;
-        private readonly ICollection<Thread> threads;
-        private readonly ICollection<IJob> jobs;
-        private readonly ISubmissionsForProcessingBusinessService submissionsForProcessingBusiness;
+        protected override IDependencyContainer GetDependencyContainer() => Bootstrap.Container;
 
-        public LocalWorkerService(
-            ISubmissionsForProcessingBusinessService submissionsForProcessingBusiness)
+        protected override void BeforeStartingThreads()
         {
-            logger = LogManager.GetLogger(Constants.LocalWorkerServiceLogName);
-            logger.Info("LocalWorkerService initializing...");
-
-            this.submissionsForProcessingBusiness = submissionsForProcessingBusiness;
-            this.threads = new List<Thread>();
-            this.jobs = new List<IJob>();
-
-            this.SpawnJobsAndThreads(this.jobs, this.threads, new ConcurrentQueue<int>());
-
-            logger.Info("LocalWorkerService initialized.");
-        }
-
-        protected override void OnStart(string[] args)
-        {
-            logger.Info("LocalWorkerService starting...");
-
-            this.CreateExecutionStrategiesWorkingDirectory();
-
-            this.submissionsForProcessingBusiness.ResetAllProcessingSubmissions(logger);
-
-            this.StartThreads(this.threads);
-
-            this.TryStartMonitoringService();
-
-            logger.Info("LocalWorkerService started.");
-        }
-
-        protected override void OnStop()
-        {
-            logger.Info("LocalWorkerService stopping...");
-
-            this.StopJobs(this.jobs);
-
-            Thread.Sleep(10000);
-
-            this.StopThreads(this.threads);
-
-            logger.Info("LocalWorkerService stopped.");
-        }
-
-        private void SpawnJobsAndThreads(
-            ICollection<IJob> jobsToSpawn,
-            ICollection<Thread> threadsToSpawn,
-            ConcurrentQueue<int> submissionsForProcessing)
-        {
-            var sharedLockObject = new object();
-
-            for (var i = 1; i <= Settings.ThreadsCount; i++)
-            {
-                var job = new SubmissionJob(
-                    $"Job №{i}",
-                    submissionsForProcessing,
-                    sharedLockObject);
-
-                var thread = new Thread(job.Start) { Name = $"Thread №{i}" };
-
-                jobsToSpawn.Add(job);
-                threadsToSpawn.Add(thread);
-            }
-        }
-
-        private void StartThreads(IEnumerable<Thread> threadsToStarts)
-        {
-            foreach (var thread in threadsToStarts)
-            {
-                logger.InfoFormat($"Starting {thread.Name}...");
-                thread.Start();
-                logger.InfoFormat($"{thread.Name} started.");
-                Thread.Sleep(234);
-            }
-        }
-
-        private void StopJobs(IEnumerable<IJob> jobsToStop)
-        {
-            foreach (var job in jobsToStop)
-            {
-                job.Stop();
-                logger.InfoFormat($"{job.Name} stopped.");
-            }
-        }
-
-        private void StopThreads(IEnumerable<Thread> threadsToStop)
-        {
-            foreach (var thread in threadsToStop)
-            {
-                thread.Abort();
-                logger.InfoFormat($"{thread.Name} aborted.");
-            }
-        }
-
-        /// <summary>
-        /// Creates folder in the Temp directory if not already created,
-        /// in which all strategies create their own working directories
-        /// making easier the deletion of left-over files by the background job
-        /// </summary>
-        private void CreateExecutionStrategiesWorkingDirectory()
-        {
-            var path = GlobalConstants.ExecutionStrategiesWorkingDirectoryPath;
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-        }
-
-        private void TryStartMonitoringService()
-        {
-            const string monitoringServiceName = Constants.LocalWorkerMonitoringServiceName;
-
             try
             {
-                var serviceState = ServicesHelper.GetServiceState(monitoringServiceName);
-                if (serviceState.Equals(ServiceState.Running))
+                using (this.DependencyContainer.BeginDefaultScope())
                 {
-                    logger.Info($"{monitoringServiceName} is running.");
-                    return;
+                    var submissionsForProcessingBusiness =
+                        this.DependencyContainer.GetInstance<ISubmissionsForProcessingBusinessService>();
+
+                    submissionsForProcessingBusiness.ResetAllProcessingSubmissions();
                 }
-
-                logger.Info($"Attempting to start the {monitoringServiceName}...");
-
-                if (serviceState.Equals(ServiceState.NotFound))
-                {
-                    ServicesHelper.InstallService(monitoringServiceName, Settings.MonitoringServiceExecutablePath);
-                }
-
-                ServicesHelper.StartService(monitoringServiceName);
-
-                logger.Info($"{monitoringServiceName} started successfully.");
             }
             catch (Exception ex)
             {
-                logger.Error($"An exception was thrown while attempting to start the {monitoringServiceName}", ex);
+                this.Logger.FatalFormat($"Resetting Processing submissions failed with exception {ex.Message}");
+                throw;
             }
+
+            try
+            {
+                this.StartMonitoringService();
+            }
+            catch (Exception ex)
+            {
+                this.Logger.Error(
+                    $"An exception was thrown while attempting to start the {Constants.LocalWorkerMonitoringServiceName}",
+                    ex);
+            }
+
+            base.BeforeStartingThreads();
+        }
+
+        private void StartMonitoringService()
+        {
+            const string monitoringServiceName = Constants.LocalWorkerMonitoringServiceName;
+
+            var serviceState = ServicesHelper.GetServiceState(monitoringServiceName);
+            if (serviceState.Equals(ServiceState.Running))
+            {
+                this.Logger.Info($"{monitoringServiceName} is running.");
+                return;
+            }
+
+            this.Logger.Info($"Attempting to start the {monitoringServiceName}...");
+
+            if (serviceState.Equals(ServiceState.NotFound))
+            {
+                ServicesHelper.InstallService(monitoringServiceName, Settings.MonitoringServiceExecutablePath);
+            }
+
+            ServicesHelper.StartService(monitoringServiceName);
+
+            this.Logger.Info($"{monitoringServiceName} started successfully.");
         }
     }
 }

@@ -1,9 +1,12 @@
 ﻿namespace OJS.Workers.Common
 {
     using System;
+    using System.Text.RegularExpressions;
 
     public class ProcessExecutionResult
     {
+        private const string ColorEncodingsSearchPattern = @"\x1b\[[0-9;]*m";
+
         public ProcessExecutionResult()
         {
             this.ReceivedOutput = string.Empty;
@@ -56,5 +59,8 @@
                     : this.TotalProcessorTime;
             }
         }
+
+        public void RemoveColorEncodingsFromReceivedOutput() =>
+            this.ReceivedOutput = Regex.Replace(this.ReceivedOutput, ColorEncodingsSearchPattern, string.Empty);
     }
 }

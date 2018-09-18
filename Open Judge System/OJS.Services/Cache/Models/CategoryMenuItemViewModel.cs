@@ -1,23 +1,21 @@
-﻿namespace OJS.Web.Areas.Contests.ViewModels.Contests
+﻿namespace OJS.Services.Cache.Models
 {
     using System;
-    using System.Linq;
     using System.Linq.Expressions;
 
     using OJS.Common.Extensions;
     using OJS.Data.Models;
 
-    public class ContestCategoryListViewModel
+    public class CategoryMenuItemViewModel
     {
-        public static Expression<Func<ContestCategory, ContestCategoryListViewModel>> FromCategory
+        public static Expression<Func<ContestCategory, CategoryMenuItemViewModel>> FromCategory
         {
             get
             {
-                return category => new ContestCategoryListViewModel
+                return category => new CategoryMenuItemViewModel
                 {
                     Id = category.Id,
                     Name = category.Name,
-                    HasChildren = category.Children.Any(x => x.IsVisible && !x.IsDeleted)
                 };
             }
         }
@@ -27,7 +25,5 @@
         public string Name { get; set; }
 
         public string NameUrl => this.Name.ToUrl();
-
-        public bool HasChildren { get; set; }
     }
 }

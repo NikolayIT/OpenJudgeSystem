@@ -1815,7 +1815,6 @@
     <Compile Include="Areas\Contests\Models\ContestRegistrationModel.cs" />
     <Compile Include="Areas\Contests\Models\SubmissionExportType.cs" />
     <Compile Include="Areas\Contests\Models\SubmissionModel.cs" />
-    <Compile Include="Areas\Contests\ViewModels\Contests\ContestCategoryListViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestPointsRangeViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestProblemResourceViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestProblemListViewModel.cs" />
@@ -1852,10 +1851,18 @@
     <Compile Include="Controllers\TempController.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
     <Compile Include="Infrastructure\Filters\ActionFilterDispatcher.cs" />
+    <Compile Include="Infrastructure\Filters\Attributes\ClearMainContestCategoriesCacheAttribute.cs" />
+    <Compile Include="Infrastructure\Filters\Attributes\ClearContestCategoryCacheAttribute.cs" />
+    <Compile Include="Infrastructure\Filters\Attributes\ClearMovedContestCategoryCacheAttribute.cs" />
+    <Compile Include="Infrastructure\Filters\ClearMainContestCategoriesCacheFilter.cs" />
     <Compile Include="Infrastructure\Filters\Attributes\LogAccessAttribute.cs" />
+    <Compile Include="Infrastructure\Filters\Attributes\PopulateMainContestCategoriesIntoViewBagAttribute.cs" />
     <Compile Include="Infrastructure\Filters\Attributes\ValidateRemoteDataApiKeyAttribute.cs" />
+    <Compile Include="Infrastructure\Filters\ClearContestCategoryCacheFilter.cs" />
+    <Compile Include="Infrastructure\Filters\ClearMovedContestCategoryCacheFilter.cs" />
     <Compile Include="Infrastructure\Filters\Contracts\IActionFilter.cs" />
     <Compile Include="Infrastructure\Filters\LogAccessFilter.cs" />
+    <Compile Include="Infrastructure\Filters\PopulateMainContestCategoriesIntoViewBagFilter.cs" />
     <Compile Include="Infrastructure\Filters\ValidateRemoteDataApiKeyFilter.cs" />
     <Compile Include="Infrastructure\SimpleInjectorPackages\ActionFiltersPackage.cs" />
     <Compile Include="Infrastructure\SimpleInjectorPackages\DataPackage.cs" />
@@ -1884,7 +1891,6 @@
     <Compile Include="ViewModels\Account\RegisterViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestCategoryViewModel.cs" />
     <Compile Include="Areas\Contests\ViewModels\Contests\ContestViewModel.cs" />
-    <Compile Include="ViewModels\CategoryMenuItemViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Checker\CheckerAdministrationViewModel.cs" />
     <Compile Include="ViewModels\Common\DropdownViewModel.cs" />
     <Compile Include="ViewModels\Feedback\FeedbackViewModel.cs" />
@@ -3444,6 +3450,7 @@
     <Content Include="Views\Shared\EditorTemplates\FileUpload.cshtml" />
     <Content Include="Areas\Administration\Views\Problems\RetestConfirmation.cshtml" />
     <Content Include="Views\Shared\_LoadingMask.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\NumericTextBox.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

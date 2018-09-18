@@ -1,4 +1,4 @@
-﻿namespace OJS.Workers.LocalWorker
+﻿namespace OJS.Workers.Jobs
 {
     public interface IJob
     {

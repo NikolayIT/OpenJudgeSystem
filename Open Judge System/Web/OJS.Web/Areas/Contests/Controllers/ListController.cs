@@ -8,6 +8,7 @@
 
     using OJS.Data;
     using OJS.Services.Business.Contests;
+    using OJS.Services.Cache;
     using OJS.Services.Data.ContestCategories;
     using OJS.Services.Data.Contests;
     using OJS.Web.Areas.Contests.ViewModels.Contests;
@@ -22,31 +23,26 @@
         private readonly IContestsBusinessService contestsBusiness;
         private readonly IContestsDataService contestsData;
         private readonly IContestCategoriesDataService contestCategoriesData;
+        private readonly ICacheItemsProviderService cacheItems;
 
         public ListController(
             IOjsData data,
             IContestsBusinessService contestsBusiness,
             IContestsDataService contestsData,
-            IContestCategoriesDataService contestCategoriesData)
+            IContestCategoriesDataService contestCategoriesData,
+            ICacheItemsProviderService cacheItems)
             : base(data)
         {
             this.contestsBusiness = contestsBusiness;
             this.contestsData = contestsData;
             this.contestCategoriesData = contestCategoriesData;
+            this.cacheItems = cacheItems;
         }
 
         public ActionResult Index() => this.View();
 
-        public ActionResult ReadCategories(int? id)
-        {
-            var categories = this.Data.ContestCategories
-                .All()
-                .Where(cc => cc.IsVisible && (id.HasValue ? cc.ParentId == id : cc.ParentId == null))
-                .OrderBy(cc => cc.OrderBy)
-                .Select(ContestCategoryListViewModel.FromCategory);
-
-            return this.Json(categories, JsonRequestBehavior.AllowGet);
-        }
+        public ActionResult ReadCategories(int? id) =>
+            this.Json(this.cacheItems.GetContestSubCategoriesList(id), JsonRequestBehavior.AllowGet);
 
         public ActionResult GetParents(int id)
         {
@@ -69,64 +65,30 @@
 
         public ActionResult ByCategory(int? id)
         {
-            ContestCategoryViewModel contestCategory;
-            if (id.HasValue)
-            {
-                var categories = this.contestCategoriesData
-                    .GetVisibleByIdQuery(id.Value)
-                    .OrderBy(cc => cc.OrderBy);
-
-                if (this.contestCategoriesData.HasContestsById(id.Value))
-                {
-                    contestCategory = categories
-                        .Select(ContestCategoryViewModel.FromLeafContestCategory)
-                        .FirstOrDefault();
-                }
-                else
-                {
-                    contestCategory = categories
-                        .Select(ContestCategoryViewModel.FromContestCategory)
-                        .FirstOrDefault();
-                }
-            }
-            else
-            {
-                contestCategory = new ContestCategoryViewModel
-                {
-                    CategoryName = Resource.Main_categories,
-                    SubCategories = this.Data.ContestCategories
-                        .All()
-                        .Where(cc => cc.IsVisible && !cc.IsDeleted && cc.Parent == null)
-                        .OrderBy(cc => cc.OrderBy)
-                        .Select(ContestCategoryListViewModel.FromCategory)
-                };
-            }
+            var contestCategory = this.GetContestCategoryFromCache(id);
 
             if (contestCategory == null)
             {
                 throw new HttpException((int)HttpStatusCode.NotFound, Resource.Category_not_found);
             }
 
-            foreach (var contest in contestCategory.Contests)
+            if (id.HasValue && this.contestCategoriesData.HasContestsById(id.Value))
             {
-                contest.UserIsAdminOrLecturerInContest = this.CheckIfUserHasContestPermissions(contest.Id);
-
-                contest.UserCanCompete = this.contestsBusiness
-                    .CanUserCompeteByContestByUserAndIsAdmin(contest.Id, this.UserProfile?.Id, this.User.IsAdmin());
-
-                contest.UserIsParticipant = this.contestsData
-                    .IsUserParticipantInByContestAndUser(contest.Id, this.UserProfile?.Id);
+                contestCategory.Contests = this.GetContestsInCategory(id.Value);
             }
 
-            contestCategory.IsUserLecturerInContestCategory = this.CheckIfUserHasContestCategoryPermissions(contestCategory.Id);
+            contestCategory.IsUserLecturerInContestCategory =
+                this.CheckIfUserHasContestCategoryPermissions(contestCategory.Id);
 
-            if (this.Request.IsAjaxRequest())
+            var isAjaxRequest = this.Request.IsAjaxRequest();
+
+            this.ViewBag.IsAjax = isAjaxRequest;
+
+            if (isAjaxRequest)
             {
-                this.ViewBag.IsAjax = true;
                 return this.PartialView(contestCategory);
             }
-
-            this.ViewBag.IsAjax = false;
+ 
             return this.View(contestCategory);
         }
 
@@ -159,5 +121,56 @@
             this.ViewBag.SubmissionType = submissionType.Name;
             return this.View(contests);
         }
+
+        private IEnumerable<ContestListViewModel> GetContestsInCategory(int categoryId)
+        {
+            var contests = this.contestsData
+                .GetAllVisibleByCategory(categoryId)
+                .OrderBy(c => c.OrderBy)
+                .ThenByDescending(c => c.EndTime ?? c.PracticeEndTime ?? c.PracticeStartTime)
+                .Select(ContestListViewModel.FromContest)
+                .ToList();
+
+            foreach (var contest in contests)
+            {
+                contest.UserIsAdminOrLecturerInContest = this.CheckIfUserHasContestPermissions(contest.Id);
+
+                contest.UserCanCompete = this.contestsBusiness
+                    .CanUserCompeteByContestByUserAndIsAdmin(contest.Id, this.UserProfile?.Id, this.User.IsAdmin());
+
+                contest.UserIsParticipant = this.contestsData
+                    .IsUserParticipantInByContestAndUser(contest.Id, this.UserProfile?.Id);
+            }
+
+            return contests;
+        }
+
+        private ContestCategoryViewModel GetContestCategoryFromCache(int? id)
+        {
+            var contestCategory = new ContestCategoryViewModel
+            {
+                Id = id ?? default(int),
+                CategoryName = Resource.Main_categories
+            };
+
+            if (id.HasValue)
+            {
+                var categoryName = this.cacheItems.GetContestCategoryName(id.Value);
+
+                if (categoryName == null)
+                {
+                    return null;
+                }
+
+                contestCategory.CategoryName = categoryName;
+            }
+
+            if (!contestCategory.SubCategories.Any())
+            {
+                contestCategory.SubCategories = this.cacheItems.GetContestSubCategoriesList(id);
+            }
+
+            return contestCategory;
+        }   
     }
 }

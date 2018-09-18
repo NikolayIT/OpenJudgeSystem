@@ -17,8 +17,9 @@
     using OJS.Services.Data.Contests;
     using OJS.Web.Common;
     using OJS.Web.Common.Extensions;
-    using OJS.Web.ViewModels;
+    using OJS.Web.Infrastructure.Filters.Attributes;
 
+    [PopulateMainContestCategoriesIntoViewBag]
     public class BaseController : Controller
     {
         public BaseController(IOjsData data) => this.Data = data;
@@ -33,13 +34,12 @@
         protected internal RedirectToRouteResult RedirectToAction<TController>(Expression<Action<TController>> expression)
             where TController : Controller
         {
-            var method = expression.Body as MethodCallExpression;
-            if (method == null)
+            if (expression.Body is MethodCallExpression method)
             {
-                throw new ArgumentException("Expected method call");
+                return this.RedirectToAction(method.Method.Name);
             }
 
-            return this.RedirectToAction(method.Method.Name);
+            throw new ArgumentException("Expected method call");
         }
 
         protected override void Initialize(RequestContext requestContext)
@@ -49,21 +49,13 @@
             base.Initialize(requestContext);
         }
 
-        protected ActionResult RedirectToHome()
-        {
-            return this.RedirectToAction<HomeController>(c => c.Index(), new { area = string.Empty });
-        }
+        protected ActionResult RedirectToHome() =>
+            this.RedirectToAction<HomeController>(c => c.Index(), new { area = string.Empty });
 
         protected override IAsyncResult BeginExecute(RequestContext requestContext, AsyncCallback callback, object state)
         {
             // Work with data before BeginExecute to prevent "NotSupportedException: A second operation started on this context before a previous asynchronous operation completed."
             this.UserProfile = this.Data.Users.GetByUsername(requestContext.HttpContext.User.Identity.Name);
-
-            this.ViewBag.MainCategories =
-                this.Data.ContestCategories.All()
-                    .Where(x => x.IsVisible && !x.ParentId.HasValue)
-                    .OrderBy(x => x.OrderBy)
-                    .Select(CategoryMenuItemViewModel.FromCategory);
 
             // Calling BeginExecute before PrepareSystemMessages for the TempData to has values
             var result = base.BeginExecute(requestContext, callback, state);

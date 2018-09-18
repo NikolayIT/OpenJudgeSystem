@@ -265,5 +265,8 @@
 
         public static string ToSingleLine(this string input) =>
             Regex.Replace(input, @"\t|\r|\n", string.Empty);
+
+        public static string RemoveMultipleSpaces(this string input) =>
+            Regex.Replace(input, @"\s+", " ");
     }
 }

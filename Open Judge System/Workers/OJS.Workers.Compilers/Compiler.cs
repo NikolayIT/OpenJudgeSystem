@@ -54,6 +54,8 @@
                     return ObjectFactory.GetInstance<CPlusPlusZipCompiler>();
                 case CompilerType.DotNetCompiler:
                     return ObjectFactory.GetInstance<DotNetCompiler>();
+                case CompilerType.SolidityCompiler:
+                    return ObjectFactory.GetInstance<SolidityCompiler>();
                 default:
                     throw new ArgumentException("Unsupported compiler.");
             }

@@ -1,15 +1,17 @@
-﻿namespace OJS.Workers.LocalWorker.Helpers
+﻿namespace OJS.Workers.Jobs.Helpers
 {
     using System;
 
     using OJS.Common.Models;
+    using OJS.Workers.Common;
     using OJS.Workers.ExecutionStrategies;
+    using OJS.Workers.ExecutionStrategies.BlockchainStrategies;
     using OJS.Workers.ExecutionStrategies.SqlStrategies.MySql;
     using OJS.Workers.ExecutionStrategies.SqlStrategies.SqlServerLocalDb;
 
     public static class SubmissionJobHelper
     {
-        public static IExecutionStrategy CreateExecutionStrategy(ExecutionStrategyType type)
+        public static IExecutionStrategy CreateExecutionStrategy(ExecutionStrategyType type, int portNumber)
         {
             IExecutionStrategy executionStrategy;
             switch (type)
@@ -266,6 +268,16 @@
                         Settings.PhpCliBaseTimeUsedInMilliseconds,
                         Settings.PhpCliBaseMemoryUsedInBytes);
                     break;
+                case ExecutionStrategyType.SolidityCompileDeployAndRunUnitTestsExecutionStrategy:
+                    executionStrategy = new SolidityCompileDeployAndRunUnitTestsExecutionStrategy(
+                        GetCompilerPath,
+                        Settings.NodeJsExecutablePath,
+                        Settings.GanacheCliNodeExecutablePath,
+                        Settings.TruffleCliNodeExecutablePath,
+                        portNumber,
+                        Settings.SolidityBaseTimeUsedInMilliseconds,
+                        Settings.SolidityBaseMemoryUsedInBytes);
+                    break;
                 case ExecutionStrategyType.SqlServerLocalDbPrepareDatabaseAndRunQueries:
                     executionStrategy = new SqlServerLocalDbPrepareDatabaseAndRunQueriesExecutionStrategy(
                         Settings.SqlServerLocalDbMasterDbConnectionString,
@@ -339,6 +351,8 @@
                 case CompilerType.DotNetCompiler:
                 case CompilerType.CSharpDotNetCore:
                     return Settings.DotNetCompilerPath;
+                case CompilerType.SolidityCompiler:
+                    return Settings.SolidityCompilerPath;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type));
             }

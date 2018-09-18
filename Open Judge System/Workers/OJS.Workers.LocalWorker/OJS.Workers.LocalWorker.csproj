@@ -78,8 +78,8 @@
     <Reference Include="MissingFeatures, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\MissingFeatures.NET.1.1\lib\MissingFeatures.dll</HintPath>
     </Reference>
-    <Reference Include="SimpleInjector, Version=4.0.11.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\SimpleInjector.4.0.11\lib\net45\SimpleInjector.dll</HintPath>
+    <Reference Include="SimpleInjector, Version=4.3.0.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SimpleInjector.4.3.0\lib\net45\SimpleInjector.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -94,8 +94,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helpers\SubmissionJobHelper.cs" />
-    <Compile Include="IJob.cs" />
+    <Compile Include="SimpleInjectorContainer.cs" />
     <Compile Include="LocalWorkerService.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -105,8 +104,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Bootstrap.cs" />
-    <Compile Include="Settings.cs" />
-    <Compile Include="SubmissionJob.cs" />
+    <Compile Include="SubmissionJobStrategy.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -170,6 +168,14 @@
     <ProjectReference Include="..\OJS.Workers.Executors\OJS.Workers.Executors.csproj">
       <Project>{cda78d62-7210-45ca-b3e5-9f6a5dea5734}</Project>
       <Name>OJS.Workers.Executors</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OJS.Workers.Jobs\OJS.Workers.Jobs.csproj">
+      <Project>{6E2902A5-E47F-4888-953E-4F81467B40C7}</Project>
+      <Name>OJS.Workers.Jobs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OJS.Workers\OJS.Workers.csproj">
+      <Project>{2CD6D71C-26BB-478B-8FF3-691A59B51D51}</Project>
+      <Name>OJS.Workers</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

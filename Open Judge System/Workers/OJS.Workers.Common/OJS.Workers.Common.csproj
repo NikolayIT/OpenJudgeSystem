@@ -75,6 +75,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="Helpers\CSharpPreprocessorHelper.cs" />
     <Compile Include="Helpers\JavaCodePreprocessorHelper.cs" />
+    <Compile Include="IDependencyContainer.cs" />
     <Compile Include="ProcessExecutionResult.cs" />
     <Compile Include="ProcessExecutionResultType.cs" />
     <Compile Include="IChecker.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="Agents\TaskInformation.cs" />
     <Compile Include="Agents\SourceFile.cs" />
     <Compile Include="Agents\Test.cs" />
+    <Compile Include="Settings.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

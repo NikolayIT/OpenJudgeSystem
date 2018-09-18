@@ -85,6 +85,7 @@
     <Compile Include="Attributes\LocalizedDescriptionAttribute.cs" />
     <Compile Include="Attributes\LocalizedDisplayFormatAttribute.cs" />
     <Compile Include="Constants\AppSettingConstants.cs" />
+    <Compile Include="Constants\CacheConstants.cs" />
     <Compile Include="Constants\EditorTemplateConstants.cs" />
     <Compile Include="DataAnnotations\DatabasePropertyAttribute.cs" />
     <Compile Include="ExpressionBuilder.cs" />
