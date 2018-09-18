@@ -7,6 +7,9 @@
 
     using OJS.Common.Extensions;
     using OJS.Data;
+    using OJS.Services.Data.Participants;
+    using OJS.Services.Data.Submissions;
+    using OJS.Services.Data.Tests;
     using OJS.Web.Areas.Contests.ViewModels.Tests;
     using OJS.Web.Controllers;
 
@@ -15,17 +18,27 @@
     [Authorize]
     public class TestsController : BaseController
     {
-        public TestsController(IOjsData data)
+        private readonly ITestsDataService testsData;
+        private readonly IParticipantsDataService participantsData;
+        private readonly ISubmissionsDataService submissionsData;
+
+        public TestsController(
+            IOjsData data,
+            ITestsDataService testsData,
+            IParticipantsDataService participantsData,
+            ISubmissionsDataService submissionsData)
             : base(data)
         {
+            this.testsData = testsData;
+            this.participantsData = participantsData;
+            this.submissionsData = submissionsData;
         }
 
         [HttpGet]
         public ActionResult GetInputData(int testId, int submissionId)
         {
-            var testInfo = this.Data.Tests
-                .All()
-                .Where(t => t.Id == testId)
+            var testInfo = this.testsData
+                .GetByIdQuery(testId)
                 .Select(t => new
                 {
                     InputDataAsBytes = t.InputData,
@@ -43,34 +56,35 @@
                 throw new HttpException((int)HttpStatusCode.NotFound, Resource.Test_not_found_message);
             }
 
-            var hasPermissions = this.CheckIfUserHasProblemPermissions(testInfo.ProblemId);
-            var isParticipant = this.Data.Participants
-                .All()
-                .Any(p => p.UserId == this.UserProfile.Id && p.ContestId == testInfo.ContestId);
-
-            var isUnofficialParticipant = this.Data.Submissions
-                .All()
-                .Any(s => s.Id == submissionId && !s.Participant.IsOfficial);
-
-            bool shouldDisplayDetailedTestInfo = hasPermissions ||
-                                                 ((testInfo.IsTrialTest ||
-                                                   testInfo.ShowDetailedFeedback ||
-                                                   testInfo.IsOpenTest) &&
-                                                   isParticipant) ||
-                                                 (testInfo.AutoChangeTestsFeedbackVisibility && isUnofficialParticipant);
-
-            if (shouldDisplayDetailedTestInfo)
+            if (!ShouldDisplayDetailedTestInfo())
             {
-                var inputDataViewModel = new TestInputDataViewModel
-                {
-                    InputData = testInfo.InputDataAsBytes.Decompress(),
-                    TestId = testId
-                };
-
-                return this.PartialView("_GetInputDataPartial", inputDataViewModel);
+                throw new HttpException((int)HttpStatusCode.Forbidden, Resource.No_rights_message);
             }
 
-            throw new HttpException((int)HttpStatusCode.Forbidden, Resource.No_rights_message);
+            var inputDataViewModel = new TestInputDataViewModel
+            {
+                InputData = testInfo.InputDataAsBytes.Decompress(),
+                TestId = testId
+            };
+
+            return this.PartialView("_GetInputDataPartial", inputDataViewModel);
+
+            bool ShouldDisplayDetailedTestInfo()
+            {
+                var userHasProblemPermissions = this.CheckIfUserHasProblemPermissions(testInfo.ProblemId);
+
+                var userIsParticipant = this.participantsData
+                    .ExistsByContestAndUser(testInfo.ContestId, this.UserProfile.Id);
+
+                var userHasTestPermissions = userIsParticipant &&
+                    (testInfo.IsTrialTest || testInfo.ShowDetailedFeedback || testInfo.IsOpenTest);
+
+                var isUnofficialSubmission = !this.submissionsData.IsOfficialById(submissionId);
+
+                var testIsOpenForEveryone = testInfo.AutoChangeTestsFeedbackVisibility && isUnofficialSubmission;
+
+                return userHasProblemPermissions || userHasTestPermissions || testIsOpenForEveryone;
+            }
         }
     }
 }

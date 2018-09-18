@@ -11,6 +11,7 @@
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Services.Data.Contests;
+    using OJS.Services.Data.Participants;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.InputModels.AntiCheat;
     using OJS.Web.Areas.Administration.ViewModels.AntiCheat;
@@ -27,33 +28,35 @@
         private readonly IPlagiarismDetectorFactory plagiarismDetectorFactory;
         private readonly ISimilarityFinder similarityFinder;
         private readonly IContestsDataService contestsData;
+        private readonly IParticipantsDataService participantsData;
 
         public AntiCheatController(
             IOjsData data,
             IPlagiarismDetectorFactory plagiarismDetectorFactory,
             ISimilarityFinder similarityFinder,
-            IContestsDataService contestsData)
+            IContestsDataService contestsData,
+            IParticipantsDataService participantsData)
             : base(data)
         {
             this.plagiarismDetectorFactory = plagiarismDetectorFactory;
             this.similarityFinder = similarityFinder;
             this.contestsData = contestsData;
+            this.participantsData = participantsData;
         }
 
         public ActionResult ByIp() => this.View(this.GetContestsListItems());
 
         public ActionResult RenderByIpGrid(int id, string excludeIps)
         {
-            var participantsByIps = this.Data.Participants
-                .All()
-                .Where(p => p.ContestId == id && p.IsOfficial)
+            var participantsByIps = this.participantsData
+                .GetAllOfficialByContest(id)
                 .Select(AntiCheatByIpAdministrationViewModel.ViewModel)
                 .Where(p => p.DifferentIps.Count() > 1)
                 .ToList();
 
             if (!string.IsNullOrEmpty(excludeIps))
             {
-                var withoutExcludeIps = this.Data.Participants.All();
+                var withoutExcludeIps = this.participantsData.GetAll();
 
                 var ipsToExclude = excludeIps.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (var ip in ipsToExclude)

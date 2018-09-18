@@ -7,15 +7,19 @@
     using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Data;
+    using OJS.Services.Data.Users;
     using OJS.Web.Areas.Administration.Controllers.Common;
     using OJS.Web.Areas.Administration.ViewModels.Lecturers;
 
     public class LecturersController : AdministrationBaseGridController
     {
-        public LecturersController(IOjsData data)
-            : base(data)
-        {
-        }
+        private readonly IUsersDataService usersData;
+
+        public LecturersController(
+            IOjsData data,
+            IUsersDataService usersData)
+            : base(data) =>
+                this.usersData = usersData;
 
         public override IEnumerable GetData()
         {
@@ -27,9 +31,8 @@
                 .Select(x => x.Id)
                 .FirstOrDefault();
 
-            return this.Data.Users
-                .All()
-                .Where(x => x.Roles.Any(y => y.RoleId == lectureRoleId))
+            return this.usersData
+                .GetAllByRole(lectureRoleId)
                 .Select(LecturerGridViewModel.ViewModel);
         }
 

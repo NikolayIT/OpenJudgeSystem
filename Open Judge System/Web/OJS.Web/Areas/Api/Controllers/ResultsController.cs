@@ -9,6 +9,7 @@
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Services.Data.Contests;
+    using OJS.Services.Data.Participants;
     using OJS.Web.Areas.Api.Models;
     using OJS.Web.Infrastructure.Filters.Attributes;
 
@@ -22,13 +23,16 @@
 
         private readonly IOjsData data;
         private readonly IContestsDataService contestsData;
+        private readonly IParticipantsDataService participantsData;
 
         public ResultsController(
             IOjsData data,
-            IContestsDataService contestsData)
+            IContestsDataService contestsData,
+            IParticipantsDataService participantsData)
         {
             this.data = data;
             this.contestsData = contestsData;
+            this.participantsData = participantsData;
         }
 
         public ContentResult GetPointsByAnswer(string apiKey, int? contestId, string answer)
@@ -38,9 +42,9 @@
                 return this.Content($"{ErrorMessage}: {InvalidArgumentsMessage}");
             }
 
-            var participants = this.data.Participants
-                .All()
-                .Where(x => x.IsOfficial && x.ContestId == contestId.Value && x.Answers.Any(a => a.Answer == answer));
+            var participants = this.participantsData
+                .GetAllOfficialByContest(contestId.Value)
+                .Where(p => p.Answers.Any(a => a.Answer == answer));
 
             var participant = participants.FirstOrDefault();
             if (participant == null)
@@ -65,8 +69,9 @@
                 return this.Content($"{ErrorMessage}: {InvalidArgumentsMessage}");
             }
 
-            var participants = this.data.Participants.All().Where(
-                x => x.IsOfficial && x.ContestId == contestId.Value && x.User.Email == email);
+            var participants = this.participantsData
+                .GetAllOfficialByContest(contestId.Value)
+                .Where(p => p.User.Email == email);
 
             var participant = participants.FirstOrDefault();
             if (participant == null)
@@ -91,9 +96,8 @@
                 return this.Json(new ErrorMessageViewModel(InvalidArgumentsMessage), JsonRequestBehavior.AllowGet);
             }
 
-            var participants = this.data.Participants
-                .All()
-                .Where(x => x.IsOfficial && x.ContestId == contestId.Value)
+            var participants = this.participantsData
+                .GetAllOfficialByContest(contestId.Value)
                 .Select(participant => new
                 {
                     participant.User.UserName,
@@ -131,9 +135,8 @@
 
             var contestMaxPoints = (double)this.contestsData.GetMaxPointsForExportById(contestId.Value);
 
-            var participants = this.data.Participants
-                .All()
-                .Where(x => x.ContestId == contestId.Value)
+            var participants = this.participantsData
+                .GetAllByContest(contestId.Value)
                 .Select(participant => new
                 {
                     participant.UserId,
@@ -161,9 +164,8 @@
                 return this.Json(new ErrorMessageViewModel(InvalidArgumentsMessage), JsonRequestBehavior.AllowGet);
             }
 
-            var participants = this.data.Participants
-                .All()
-                .Where(x => x.IsOfficial && x.ContestId == contestId.Value)
+            var participants = this.participantsData
+                .GetAllOfficialByContest(contestId.Value)
                 .Select(participant => new
                 {
                     participant.User.UserName,

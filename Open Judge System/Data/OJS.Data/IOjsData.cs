@@ -14,8 +14,6 @@
 
         IDeletableEntityRepository<Problem> Problems { get; }
 
-        ITestRepository Tests { get; }
-
         IDeletableEntityRepository<Event> Events { get; }
 
         IDeletableEntityRepository<ContestCategory> ContestCategories { get; }
@@ -23,8 +21,6 @@
         IDeletableEntityRepository<ContestQuestion> ContestQuestions { get; }
 
         IDeletableEntityRepository<ContestQuestionAnswer> ContestQuestionAnswers { get; }
-
-        ITestRunsRepository TestRuns { get; }
 
         IDeletableEntityRepository<FeedbackReport> FeedbackReports { get; }
 
@@ -35,8 +31,6 @@
         IUsersRepository Users { get; }
 
         IRepository<IdentityRole> Roles { get; }
-
-        IParticipantsRepository Participants { get; }
 
         IRepository<Setting> Settings { get; }
 
