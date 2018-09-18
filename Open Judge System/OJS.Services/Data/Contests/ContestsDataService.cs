@@ -30,9 +30,8 @@
         public IQueryable<Contest> GetAll() => this.contests.All();
 
         public IQueryable<Contest> GetAllActive() =>
-            this.GetAll()
+            this.GetAllVisible()
                 .Where(c =>
-                    c.IsVisible &&
                     c.StartTime <= DateTime.Now &&
                     (c.EndTime >= DateTime.Now ||
                         (c.Type == ContestType.OnlinePracticalExam && c.Participants.Any(p =>
@@ -40,9 +39,8 @@
                             p.ParticipationEndTime >= DateTime.Now))));
 
         public IQueryable<Contest> GetAllCompetable() =>
-            this.GetAll()
+            this.GetAllVisible()
                 .Where(c =>
-                    c.IsVisible &&
                     c.StartTime <= DateTime.Now &&
                     c.EndTime.HasValue &&
                     c.EndTime >= DateTime.Now);
@@ -55,14 +53,16 @@
                     !c.Participants.Any(p => p.ParticipationEndTime < DateTime.Now));
 
         public IQueryable<Contest> GetAllUpcoming() =>
-            this.GetAll()
-                .Where(c => c.StartTime > DateTime.Now && c.IsVisible);
+            this.GetAllVisible()
+                .Where(c => c.StartTime > DateTime.Now);
 
         public IQueryable<Contest> GetAllPast() =>
-            this.GetAll()
-                .Where(c => c.EndTime < DateTime.Now && c.IsVisible);
+            this.GetAllVisible()
+                .Where(c => c.EndTime < DateTime.Now);
 
-        public IQueryable<Contest> GetAllVisible() => this.GetAll().Where(c => c.IsVisible);
+        public IQueryable<Contest> GetAllVisible() =>
+            this.GetAll()
+                .Where(c => c.IsVisible);
 
         public IQueryable<Contest> GetAllVisibleByCategory(int categoryId) =>
             this.GetAllVisible()
