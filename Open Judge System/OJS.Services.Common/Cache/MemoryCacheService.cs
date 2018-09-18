@@ -6,7 +6,7 @@
 
     public class MemoryCacheService : ICacheService
     {
-        public T Get<T>(string cacheId, Func<T> getItemCallback, int? cacheSeconds = null)
+        public T Get<T>(string cacheId, Func<T> getItemCallback, int? cacheSeconds)
             where T : class
         {
             if (HttpRuntime.Cache.Get(cacheId) is T item)
