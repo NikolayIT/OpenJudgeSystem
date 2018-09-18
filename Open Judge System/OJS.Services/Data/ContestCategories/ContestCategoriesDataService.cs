@@ -12,14 +12,12 @@
         public ContestCategoriesDataService(IEfDeletableEntityRepository<ContestCategory> contestCategories) =>
             this.contestCategories = contestCategories;
 
+        public ContestCategory GetById(int id) => this.contestCategories.GetById(id);
+
         public IQueryable<ContestCategory> GetAllVisible() =>
             this.contestCategories
                 .All()
                 .Where(cc => cc.IsVisible);
-
-        public IQueryable<ContestCategory> GetVisibleByIdQuery(int id) =>
-            this.GetAllVisible()
-                .Where(cc => cc.Id == id);
 
         public IQueryable<ContestCategory> GetAllVisibleByLecturer(string lecturerId) =>
             this.GetAllVisible()
@@ -35,8 +33,8 @@
                 .FirstOrDefault();
 
         public bool HasContestsById(int id) =>
-            this.GetVisibleByIdQuery(id)
-                .Select(c => c.Contests.Any())
-                .FirstOrDefault();
+            this.GetAllVisible()
+                .Where(cc => cc.Id == id)
+                .Any(cc => cc.Contests.Any());
     }
 }

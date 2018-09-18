@@ -29,6 +29,8 @@
 
         IEnumerable<int> GetIdsByProblem(int problemId);
 
+        bool IsOfficialById(int id);
+
         void SetAllToUnprocessedByProblem(int problemId);
 
         void DeleteByProblem(int problemId);

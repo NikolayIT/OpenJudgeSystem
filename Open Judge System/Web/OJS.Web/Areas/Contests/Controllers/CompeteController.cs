@@ -35,6 +35,7 @@
     using OJS.Web.Areas.Contests.ViewModels.Results;
     using OJS.Web.Areas.Contests.ViewModels.Submissions;
     using OJS.Web.Common.Attributes;
+    using OJS.Web.Common.Exceptions;
     using OJS.Web.Common.Extensions;
     using OJS.Web.Controllers;
 
@@ -138,7 +139,7 @@
                     this.User.IsAdmin(),
                     allowToAdminAlways: true))
             {
-                throw new HttpException(
+                throw new ContestCannotBeCompetedException(
                     (int)HttpStatusCode.Forbidden,
                     Resource.ContestsGeneral.Contest_cannot_be_competed);
             }
@@ -167,8 +168,13 @@
             }
             catch (HttpException httpEx)
             {
+                if (httpEx is ContestCannotBeCompetedException && contest.CanBePracticed)
+                {
+                    return this.RedirectToAction(c => c.Index(id, false, null));
+                }
+
                 this.TempData.AddDangerMessage(httpEx.Message);
-                return this.RedirectToAction<HomeController>(c => c.Index(), new { area = string.Empty });
+                return this.RedirectToHome();
             }
 
             var isUserAdminOrLecturerInContest = this.IsUserAdminOrLecturerInContest(contest);
@@ -698,7 +704,7 @@
             }
 
             var contest = problemWithResource.ProblemGroup.Contest;
-            bool userCanDownloadResource = false;
+            var userCanDownloadResource = false;
 
             if (this.UserProfile == null)
             {
@@ -713,7 +719,8 @@
             else
             {
                 this.ValidateContest(contest, official);
-                userCanDownloadResource = this.Data.Participants.Any(contest.Id, this.UserProfile.Id, official);
+                userCanDownloadResource = this.participantsData
+                    .ExistsByContestByUserAndIsOfficial(contest.Id, this.UserProfile.Id, official);
             }
 
             if (userCanDownloadResource ||
@@ -768,7 +775,7 @@
         [Authorize]
         public ActionResult NewContestIp(int id)
         {
-            if (!this.Data.Participants.Any(id, this.UserProfile.Id, true))
+            if (!this.participantsData.ExistsByContestByUserAndIsOfficial(id, this.UserProfile.Id, true))
             {
                 return this.RedirectToAction("Register", new { id, official = true });
             }
@@ -791,7 +798,7 @@
         [ValidateAntiForgeryToken]
         public ActionResult NewContestIp(NewContestIpViewModel model)
         {
-            if (!this.Data.Participants.Any(model.ContestId, this.UserProfile.Id, true))
+            if (!this.participantsData.ExistsByContestByUserAndIsOfficial(model.ContestId, this.UserProfile.Id, true))
             {
                 return this.RedirectToAction("Register", new { id = model.ContestId, official = true });
             }

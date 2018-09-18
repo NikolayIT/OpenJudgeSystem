@@ -25,6 +25,7 @@
             ActionExecutedContext filterContext)
         {
             this.cache.Remove(CacheConstants.MainContestCategoriesDropDown);
+            this.cache.Remove(CacheConstants.ContestCategoriesTree);
         }
     }
 }

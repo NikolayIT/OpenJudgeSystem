@@ -97,6 +97,9 @@
     <Compile Include="Business\Submissions\ISubmissionsBusinessService.cs" />
     <Compile Include="Business\Submissions\Models\ParticipantScoreModel.cs" />
     <Compile Include="Business\Submissions\SubmissionsBusinessService.cs" />
+    <Compile Include="Cache\CacheItemsProviderService.cs" />
+    <Compile Include="Cache\Models\CategoryMenuItemViewModel.cs" />
+    <Compile Include="Cache\Models\ContestCategoryListViewModel.cs" />
     <Compile Include="Data\Checkers\CheckersDataService.cs" />
     <Compile Include="Data\Checkers\ICheckersDataService.cs" />
     <Compile Include="Data\ContestCategories\ContestCategoriesDataService.cs" />
@@ -105,6 +108,7 @@
     <Compile Include="Data\Contests\IContestsDataService.cs" />
     <Compile Include="Data\ExamGroups\ExamGroupsDataService.cs" />
     <Compile Include="Data\ExamGroups\IExamGroupsDataService.cs" />
+    <Compile Include="Cache\ICacheItemsProviderService.cs" />
     <Compile Include="Data\Ips\IIpsDataService.cs" />
     <Compile Include="Data\Ips\IpsDataService.cs" />
     <Compile Include="Data\Participants\IParticipantsDataService.cs" />

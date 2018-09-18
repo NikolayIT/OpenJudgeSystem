@@ -16,11 +16,19 @@
             this.GetAll()
                 .FirstOrDefault(u => u.Id == id);
 
+        public UserProfile GetByUsername(string username) =>
+            this.GetAll()
+                .FirstOrDefault(u => u.UserName == username);
+
         public IQueryable<UserProfile> GetAll() =>
             this.users.All();
 
         public IQueryable<UserProfile> GetAllWithDeleted() =>
             this.users.AllWithDeleted();
+
+        public IQueryable<UserProfile> GetAllByRole(string roleId) =>
+            this.GetAll()
+                .Where(x => x.Roles.Any(y => y.RoleId == roleId));
 
         public void DeleteById(string id) =>
             this.users.Delete(u => u.Id == id);
