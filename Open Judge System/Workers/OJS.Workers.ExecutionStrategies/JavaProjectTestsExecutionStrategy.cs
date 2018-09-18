@@ -249,7 +249,8 @@ class Classes{{
             {
                 var className = JavaCodePreprocessorHelper.GetPublicClassName(test.Input);
                 var testFileName =
-                        $"{this.WorkingDirectory}\\{className}{Constants.JavaSourceFileExtension}";
+                    $"{this.WorkingDirectory}\\{className}{Constants.JavaSourceFileExtension}";
+
                 File.WriteAllText(testFileName, test.Input);
                 filePaths[testNumber] = testFileName;
                 this.TestNames.Add(className);

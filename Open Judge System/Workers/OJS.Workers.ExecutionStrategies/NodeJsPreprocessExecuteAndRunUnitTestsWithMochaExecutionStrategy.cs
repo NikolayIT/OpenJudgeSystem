@@ -7,7 +7,8 @@
     using OJS.Workers.Common;
     using OJS.Workers.Common.Helpers;
 
-    public class NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy : NodeJsPreprocessExecuteAndCheckExecutionStrategy
+    public class NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy
+        : NodeJsPreprocessExecuteAndCheckExecutionStrategy
     {
         protected const string TestsPlaceholder = "#testsCode#";
 

@@ -276,9 +276,10 @@
             this.ProjectRootDirectoryInSubmissionZip = $"{IntelliJProjectTemplatePattern}/{normalizedPath}/";
             this.ProjectTestDirectoryInSubmissionZip = $"{IntelliJTestProjectTemplatePattern}/{normalizedPath}/";
 
-            this.MainClassFileName = this.MainClassFileName.Substring(
-                this.MainClassFileName.LastIndexOf(".", StringComparison.Ordinal) + 1)
-                + Constants.JavaSourceFileExtension;
+            var fileNameWithoutExtension = this.MainClassFileName.Substring(
+                this.MainClassFileName.LastIndexOf(".", StringComparison.Ordinal) + 1);
+
+            this.MainClassFileName = fileNameWithoutExtension + Constants.JavaSourceFileExtension;
         }
 
         protected void OverwriteApplicationProperties(string submissionZipFilePath)

@@ -685,7 +685,11 @@
             zipFile.Save(stream);
             stream.Position = 0;
 
-            var exportedTests = this.File(stream, MediaTypeNames.Application.Zip, $"{zipFileName}{Constants.ZipFileExtension}");
+            var exportedTests = this.File(
+                stream,
+                MediaTypeNames.Application.Zip,
+                $"{zipFileName}{Constants.ZipFileExtension}");
+
             return exportedTests;
         }
 

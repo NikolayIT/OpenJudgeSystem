@@ -8,7 +8,8 @@
     using OJS.Workers.Common;
     using OJS.Workers.Common.Helpers;
 
-    public class NodeJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy : NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy
+    public class NodeJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy
+        : NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy
     {
         public NodeJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy(
             string nodeJsExecutablePath,
