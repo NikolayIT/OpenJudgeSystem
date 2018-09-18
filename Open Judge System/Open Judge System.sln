@@ -101,8 +101,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Workers.Jobs", "Workers
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Workers", "Workers\OJS.Workers\OJS.Workers.csproj", "{2CD6D71C-26BB-478B-8FF3-691A59B51D51}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "LocalWorker", "LocalWorker", "{44A25B08-9C05-4B7A-9249-3267B9F1802A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
