@@ -40,9 +40,6 @@
 
         public override SubmissionModel RetrieveSubmission()
         {
-            bool isSubmissionRetrieved;
-            int submissionId;
-
             lock (this.SubmissionsForProcessing)
             {
                 if (this.SubmissionsForProcessing.IsEmpty)
@@ -55,19 +52,29 @@
                         .ForEach(this.SubmissionsForProcessing.Enqueue);
                 }
 
-                isSubmissionRetrieved = this.SubmissionsForProcessing.TryDequeue(out submissionId);
-            }
+                var isSubmissionRetrieved = this.SubmissionsForProcessing.TryDequeue(out var submissionId);
 
-            var submissionModel = isSubmissionRetrieved
-                ? this.GetSubmissionModel(submissionId)
-                : null;
+                if (!isSubmissionRetrieved)
+                {
+                    return null;
+                }
 
-            if (submissionModel != null)
-            {
+                this.Logger.InfoFormat($"Submission #{submissionId} retrieved from data store successfully");
+
+                this.submission = this.submissionsData.GetById(submissionId);
+
+                this.submissionForProcessing = this.submissionsForProccessingData.GetBySubmission(submissionId);
+
+                if (this.submission == null || this.submissionForProcessing == null)
+                {
+                    this.Logger.Error($"Cannot retrieve submission #{submissionId} from database");
+                    return null;
+                }
+
                 this.SetSubmissionToProcessing();
             }
 
-            return submissionModel;
+            return this.GetSubmissionModel();
         }
 
         public override void BeforeExecute()
@@ -273,45 +280,31 @@
             }
         }
 
-        private SubmissionModel GetSubmissionModel(int submissionId)
+        private SubmissionModel GetSubmissionModel() => new SubmissionModel
         {
-            this.Logger.InfoFormat($"Submission #{submissionId} retrieved from data store successfully");
-
-            this.submission = this.submissionsData.GetById(submissionId);
-
-            this.submissionForProcessing = this.submissionsForProccessingData.GetBySubmission(submissionId);
-
-            if (this.submission == null || this.submissionForProcessing == null)
-            {
-                return null;
-            }
-
-            return new SubmissionModel
-            {
-                Id = this.submission.Id,
-                AdditionalCompilerArguments = this.submission.SubmissionType.AdditionalCompilerArguments,
-                AllowedFileExtensions = this.submission.SubmissionType.AllowedFileExtensions,
-                FileContent = this.submission.Content,
-                CompilerType = this.submission.SubmissionType.CompilerType,
-                TaskSkeleton = this.submission.SolutionSkeleton,
-                TimeLimit = this.submission.Problem.TimeLimit,
-                MemoryLimit = this.submission.Problem.MemoryLimit,
-                CheckerParameter = this.submission.Problem.Checker.Parameter,
-                CheckerAssemblyName = this.submission.Problem.Checker.DllFile,
-                CheckerTypeName = this.submission.Problem.Checker.ClassName,
-                ExecutionStrategyType = this.submission.SubmissionType.ExecutionStrategyType,
-                Tests = this.submission.Problem.Tests
-                    .AsQueryable()
-                    .Select(t => new TestContext
-                    {
-                        Id = t.Id,
-                        Input = t.InputDataAsString,
-                        Output = t.OutputDataAsString,
-                        IsTrialTest = t.IsTrialTest,
-                        OrderBy = t.OrderBy
-                    })
-                    .ToList()
-            };
-        }
+            Id = this.submission.Id,
+            AdditionalCompilerArguments = this.submission.SubmissionType.AdditionalCompilerArguments,
+            AllowedFileExtensions = this.submission.SubmissionType.AllowedFileExtensions,
+            FileContent = this.submission.Content,
+            CompilerType = this.submission.SubmissionType.CompilerType,
+            TaskSkeleton = this.submission.Problem.SolutionSkeleton,
+            TimeLimit = this.submission.Problem.TimeLimit,
+            MemoryLimit = this.submission.Problem.MemoryLimit,
+            CheckerParameter = this.submission.Problem.Checker.Parameter,
+            CheckerAssemblyName = this.submission.Problem.Checker.DllFile,
+            CheckerTypeName = this.submission.Problem.Checker.ClassName,
+            ExecutionStrategyType = this.submission.SubmissionType.ExecutionStrategyType,
+            Tests = this.submission.Problem.Tests
+                .AsQueryable()
+                .Select(t => new TestContext
+                {
+                    Id = t.Id,
+                    Input = t.InputDataAsString,
+                    Output = t.OutputDataAsString,
+                    IsTrialTest = t.IsTrialTest,
+                    OrderBy = t.OrderBy
+                })
+                .ToList()
+        };
     }
 }

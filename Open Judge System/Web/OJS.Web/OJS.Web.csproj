@@ -1852,10 +1852,14 @@
     <Compile Include="Controllers\TempController.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
     <Compile Include="Infrastructure\Filters\ActionFilterDispatcher.cs" />
+    <Compile Include="Infrastructure\Filters\Attributes\ClearMainContestCategoriesCacheAttribute.cs" />
+    <Compile Include="Infrastructure\Filters\ClearMainContestCategoriesCacheFilter.cs" />
     <Compile Include="Infrastructure\Filters\Attributes\LogAccessAttribute.cs" />
+    <Compile Include="Infrastructure\Filters\Attributes\PopulateMainContestCategoriesIntoViewBagAttribute.cs" />
     <Compile Include="Infrastructure\Filters\Attributes\ValidateRemoteDataApiKeyAttribute.cs" />
     <Compile Include="Infrastructure\Filters\Contracts\IActionFilter.cs" />
     <Compile Include="Infrastructure\Filters\LogAccessFilter.cs" />
+    <Compile Include="Infrastructure\Filters\PopulateMainContestCategoriesIntoViewBagFilter.cs" />
     <Compile Include="Infrastructure\Filters\ValidateRemoteDataApiKeyFilter.cs" />
     <Compile Include="Infrastructure\SimpleInjectorPackages\ActionFiltersPackage.cs" />
     <Compile Include="Infrastructure\SimpleInjectorPackages\DataPackage.cs" />
