@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{91080721-1B4B-49E6-BB1B-3684268D12DD}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>OJS.Workers.LocalWorkerMonitoring</RootNamespace>
-    <AssemblyName>OJS.Workers.LocalWorkerMonitoring</AssemblyName>
+    <RootNamespace>OJS.LocalWorkerMonitoring</RootNamespace>
+    <AssemblyName>OJS.LocalWorkerMonitoring</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -73,7 +73,7 @@
       <Project>{A7DE52AC-62E7-43F0-8F73-047728EB5AF2}</Project>
       <Name>OJS.Services.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OJS.Workers.Common\OJS.Workers.Common.csproj">
+    <ProjectReference Include="..\..\Workers\OJS.Workers.Common\OJS.Workers.Common.csproj">
       <Project>{7F714D0B-CE81-4DD7-B6B2-62080FE22CD8}</Project>
       <Name>OJS.Workers.Common</Name>
     </ProjectReference>

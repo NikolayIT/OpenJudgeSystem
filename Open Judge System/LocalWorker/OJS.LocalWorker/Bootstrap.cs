@@ -1,4 +1,4 @@
-﻿namespace OJS.Workers.LocalWorker
+﻿namespace OJS.LocalWorker
 {
     using System.Data.Entity;
     using System.Linq;
