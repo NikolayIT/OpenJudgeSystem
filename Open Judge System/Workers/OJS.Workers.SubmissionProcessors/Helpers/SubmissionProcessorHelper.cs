@@ -1,4 +1,4 @@
-﻿namespace OJS.Workers.Jobs.Helpers
+﻿namespace OJS.Workers.SubmissionProcessors.Helpers
 {
     using System;
 
@@ -9,7 +9,7 @@
     using OJS.Workers.ExecutionStrategies.SqlStrategies.MySql;
     using OJS.Workers.ExecutionStrategies.SqlStrategies.SqlServerLocalDb;
 
-    public static class SubmissionJobHelper
+    public static class SubmissionProcessorHelper
     {
         public static IExecutionStrategy CreateExecutionStrategy(ExecutionStrategyType type, int portNumber)
         {

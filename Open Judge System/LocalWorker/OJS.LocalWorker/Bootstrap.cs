@@ -16,7 +16,7 @@
     using OJS.Services.Data.SubmissionsForProcessing;
     using OJS.Workers.Common;
     using OJS.Workers.Compilers;
-    using OJS.Workers.Jobs;
+    using OJS.Workers.SubmissionProcessors;
 
     using SimpleInjector;
     using SimpleInjector.Lifestyles;
@@ -43,7 +43,7 @@
             container.Register<DbContext>(container.GetInstance<OjsDbContext>, Lifestyle.Scoped);
 
             container.Register(
-                typeof(IJobStrategy<>),
+                typeof(ISubmissionProcessingStrategy<>),
                 typeof(SubmissionJobStrategy),
                 Lifestyle.Scoped);
 

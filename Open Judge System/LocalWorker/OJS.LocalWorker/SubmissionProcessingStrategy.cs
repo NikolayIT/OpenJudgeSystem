@@ -10,10 +10,10 @@
     using OJS.Services.Data.SubmissionsForProcessing;
     using OJS.Services.Data.TestRuns;
     using OJS.Workers.ExecutionStrategies;
-    using OJS.Workers.Jobs;
-    using OJS.Workers.Jobs.Models;
+    using OJS.Workers.SubmissionProcessors;
+    using OJS.Workers.SubmissionProcessors.Models;
 
-    public class SubmissionJobStrategy : BaseJobStrategy<int>
+    public class SubmissionJobStrategy : SubmissionProcessingStrategy<int>
     {
         private readonly ISubmissionsDataService submissionsData;
         private readonly ITestRunsDataService testRunsData;

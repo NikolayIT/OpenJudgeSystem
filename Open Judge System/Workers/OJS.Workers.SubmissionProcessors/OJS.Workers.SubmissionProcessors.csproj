@@ -7,8 +7,8 @@
     <ProjectGuid>{6E2902A5-E47F-4888-953E-4F81467B40C7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OJS.Workers.Processors</RootNamespace>
-    <AssemblyName>OJS.Workers.Processors</AssemblyName>
+    <RootNamespace>OJS.Workers.SubmissionProcessors</RootNamespace>
+    <AssemblyName>OJS.Workers.SubmissionProcessors</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -46,7 +46,7 @@
   <ItemGroup>
     <Compile Include="SubmissionProcessingStrategy.cs" />
     <Compile Include="Helpers\SubmissionProcessorHelper.cs" />
-    <Compile Include="IProcessor.cs" />
+    <Compile Include="ISubmissionProcessor.cs" />
     <Compile Include="ISubmissionProcessingStrategy.cs" />
     <Compile Include="Models\SubmissionModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

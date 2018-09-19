@@ -1,4 +1,4 @@
-﻿namespace OJS.Workers.Jobs
+﻿namespace OJS.Workers.SubmissionProcessors
 {
     using System.Collections.Concurrent;
 
@@ -6,9 +6,9 @@
 
     using OJS.Workers.Common;
     using OJS.Workers.ExecutionStrategies;
-    using OJS.Workers.Jobs.Models;
+    using OJS.Workers.SubmissionProcessors.Models;
 
-    public abstract class BaseJobStrategy<TSubmission> : IJobStrategy<TSubmission>
+    public abstract class SubmissionProcessingStrategy<TSubmission> : ISubmissionProcessingStrategy<TSubmission>
     {
         protected ILog Logger { get; private set; }
 

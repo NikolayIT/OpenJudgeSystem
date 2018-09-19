@@ -11,12 +11,12 @@
     using log4net;
 
     using OJS.Workers.Common;
-    using OJS.Workers.Jobs;
+    using OJS.Workers.SubmissionProcessors;
 
     public class LocalWorkerServiceBase<TSubmission> : ServiceBase
     {
         private readonly ICollection<Thread> threads;
-        private readonly ICollection<IJob> jobs;
+        private readonly ICollection<ISubmissionProcessor> submissionProcessors;
 
         protected LocalWorkerServiceBase()
         {
@@ -25,7 +25,7 @@
             this.Logger = LogManager.GetLogger(loggerAssembly, Constants.LocalWorkerServiceLogName);
 
             this.threads = new List<Thread>();
-            this.jobs = new List<IJob>();
+            this.submissionProcessors = new List<ISubmissionProcessor>();
         }
 
         protected ILog Logger { get; }
@@ -38,7 +38,10 @@
 
             this.DependencyContainer = this.GetDependencyContainer();
 
-            this.SpawnJobsAndThreads(this.jobs, this.threads, new ConcurrentQueue<TSubmission>());
+            this.SpawnSubmissionProcessorsAndThreads(
+                this.submissionProcessors,
+                this.threads,
+                new ConcurrentQueue<TSubmission>());
 
             this.BeforeStartingThreads();
 
@@ -51,7 +54,7 @@
         {
             this.Logger.Info("LocalWorkerService stopping...");
 
-            this.StopJobs(this.jobs);
+            this.StopSubmissionProcessors(this.submissionProcessors);
 
             Thread.Sleep(this.TimeBeforeAbortingThreadsInMilliseconds);
 
@@ -72,8 +75,8 @@
         protected virtual int TimeBeforeAbortingThreadsInMilliseconds =>
             Constants.DefaultTimeBeforeAbortingThreadsInMilliseconds;
 
-        private void SpawnJobsAndThreads(
-            ICollection<IJob> jobsToSpawn,
+        private void SpawnSubmissionProcessorsAndThreads(
+            ICollection<ISubmissionProcessor> processors,
             ICollection<Thread> threadsToSpawn,
             ConcurrentQueue<TSubmission> submissionsForProcessing)
         {
@@ -81,23 +84,26 @@
 
             for (var i = 1; i <= Settings.ThreadsCount; i++)
             {
-                var job = new SubmissionJob<TSubmission>(
-                    $"Job #{i}",
+                var submissionProcessor = new SubmissionProcessor<TSubmission>(
+                    $"{nameof(SubmissionProcessor<TSubmission>)} #{i}",
                     this.DependencyContainer,
                     submissionsForProcessing,
                     Settings.GanacheCliDefaultPortNumber + i,
                     sharedLockObject);
 
-                var thread = new Thread(job.Start) { Name = $"Thread #{i}" };
+                var thread = new Thread(submissionProcessor.Start)
+                {
+                    Name = $"{nameof(Thread)} #{i}"
+                };
 
-                jobsToSpawn.Add(job);
+                processors.Add(submissionProcessor);
                 threadsToSpawn.Add(thread);
             }
         }
 
-        private void StartThreads(IEnumerable<Thread> threadsToStarts)
+        private void StartThreads(IEnumerable<Thread> threadsToStart)
         {
-            foreach (var thread in threadsToStarts)
+            foreach (var thread in threadsToStart)
             {
                 this.Logger.InfoFormat($"Starting {thread.Name}...");
                 thread.Start();
@@ -106,12 +112,12 @@
             }
         }
 
-        private void StopJobs(IEnumerable<IJob> jobsToStop)
+        private void StopSubmissionProcessors(IEnumerable<ISubmissionProcessor> processors)
         {
-            foreach (var job in jobsToStop)
+            foreach (var processor in processors)
             {
-                job.Stop();
-                this.Logger.InfoFormat($"{job.Name} stopped.");
+                processor.Stop();
+                this.Logger.InfoFormat($"{processor.Name} stopped.");
             }
         }
 
