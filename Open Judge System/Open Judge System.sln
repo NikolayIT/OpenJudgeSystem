@@ -97,7 +97,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Data.Archives", "OJS.Da
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.LocalWorkerMonitoring", "LocalWorker\OJS.LocalWorkerMonitoring\OJS.LocalWorkerMonitoring.csproj", "{91080721-1B4B-49E6-BB1B-3684268D12DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Workers.Processors", "Workers\OJS.Workers.Processors\OJS.Workers.Processors.csproj", "{6E2902A5-E47F-4888-953E-4F81467B40C7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Workers.SubmissionProcessors", "Workers\OJS.Workers.SubmissionProcessors\OJS.Workers.SubmissionProcessors.csproj", "{6E2902A5-E47F-4888-953E-4F81467B40C7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Workers", "Workers\OJS.Workers\OJS.Workers.csproj", "{2CD6D71C-26BB-478B-8FF3-691A59B51D51}"
 EndProject
