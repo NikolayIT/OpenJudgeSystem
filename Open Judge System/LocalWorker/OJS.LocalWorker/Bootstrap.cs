@@ -44,7 +44,7 @@
 
             container.Register(
                 typeof(ISubmissionProcessingStrategy<>),
-                typeof(SubmissionJobStrategy),
+                typeof(OjsSubmissionProcessingStrategy),
                 Lifestyle.Scoped);
 
             container.Register(

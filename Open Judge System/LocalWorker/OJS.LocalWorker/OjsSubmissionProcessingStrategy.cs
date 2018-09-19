@@ -13,7 +13,7 @@
     using OJS.Workers.SubmissionProcessors;
     using OJS.Workers.SubmissionProcessors.Models;
 
-    public class SubmissionJobStrategy : SubmissionProcessingStrategy<int>
+    public class OjsSubmissionProcessingStrategy : SubmissionProcessingStrategy<int>
     {
         private readonly ISubmissionsDataService submissionsData;
         private readonly ITestRunsDataService testRunsData;
@@ -24,7 +24,7 @@
         private Submission submission;
         private SubmissionForProcessing submissionForProcessing;
 
-        public SubmissionJobStrategy(
+        public OjsSubmissionProcessingStrategy(
             ISubmissionsDataService submissionsData,
             ITestRunsDataService testRunsData,
             IParticipantsDataService participantsData,
