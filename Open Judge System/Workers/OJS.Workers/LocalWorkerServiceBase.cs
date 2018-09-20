@@ -34,7 +34,7 @@
 
         protected override void OnStart(string[] args)
         {
-            this.Logger.Info("LocalWorkerService starting...");
+            this.Logger.Info($"{Constants.LocalWorkerServiceName} starting...");
 
             this.DependencyContainer = this.GetDependencyContainer();
 
@@ -44,20 +44,20 @@
 
             this.StartThreads();
 
-            this.Logger.Info("LocalWorkerService started.");
+            this.Logger.Info($"{Constants.LocalWorkerServiceName} started.");
         }
 
         protected override void OnStop()
         {
-            this.Logger.Info("LocalWorkerService stopping...");
+            this.Logger.Info($"{Constants.LocalWorkerServiceName} stopping...");
 
             this.StopSubmissionProcessors();
 
             Thread.Sleep(this.TimeBeforeAbortingThreadsInMilliseconds);
 
-            this.StopThreads();
+            this.AbortThreads();
 
-            this.Logger.Info("LocalWorkerService stopped.");
+            this.Logger.Info($"{Constants.LocalWorkerServiceName} stopped.");
         }
 
         protected virtual void BeforeStartingThreads()
@@ -80,11 +80,11 @@
             for (var i = 1; i <= Settings.ThreadsCount; i++)
             {
                 var submissionProcessor = new SubmissionProcessor<TSubmission>(
-                    $"SP #{i}",
-                    this.DependencyContainer,
-                    submissionsForProcessing,
-                    Settings.GanacheCliDefaultPortNumber + i,
-                    sharedLockObject);
+                    name: $"SP #{i}",
+                    dependencyContainer: this.DependencyContainer,
+                    submissionsForProcessing: submissionsForProcessing,
+                    portNumber: Settings.GanacheCliDefaultPortNumber + i,
+                    sharedLockObject: sharedLockObject);
 
                 var thread = new Thread(submissionProcessor.Start)
                 {
@@ -116,7 +116,7 @@
             }
         }
 
-        private void StopThreads()
+        private void AbortThreads()
         {
             foreach (var thread in this.threads)
             {

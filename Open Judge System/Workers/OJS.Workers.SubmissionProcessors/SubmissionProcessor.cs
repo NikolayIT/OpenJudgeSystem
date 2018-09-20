@@ -28,7 +28,7 @@
             string name,
             IDependencyContainer dependencyContainer,
             ConcurrentQueue<TSubmission> submissionsForProcessing,
-            int portnumber,
+            int portNumber,
             object sharedLockObject)
         {
             this.Name = name;
@@ -40,7 +40,7 @@
 
             this.dependencyContainer = dependencyContainer;
             this.submissionsForProcessing = submissionsForProcessing;
-            this.portNumber = portnumber;
+            this.portNumber = portNumber;
             this.sharedLockObject = sharedLockObject;
 
 
