@@ -1,4 +1,4 @@
-﻿namespace OJS.Workers.Jobs.Models
+﻿namespace OJS.Workers.SubmissionProcessors.Models
 {
     using System.Collections.Generic;
 

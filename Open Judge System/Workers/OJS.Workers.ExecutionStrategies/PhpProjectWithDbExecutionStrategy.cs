@@ -77,7 +77,7 @@
                 File.WriteAllText(this.SuperGlobalsTemplatePath, test.Input);
 
                 var processExecutionResult = executor.Execute(
-                    this.phpCliExecutablePath,
+                    this.PhpCliExecutablePath,
                     string.Empty,
                     executionContext.TimeLimit,
                     executionContext.MemoryLimit,

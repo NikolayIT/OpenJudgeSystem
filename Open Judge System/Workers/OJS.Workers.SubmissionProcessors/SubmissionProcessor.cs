@@ -1,4 +1,4 @@
-﻿namespace OJS.Workers.Jobs
+﻿namespace OJS.Workers.SubmissionProcessors
 {
     using System;
     using System.Collections.Concurrent;
@@ -8,12 +8,12 @@
 
     using OJS.Workers.Common;
     using OJS.Workers.ExecutionStrategies;
-    using OJS.Workers.Jobs.Helpers;
-    using OJS.Workers.Jobs.Models;
+    using OJS.Workers.SubmissionProcessors.Helpers;
+    using OJS.Workers.SubmissionProcessors.Models;
 
     using ExecutionContext = ExecutionStrategies.ExecutionContext;
 
-    public class SubmissionJob<TSubmission> : IJob
+    public class SubmissionProcessor<TSubmission> : ISubmissionProcessor
     {
         private readonly object sharedLockObject;
         private readonly ILog logger;
@@ -21,45 +21,49 @@
         private readonly ConcurrentQueue<TSubmission> submissionsForProcessing;
         private readonly int portNumber;
 
-        private IJobStrategy<TSubmission> jobStrategy;
+        private ISubmissionProcessingStrategy<TSubmission> submissionProcessingStrategy;
         private bool stopping;
 
-        public SubmissionJob(
+        public SubmissionProcessor(
             string name,
             IDependencyContainer dependencyContainer,
             ConcurrentQueue<TSubmission> submissionsForProcessing,
-            int portnumber,
+            int portNumber,
             object sharedLockObject)
         {
             this.Name = name;
 
             this.logger = LogManager.GetLogger(name);
-            this.logger.Info("SubmissionJob initializing...");
+            this.logger.Info($"{nameof(SubmissionProcessor<TSubmission>)} initializing...");
 
             this.stopping = false;
 
             this.dependencyContainer = dependencyContainer;
             this.submissionsForProcessing = submissionsForProcessing;
-            this.portNumber = portnumber;
+            this.portNumber = portNumber;
             this.sharedLockObject = sharedLockObject;
 
 
-            this.logger.Info("SubmissionJob initialized.");
+            this.logger.Info($"{nameof(SubmissionProcessor<TSubmission>)} initialized.");
         }
 
         public string Name { get; set; }
 
         public void Start()
         {
-            this.logger.Info("SubmissionJob starting...");
+            this.logger.Info($"{nameof(SubmissionProcessor<TSubmission>)} starting...");
 
             while (!this.stopping)
             {
                 using (this.dependencyContainer.BeginDefaultScope())
                 {
-                    this.jobStrategy = this.dependencyContainer.GetInstance<IJobStrategy<TSubmission>>();
+                    this.submissionProcessingStrategy = this.dependencyContainer
+                        .GetInstance<ISubmissionProcessingStrategy<TSubmission>>();
 
-                    this.jobStrategy.Initialize(this.logger, this.submissionsForProcessing, this.sharedLockObject);
+                    this.submissionProcessingStrategy.Initialize(
+                        this.logger,
+                        this.submissionsForProcessing,
+                        this.sharedLockObject);
 
                     var submission = this.GetSubmissionForProcessing();
 
@@ -69,12 +73,12 @@
                     }
                     else
                     {
-                        Thread.Sleep(this.jobStrategy.JobLoopWaitTimeInMilliseconds);
+                        Thread.Sleep(this.submissionProcessingStrategy.JobLoopWaitTimeInMilliseconds);
                     }
                 }
             }
 
-            this.logger.Info("SubmissionJob stopped.");
+            this.logger.Info($"{nameof(SubmissionProcessor<TSubmission>)} stopped.");
         }
 
         public void Stop()
@@ -86,7 +90,7 @@
         {
             try
             {
-                return this.jobStrategy.RetrieveSubmission();
+                return this.submissionProcessingStrategy.RetrieveSubmission();
             }
             catch (Exception exception)
             {
@@ -115,7 +119,7 @@
             }
             catch
             {
-                this.jobStrategy.OnError(submission);
+                this.submissionProcessingStrategy.OnError(submission);
             }
         }
 
@@ -123,14 +127,14 @@
         {
             try
             {
-                return SubmissionJobHelper.CreateExecutionStrategy(
+                return SubmissionProcessorHelper.CreateExecutionStrategy(
                     submission.ExecutionStrategyType,
                     this.portNumber);
             }
             catch (Exception ex)
             {
                 this.logger.Error(
-                    $"{nameof(SubmissionJobHelper.CreateExecutionStrategy)} has thrown an Exception: ", ex);
+                    $"{nameof(SubmissionProcessorHelper.CreateExecutionStrategy)} has thrown an Exception: ", ex);
 
                 submission.ProcessingComment = $"Exception in creating execution strategy: {ex.Message}";
                 throw;
@@ -141,12 +145,12 @@
         {
             try
             {
-                this.jobStrategy.BeforeExecute();
+                this.submissionProcessingStrategy.BeforeExecute();
             }
             catch (Exception ex)
             {
                 this.logger.Error(
-                    $"{nameof(this.jobStrategy.BeforeExecute)} on submission #{submission.Id} has thrown an exception:",
+                    $"{nameof(this.submissionProcessingStrategy.BeforeExecute)} on submission #{submission.Id} has thrown an exception:",
                     ex);
 
                 submission.ProcessingComment = $"Exception before executing the submission: {ex.Message}";
@@ -193,7 +197,7 @@
         {
             try
             {
-                this.jobStrategy.ProcessExecutionResult(executionResult);
+                this.submissionProcessingStrategy.ProcessExecutionResult(executionResult);
             }
             catch (Exception ex)
             {

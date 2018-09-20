@@ -1,6 +1,6 @@
-﻿namespace OJS.Workers.Jobs
+﻿namespace OJS.Workers.SubmissionProcessors
 {
-    public interface IJob
+    public interface ISubmissionProcessor
     {
         string Name { get; set; }
 

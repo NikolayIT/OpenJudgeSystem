@@ -1,13 +1,13 @@
-﻿namespace OJS.Workers.Jobs
+﻿namespace OJS.Workers.SubmissionProcessors
 {
     using System.Collections.Concurrent;
 
     using log4net;
 
     using OJS.Workers.ExecutionStrategies;
-    using OJS.Workers.Jobs.Models;
+    using OJS.Workers.SubmissionProcessors.Models;
 
-    public interface IJobStrategy<TSubmission>
+    public interface ISubmissionProcessingStrategy<TSubmission>
     {
         int JobLoopWaitTimeInMilliseconds { get; }
 
