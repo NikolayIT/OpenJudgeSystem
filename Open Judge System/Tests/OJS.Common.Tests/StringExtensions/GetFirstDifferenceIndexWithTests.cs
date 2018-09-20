@@ -2,7 +2,7 @@
 {
     using NUnit.Framework;
 
-    using OJS.Common.Extensions;
+    using OJS.Workers.Common.Extensions;
 
     [TestFixture]
     public class GetFirstDifferenceIndexWithTests

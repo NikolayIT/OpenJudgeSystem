@@ -9,7 +9,6 @@
 
     using MissingFeatures;
 
-    using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
@@ -19,6 +18,7 @@
     using OJS.Services.Data.ProblemGroups;
     using OJS.Services.Data.SubmissionsForProcessing;
     using OJS.Web.Common.Attributes;
+    using OJS.Workers.Common.Helpers;
 
     [AuthorizeRoles(SystemRole.Administrator)]
     public class TempController : BaseController

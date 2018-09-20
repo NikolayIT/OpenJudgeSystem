@@ -9,11 +9,11 @@
 
     using HangfireConfiguration;
 
-    using OJS.Common;
     using OJS.Data;
     using OJS.Data.Migrations;
     using OJS.Data.Providers.Registries;
     using OJS.Web.Infrastructure.Filters;
+    using OJS.Workers.Common;
 
     public class Global : HttpApplication
     {

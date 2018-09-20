@@ -4,8 +4,8 @@
 
     using NUnit.Framework;
 
-    using OJS.Common.Models;
     using OJS.Web.Areas.Contests.ViewModels.Results;
+    using OJS.Workers.Common.Models;
 
     [TestFixture]
     public class TestRunFullResultsViewModelTests

@@ -6,7 +6,7 @@
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
 
-    using OJS.Common;
+    using OJS.Workers.Common;
 
     internal class GanacheCli : IDisposable
     {
@@ -96,7 +96,7 @@
                     // ReSharper disable once AccessToDisposedClosure
                     var task = Task.Factory.StartNew(() => process.StandardOutput.ReadLine());
 
-                    var canReadLine = task.Wait(GlobalConstants.DefaultProcessExitTimeOutMilliseconds);
+                    var canReadLine = task.Wait(Constants.DefaultProcessExitTimeOutMilliseconds);
                     if (!canReadLine)
                     {
                         this.errorMessage = "ganache-cli is unresponsive";

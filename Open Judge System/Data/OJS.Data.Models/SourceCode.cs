@@ -3,8 +3,8 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    using OJS.Common.Extensions;
     using OJS.Data.Contracts;
+    using OJS.Workers.Common.Extensions;
 
     public class SourceCode : DeletableEntity
     {

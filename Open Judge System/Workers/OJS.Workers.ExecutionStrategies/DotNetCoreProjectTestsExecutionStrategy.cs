@@ -5,10 +5,10 @@
     using System.IO;
     using System.Linq;
 
-    using OJS.Common;
-    using OJS.Common.Extensions;
-    using OJS.Common.Models;
     using OJS.Workers.Checkers;
+    using OJS.Workers.Common;
+    using OJS.Workers.Common.Helpers;
+    using OJS.Workers.Common.Models;
     using OJS.Workers.Executors;
 
     public class DotNetCoreProjectTestsExecutionStrategy : CSharpProjectTestsExecutionStrategy
@@ -130,7 +130,7 @@
             IEnumerable<string> projectsToTestCsProjPaths)
         {
             var consoleAppEntryPointPath =
-                $@"{this.NUnitLiteConsoleAppDirectory}\{NUnitLiteConsoleAppProgramName}{GlobalConstants.CSharpFileExtension}";
+                $@"{this.NUnitLiteConsoleAppDirectory}\{NUnitLiteConsoleAppProgramName}{Constants.CSharpFileExtension}";
 
             File.WriteAllText(consoleAppEntryPointPath, NUnitLiteConsoleAppProgramTemplate);
 

@@ -4,7 +4,8 @@
     using System.Linq.Expressions;
 
     using OJS.Common.DataAnnotations;
-    using OJS.Common.Models;
+    using OJS.Workers.Common.Models;
+
     using TestRunModel = OJS.Data.Models.TestRun;
 
     public class TestRunViewModel

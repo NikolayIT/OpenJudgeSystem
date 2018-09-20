@@ -2,8 +2,8 @@
 {
     using System;
 
-    using OJS.Common;
-    using OJS.Common.Models;
+    using OJS.Workers.Common;
+    using OJS.Workers.Common.Models;
     using OJS.Workers.Compilers;
     using OJS.Workers.Tools.AntiCheat.Contracts;
     using OJS.Workers.Tools.Disassemblers;

@@ -3,8 +3,8 @@
     using System;
     using System.Linq.Expressions;
 
-    using OJS.Common.Models;
     using OJS.Data.Models;
+    using OJS.Workers.Common.Models;
 
     public class TestRunViewModel
     {

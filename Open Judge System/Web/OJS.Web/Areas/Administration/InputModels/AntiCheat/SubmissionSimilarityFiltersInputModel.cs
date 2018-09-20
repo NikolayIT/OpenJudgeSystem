@@ -3,8 +3,8 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    using OJS.Common.Models;
     using OJS.Web.ViewModels.Common;
+    using OJS.Workers.Common.Models;
 
     public class SubmissionSimilarityFiltersInputModel
     {

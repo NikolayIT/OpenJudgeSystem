@@ -14,12 +14,14 @@
     using OJS.Common;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Services.Cache;
     using OJS.Services.Data.Contests;
     using OJS.Web.Common;
     using OJS.Web.Common.Extensions;
-    using OJS.Web.Infrastructure.Filters.Attributes;
+    using OJS.Workers.Common;
 
-    [PopulateMainContestCategoriesIntoViewBag]
+    // TODO: handle setting ViewBag data throught the help of this attribute
+    // [PopulateMainContestCategoriesIntoViewBag]
     public class BaseController : Controller
     {
         public BaseController(IOjsData data) => this.Data = data;
@@ -56,6 +58,11 @@
         {
             // Work with data before BeginExecute to prevent "NotSupportedException: A second operation started on this context before a previous asynchronous operation completed."
             this.UserProfile = this.Data.Users.GetByUsername(requestContext.HttpContext.User.Identity.Name);
+
+            // Implement setting the MainContestCategoeries with action filter
+            var cacheItems = ObjectFactory.GetInstance<ICacheItemsProviderService>();
+
+            this.ViewBag.MainCategories = cacheItems.GetMainContestCategoeries();
 
             // Calling BeginExecute before PrepareSystemMessages for the TempData to has values
             var result = base.BeginExecute(requestContext, callback, state);

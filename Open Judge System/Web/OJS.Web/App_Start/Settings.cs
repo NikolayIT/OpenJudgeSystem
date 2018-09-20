@@ -1,6 +1,6 @@
 ﻿namespace OJS.Web
 {
-    using static OJS.Common.Helpers.SettingsHelper;
+    using static OJS.Workers.Common.Helpers.SettingsHelper;
 
     public static class Settings
     {

@@ -10,6 +10,8 @@
     using OJS.Common;
     using OJS.Common.Extensions;
     using OJS.Common.Models;
+    using OJS.Workers.Common.Extensions;
+    using OJS.Workers.Common.Models;
 
     public class SubmissionType
     {
@@ -61,8 +63,8 @@
         {
             get
             {
-                string extension = (this.ExecutionStrategyType.GetFileExtension()
-                                    ?? this.CompilerType.GetFileExtension()) ?? string.Empty;
+                var extension = (this.ExecutionStrategyType.GetFileExtension()
+                    ?? this.CompilerType.GetFileExtension()) ?? string.Empty;
 
                 return extension;
             }

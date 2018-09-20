@@ -8,7 +8,7 @@
 
     using Microsoft.Build.Evaluation;
 
-    using OJS.Common;
+    using OJS.Workers.Common;
 
     internal static class CSharpProjectExtensions
     {
@@ -69,7 +69,7 @@
         {
             foreach (var itemName in itemNames)
             {
-                project.AddItem("Compile", $"{itemName}{GlobalConstants.CSharpFileExtension}");
+                project.AddItem("Compile", $"{itemName}{Constants.CSharpFileExtension}");
             }
         }
 

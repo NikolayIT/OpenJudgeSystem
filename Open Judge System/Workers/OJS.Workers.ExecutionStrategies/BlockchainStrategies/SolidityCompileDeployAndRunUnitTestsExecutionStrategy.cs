@@ -6,11 +6,10 @@
     using System.Linq;
     using System.Text.RegularExpressions;
 
-    using OJS.Common;
-    using OJS.Common.Extensions;
-    using OJS.Common.Models;
     using OJS.Workers.Checkers;
     using OJS.Workers.Common;
+    using OJS.Workers.Common.Extensions;
+    using OJS.Workers.Common.Models;
     using OJS.Workers.ExecutionStrategies;
     using OJS.Workers.Executors;
 
@@ -66,7 +65,7 @@
         protected Func<CompilerType, string> GetCompilerPathFunc { get; }
 
         private static string TestFileNameSearchPattern =>
-            $@"{TruffleProjectManager.TestFileNamePrefix}(\d+){GlobalConstants.JavaScriptFileExtension}";
+            $@"{TruffleProjectManager.TestFileNamePrefix}(\d+){Constants.JavaScriptFileExtension}";
 
         private IList<string> TestNames { get; } = new List<string>();
 
@@ -168,11 +167,11 @@
                 string byteCode = null;
                 string abi = null;
 
-                if (file.Extension == GlobalConstants.ByteCodeFileExtension)
+                if (file.Extension == Constants.ByteCodeFileExtension)
                 {
                     byteCode = fileContent;
                 }
-                else if (file.Extension == GlobalConstants.AbiFileExtension)
+                else if (file.Extension == Constants.AbiFileExtension)
                 {
                     abi = fileContent;
                 }

@@ -6,10 +6,10 @@
     using System.Linq;
     using System.Text.RegularExpressions;
 
-    using OJS.Common;
-    using OJS.Common.Extensions;
-    using OJS.Common.Models;
     using OJS.Workers.Checkers;
+    using OJS.Workers.Common;
+    using OJS.Workers.Common.Helpers;
+    using OJS.Workers.Common.Models;
     using OJS.Workers.Executors;
 
     public class CPlusPlusZipFileExecutionStrategy : ExecutionStrategy
@@ -90,7 +90,7 @@
         private IEnumerable<string> ExtractTaskSkeleton(string executionContextTaskSkeletonAsString)
         {
             var headersAndCppFiles = executionContextTaskSkeletonAsString.Split(
-                new string[] { GlobalConstants.ClassDelimiter },
+                new string[] { Constants.ClassDelimiter },
                 StringSplitOptions.RemoveEmptyEntries);
 
             var pathsToHeadersAndCppFiles = new List<string>();

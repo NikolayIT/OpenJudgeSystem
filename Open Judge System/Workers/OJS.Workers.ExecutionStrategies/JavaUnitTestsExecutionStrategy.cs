@@ -6,11 +6,10 @@
     using System.Linq;
     using System.Text.RegularExpressions;
 
-    using OJS.Common;
-    using OJS.Common.Extensions;
-    using OJS.Common.Models;
     using OJS.Workers.Checkers;
     using OJS.Workers.Common;
+    using OJS.Workers.Common.Helpers;
+    using OJS.Workers.Common.Models;
     using OJS.Workers.Compilers;
     using OJS.Workers.ExecutionStrategies.Helpers;
     using OJS.Workers.Executors;
@@ -50,7 +49,7 @@
         protected string JavaLibrariesPath { get; }
 
         protected string JUnitTestRunnerSourceFilePath =>
-            $"{this.WorkingDirectory}\\{JUnitRunnerClassName}{GlobalConstants.JavaSourceFileExtension}";
+            $"{this.WorkingDirectory}\\{JUnitRunnerClassName}{Constants.JavaSourceFileExtension}";
 
         protected List<string> TestNames { get; }
 
@@ -149,7 +148,7 @@ public class _$TestRunner {{
             foreach (var test in tests)
             {
                 var fileNames = new List<string>();
-                var classes = test.Input.Split(new[] { GlobalConstants.ClassDelimiter }, StringSplitOptions.RemoveEmptyEntries);
+                var classes = test.Input.Split(new[] { Constants.ClassDelimiter }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (var projectClass in classes)
                 {
                     var name = Regex.Match(projectClass, FilenameRegex);
@@ -268,7 +267,7 @@ public class _$TestRunner {{
                 ? $".{trimmedAllowedFileExtensions}"
                 : trimmedAllowedFileExtensions;
 
-            if (allowedFileExtensions != GlobalConstants.ZipFileExtension)
+            if (allowedFileExtensions != Constants.ZipFileExtension)
             {
                 throw new ArgumentException("Submission file is not a zip file!");
             }
@@ -298,7 +297,7 @@ public class _$TestRunner {{
         private void ExtractUserTestFiles(string submissionFilePath)
         {
             var fileNames = FileHelpers.GetFilePathsFromZip(submissionFilePath)
-                .Where(x => x.EndsWith(GlobalConstants.JavaSourceFileExtension));
+                .Where(x => x.EndsWith(Constants.JavaSourceFileExtension));
             this.TestNames.AddRange(fileNames);
         }
 

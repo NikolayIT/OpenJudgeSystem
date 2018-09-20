@@ -4,11 +4,12 @@
     using System.Collections.Generic;
     using System.Data.Entity.Migrations;
     using System.Linq;
+
     using Microsoft.AspNet.Identity.EntityFramework;
 
     using OJS.Common;
-    using OJS.Common.Models;
     using OJS.Data.Models;
+    using OJS.Workers.Common.Models;
 
     public class DefaultMigrationConfiguration : DbMigrationsConfiguration<OjsDbContext>
     {

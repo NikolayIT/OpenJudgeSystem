@@ -6,10 +6,11 @@
 
     using log4net;
 
-    using OJS.Common.Extensions;
-    using OJS.Common.Models;
     using OJS.Workers.Checkers;
     using OJS.Workers.Common;
+    using OJS.Workers.Common.Extensions;
+    using OJS.Workers.Common.Helpers;
+    using OJS.Workers.Common.Models;
     using OJS.Workers.Compilers;
 
     public abstract class ExecutionStrategy : IExecutionStrategy

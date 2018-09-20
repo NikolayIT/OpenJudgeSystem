@@ -162,6 +162,10 @@
       <Project>{a7de52ac-62e7-43f0-8f73-047728eb5af2}</Project>
       <Name>OJS.Services.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Workers\OJS.Workers.Common\OJS.Workers.Common.csproj">
+      <Project>{7F714D0B-CE81-4DD7-B6B2-62080FE22CD8}</Project>
+      <Name>OJS.Workers.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

@@ -52,12 +52,20 @@
     <CodeAnalysisRuleSet>..\..\Rules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DotNetZip, Version=1.10.1.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\DotNetZip.1.10.1\lib\net20\DotNetZip.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="MissingFeatures, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MissingFeatures.NET.1.1\lib\MissingFeatures.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ServiceProcess" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Agents\AgentTaskData.cs" />
@@ -73,9 +81,24 @@
     <Compile Include="Communication\Job.cs" />
     <Compile Include="Communication\JobResult.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Extensions\ByteArrayExtensions.cs" />
+    <Compile Include="Extensions\CompilerTypeExtensions.cs" />
+    <Compile Include="Extensions\CompressStringExtensions.cs" />
+    <Compile Include="Extensions\ServiceProviderExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Helpers\CSharpPreprocessorHelper.cs" />
+    <Compile Include="Helpers\DirectoryHelpers.cs" />
+    <Compile Include="Helpers\FileHelpers.cs" />
     <Compile Include="Helpers\JavaCodePreprocessorHelper.cs" />
+    <Compile Include="Helpers\ServicesHelper.cs" />
+    <Compile Include="Helpers\SettingsHelper.cs" />
     <Compile Include="IDependencyContainer.cs" />
+    <Compile Include="Models\CompilerType.cs" />
+    <Compile Include="Models\ExecutionStrategyType.cs" />
+    <Compile Include="Models\PlagiarismDetectorType.cs" />
+    <Compile Include="Models\ServiceState.cs" />
+    <Compile Include="Models\TestRunResultType.cs" />
+    <Compile Include="ObjectFactory.cs" />
     <Compile Include="ProcessExecutionResult.cs" />
     <Compile Include="ProcessExecutionResultType.cs" />
     <Compile Include="IChecker.cs" />
@@ -95,12 +118,7 @@
     <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\OJS.Common\OJS.Common.csproj">
-      <Project>{69B10B02-22CF-47D6-B5F3-8A5FFB7DC771}</Project>
-      <Name>OJS.Common</Name>
-    </ProjectReference>
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

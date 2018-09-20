@@ -60,6 +60,10 @@
             this.GetAllByProblem(problemId)
                 .Select(s => s.Id);
 
+        public bool IsOfficialById(int id) =>
+            this.GetByIdQuery(id)
+                .Any(s => s.Participant.IsOfficial);
+
         public void SetAllToUnprocessedByProblem(int problemId) =>
             this.GetAllByProblem(problemId)
                 .Update(s => new Submission

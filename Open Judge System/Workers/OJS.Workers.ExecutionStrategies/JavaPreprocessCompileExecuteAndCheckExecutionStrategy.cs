@@ -5,11 +5,10 @@
     using System.IO;
     using System.Text;
 
-    using OJS.Common;
-    using OJS.Common.Models;
     using OJS.Workers.Checkers;
     using OJS.Workers.Common;
     using OJS.Workers.Common.Helpers;
+    using OJS.Workers.Common.Models;
     using OJS.Workers.Executors;
 
     public class JavaPreprocessCompileExecuteAndCheckExecutionStrategy : ExecutionStrategy
@@ -43,7 +42,7 @@
         protected Func<CompilerType, string> GetCompilerPathFunc { get; }
 
         protected string SandboxExecutorSourceFilePath =>
-            $"{this.WorkingDirectory}\\{SandboxExecutorClassName}{GlobalConstants.JavaSourceFileExtension}";
+            $"{this.WorkingDirectory}\\{SandboxExecutorClassName}{Constants.JavaSourceFileExtension}";
 
         protected string SandboxExecutorCode => @"
 import java.io.File;

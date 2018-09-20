@@ -4,7 +4,7 @@
 
     using Microsoft.Build.Evaluation;
 
-    using OJS.Common.Models;
+    using OJS.Workers.Common.Models;
     using OJS.Workers.ExecutionStrategies.Extensions;
 
     public class CSharpAspProjectTestsExecutionStrategy : CSharpProjectTestsExecutionStrategy

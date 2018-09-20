@@ -8,12 +8,11 @@
 
     using Microsoft.Build.Evaluation;
 
-    using OJS.Common;
-    using OJS.Common.Extensions;
-    using OJS.Common.Models;
     using OJS.Workers.Checkers;
     using OJS.Workers.Common;
+    using OJS.Workers.Common.Extensions;
     using OJS.Workers.Common.Helpers;
+    using OJS.Workers.Common.Models;
     using OJS.Workers.ExecutionStrategies.Extensions;
     using OJS.Workers.Executors;
 
@@ -159,7 +158,7 @@
 
         protected void SaveSetupFixture(string directory)
         {
-            this.SetupFixturePath = $"{directory}\\{SetupFixtureFileName}{GlobalConstants.CSharpFileExtension}";
+            this.SetupFixturePath = $"{directory}\\{SetupFixtureFileName}{Constants.CSharpFileExtension}";
             File.WriteAllText(this.SetupFixturePath, SetupFixtureTemplate);
             this.TestPaths.Add(this.SetupFixturePath);
         }
@@ -170,7 +169,7 @@
             foreach (var test in tests)
             {
                 var testName = this.TestNames[index++];
-                var testedCodePath = $"{compileDirectory}\\{testName}{GlobalConstants.CSharpFileExtension}";
+                var testedCodePath = $"{compileDirectory}\\{testName}{Constants.CSharpFileExtension}";
                 this.TestPaths.Add(testedCodePath);
                 File.WriteAllText(testedCodePath, test.Input);
             }

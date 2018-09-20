@@ -5,11 +5,10 @@
     using System.IO;
     using System.Linq;
 
-    using OJS.Common;
-    using OJS.Common.Extensions;
-    using OJS.Common.Models;
     using OJS.Workers.Checkers;
+    using OJS.Workers.Common;
     using OJS.Workers.Common.Helpers;
+    using OJS.Workers.Common.Models;
     using OJS.Workers.ExecutionStrategies.Helpers;
     using OJS.Workers.Executors;
 
@@ -128,7 +127,7 @@ class Classes{{
                 FileHelpers.UnzipFile(submissionFilePath, this.WorkingDirectory);
 
                 string className = JavaCodePreprocessorHelper.GetPublicClassName(executionContext.TaskSkeletonAsString);
-                string filePath = $"{this.WorkingDirectory}\\{className}{GlobalConstants.JavaSourceFileExtension}";
+                string filePath = $"{this.WorkingDirectory}\\{className}{Constants.JavaSourceFileExtension}";
                 File.WriteAllText(filePath, executionContext.TaskSkeletonAsString);
                 FileHelpers.AddFilesToZipArchive(submissionFilePath, string.Empty, filePath);
 
@@ -250,7 +249,8 @@ class Classes{{
             {
                 var className = JavaCodePreprocessorHelper.GetPublicClassName(test.Input);
                 var testFileName =
-                        $"{this.WorkingDirectory}\\{className}{GlobalConstants.JavaSourceFileExtension}";
+                    $"{this.WorkingDirectory}\\{className}{Constants.JavaSourceFileExtension}";
+
                 File.WriteAllText(testFileName, test.Input);
                 filePaths[testNumber] = testFileName;
                 this.TestNames.Add(className);
@@ -274,7 +274,7 @@ class Classes{{
         {
             this.UserClassNames.AddRange(
                 FileHelpers.GetFilePathsFromZip(submissionFilePath)
-                    .Where(x => !x.EndsWith("/") && x.EndsWith(GlobalConstants.JavaSourceFileExtension))
+                    .Where(x => !x.EndsWith("/") && x.EndsWith(Constants.JavaSourceFileExtension))
                     .Select(x => x.Contains(".") ? x.Substring(0, x.LastIndexOf(".", StringComparison.Ordinal)) : x)
                     .Select(x => x.Replace("/", ".")));
         }

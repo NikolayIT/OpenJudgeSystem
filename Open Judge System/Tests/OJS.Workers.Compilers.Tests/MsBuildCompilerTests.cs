@@ -4,7 +4,7 @@
 
     using NUnit.Framework;
 
-    using OJS.Common.Extensions;
+    using OJS.Workers.Common.Helpers;
 
     [TestFixture]
     public class MsBuildCompilerTests

@@ -4,8 +4,8 @@
     using System.IO;
     using System.Linq;
 
-    using OJS.Common.Extensions;
     using OJS.Workers.Common;
+    using OJS.Workers.Common.Helpers;
     using OJS.Workers.Tools.AntiCheat.Contracts;
     using OJS.Workers.Tools.Disassemblers;
     using OJS.Workers.Tools.Disassemblers.Contracts;

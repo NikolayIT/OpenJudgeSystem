@@ -6,6 +6,8 @@
     using System.Web.Mvc;
 
     using OJS.Data;
+    using OJS.Services.Data.Participants;
+    using OJS.Services.Data.Users;
     using OJS.Web.Areas.Users.ViewModels;
     using OJS.Web.Controllers;
 
@@ -13,9 +15,17 @@
 
     public class ProfileController : BaseController
     {
-        public ProfileController(IOjsData data)
+        private readonly IParticipantsDataService participantsData;
+        private readonly IUsersDataService usersData;
+
+        public ProfileController(
+            IOjsData data,
+            IParticipantsDataService participantsData,
+            IUsersDataService usersData)
             : base(data)
         {
+            this.participantsData = participantsData;
+            this.usersData = usersData;
         }
 
         public ActionResult Index(string id)
@@ -25,7 +35,7 @@
                 id = this.User.Identity.Name;
             }
 
-            var profile = this.Data.Users.GetByUsername(id);
+            var profile = this.usersData.GetByUsername(id);
 
             if (profile == null)
             {
@@ -34,8 +44,8 @@
 
             var userSettingsViewModel = new UserProfileViewModel(profile)
             {
-                Participations = this.Data.Participants.All()
-                    .Where(x => x.UserId == profile.Id)
+                Participations = this.participantsData
+                    .GetAllByUser(profile.Id)
                     .GroupBy(x => x.Contest)
                     .Select(c => new UserParticipationViewModel
                     {

@@ -8,9 +8,9 @@
     using System.Text;
 
     using OJS.Common;
-    using OJS.Common.Extensions;
-    using OJS.Common.Models;
     using OJS.Data.Contracts;
+    using OJS.Workers.Common.Extensions;
+    using OJS.Workers.Common.Models;
 
     public class Submission : DeletableEntity
     {
@@ -82,7 +82,7 @@
         public virtual ICollection<TestRun> TestRuns { get; set; } = new HashSet<TestRun>();
 
         /// <summary>
-        /// Cache field for submission test runs representing each test run result as an integer equal to <see cref="OJS.Common.Models.TestRunResultType"/>.
+        /// Cache field for submission test runs representing each test run result as an integer equal to <see cref="TestRunResultType"/>.
         /// The first integer represent the number of trial tests associated with this submissions.
         /// This field optimized database queries.
         ///

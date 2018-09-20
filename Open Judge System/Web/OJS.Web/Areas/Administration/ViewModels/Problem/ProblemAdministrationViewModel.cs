@@ -18,6 +18,7 @@
     using OJS.Web.Areas.Administration.ViewModels.Common;
     using OJS.Web.Areas.Administration.ViewModels.ProblemResource;
     using OJS.Web.Areas.Administration.ViewModels.SubmissionType;
+    using OJS.Workers.Common.Extensions;
 
     using static OJS.Common.Constants.EditorTemplateConstants;
 

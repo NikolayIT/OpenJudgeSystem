@@ -10,14 +10,13 @@
 
     using log4net;
 
-    using OJS.Common;
     using OJS.Workers.Common;
-    using OJS.Workers.Jobs;
+    using OJS.Workers.SubmissionProcessors;
 
     public class LocalWorkerServiceBase<TSubmission> : ServiceBase
     {
         private readonly ICollection<Thread> threads;
-        private readonly ICollection<IJob> jobs;
+        private readonly ICollection<ISubmissionProcessor> submissionProcessors;
 
         protected LocalWorkerServiceBase()
         {
@@ -26,7 +25,7 @@
             this.Logger = LogManager.GetLogger(loggerAssembly, Constants.LocalWorkerServiceLogName);
 
             this.threads = new List<Thread>();
-            this.jobs = new List<IJob>();
+            this.submissionProcessors = new List<ISubmissionProcessor>();
         }
 
         protected ILog Logger { get; }
@@ -35,30 +34,30 @@
 
         protected override void OnStart(string[] args)
         {
-            this.Logger.Info("LocalWorkerService starting...");
+            this.Logger.Info($"{Constants.LocalWorkerServiceName} starting...");
 
             this.DependencyContainer = this.GetDependencyContainer();
 
-            this.SpawnJobsAndThreads(this.jobs, this.threads, new ConcurrentQueue<TSubmission>());
+            this.SpawnSubmissionProcessorsAndThreads();
 
             this.BeforeStartingThreads();
 
-            this.StartThreads(this.threads);
+            this.StartThreads();
 
-            this.Logger.Info("LocalWorkerService started.");
+            this.Logger.Info($"{Constants.LocalWorkerServiceName} started.");
         }
 
         protected override void OnStop()
         {
-            this.Logger.Info("LocalWorkerService stopping...");
+            this.Logger.Info($"{Constants.LocalWorkerServiceName} stopping...");
 
-            this.StopJobs(this.jobs);
+            this.StopSubmissionProcessors();
 
             Thread.Sleep(this.TimeBeforeAbortingThreadsInMilliseconds);
 
-            this.StopThreads(this.threads);
+            this.AbortThreads();
 
-            this.Logger.Info("LocalWorkerService stopped.");
+            this.Logger.Info($"{Constants.LocalWorkerServiceName} stopped.");
         }
 
         protected virtual void BeforeStartingThreads()
@@ -73,32 +72,33 @@
         protected virtual int TimeBeforeAbortingThreadsInMilliseconds =>
             Constants.DefaultTimeBeforeAbortingThreadsInMilliseconds;
 
-        private void SpawnJobsAndThreads(
-            ICollection<IJob> jobsToSpawn,
-            ICollection<Thread> threadsToSpawn,
-            ConcurrentQueue<TSubmission> submissionsForProcessing)
+        private void SpawnSubmissionProcessorsAndThreads()
         {
+            var submissionsForProcessing = new ConcurrentQueue<TSubmission>();
             var sharedLockObject = new object();
 
             for (var i = 1; i <= Settings.ThreadsCount; i++)
             {
-                var job = new SubmissionJob<TSubmission>(
-                    $"Job #{i}",
-                    this.DependencyContainer,
-                    submissionsForProcessing,
-                    Settings.GanacheCliDefaultPortNumber + i,
-                    sharedLockObject);
+                var submissionProcessor = new SubmissionProcessor<TSubmission>(
+                    name: $"SP #{i}",
+                    dependencyContainer: this.DependencyContainer,
+                    submissionsForProcessing: submissionsForProcessing,
+                    portNumber: Settings.GanacheCliDefaultPortNumber + i,
+                    sharedLockObject: sharedLockObject);
 
-                var thread = new Thread(job.Start) { Name = $"Thread #{i}" };
+                var thread = new Thread(submissionProcessor.Start)
+                {
+                    Name = $"{nameof(Thread)} #{i}"
+                };
 
-                jobsToSpawn.Add(job);
-                threadsToSpawn.Add(thread);
+                this.submissionProcessors.Add(submissionProcessor);
+                this.threads.Add(thread);
             }
         }
 
-        private void StartThreads(IEnumerable<Thread> threadsToStarts)
+        private void StartThreads()
         {
-            foreach (var thread in threadsToStarts)
+            foreach (var thread in this.threads)
             {
                 this.Logger.InfoFormat($"Starting {thread.Name}...");
                 thread.Start();
@@ -107,18 +107,18 @@
             }
         }
 
-        private void StopJobs(IEnumerable<IJob> jobsToStop)
+        private void StopSubmissionProcessors()
         {
-            foreach (var job in jobsToStop)
+            foreach (var submissionProcessor in this.submissionProcessors)
             {
-                job.Stop();
-                this.Logger.InfoFormat($"{job.Name} stopped.");
+                submissionProcessor.Stop();
+                this.Logger.InfoFormat($"{submissionProcessor.Name} stopped.");
             }
         }
 
-        private void StopThreads(IEnumerable<Thread> threadsToStop)
+        private void AbortThreads()
         {
-            foreach (var thread in threadsToStop)
+            foreach (var thread in this.threads)
             {
                 thread.Abort();
                 this.Logger.InfoFormat($"{thread.Name} aborted.");
@@ -132,7 +132,7 @@
         /// </summary>
         private void CreateExecutionStrategiesWorkingDirectory()
         {
-            var path = GlobalConstants.ExecutionStrategiesWorkingDirectoryPath;
+            var path = Constants.ExecutionStrategiesWorkingDirectoryPath;
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);

@@ -3,6 +3,7 @@
     using System;
 
     using OJS.Common.Models;
+    using OJS.Workers.Common.Models;
 
     public static class PlagiarismDetectorTypeExtensions
     {

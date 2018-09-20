@@ -128,6 +128,7 @@
     <Compile Include="Attributes\DisableCache.cs" />
     <Compile Include="Attributes\RestrictRequestsAttribute.cs" />
     <Compile Include="EnumConverter.cs" />
+    <Compile Include="Exceptions\ContestCannotBeCompetedException.cs" />
     <Compile Include="Extensions\ActionDescriptorExtensions.cs" />
     <Compile Include="Extensions\ControllerExtensions.cs" />
     <Compile Include="Extensions\HttpResponseBaseExtensions.cs" />
@@ -175,6 +176,10 @@
     <ProjectReference Include="..\..\OJS.Common\OJS.Common.csproj">
       <Project>{69B10B02-22CF-47D6-B5F3-8A5FFB7DC771}</Project>
       <Name>OJS.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Workers\OJS.Workers.Common\OJS.Workers.Common.csproj">
+      <Project>{7F714D0B-CE81-4DD7-B6B2-62080FE22CD8}</Project>
+      <Name>OJS.Workers.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

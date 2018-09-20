@@ -51,17 +51,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\OJS.Common\OJS.Common.csproj">
-      <Project>{69B10B02-22CF-47D6-B5F3-8A5FFB7DC771}</Project>
-      <Name>OJS.Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\OJS.Workers.Common\OJS.Workers.Common.csproj">
       <Project>{7F714D0B-CE81-4DD7-B6B2-62080FE22CD8}</Project>
       <Name>OJS.Workers.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OJS.Workers.Jobs\OJS.Workers.Jobs.csproj">
+    <ProjectReference Include="..\OJS.Workers.SubmissionProcessors\OJS.Workers.SubmissionProcessors.csproj">
       <Project>{6E2902A5-E47F-4888-953E-4F81467B40C7}</Project>
-      <Name>OJS.Workers.Jobs</Name>
+      <Name>OJS.Workers.SubmissionProcessors</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -6,7 +6,7 @@
     using System.Text;
     using System.Threading;
 
-    using OJS.Common;
+    using OJS.Workers.Common;
     using OJS.Workers.Tools.Disassemblers.Contracts;
 
     public abstract class Disassembler : IDisassembler
@@ -96,7 +96,7 @@
                     {
                         process.BeginOutputReadLine();
 
-                        var exited = process.WaitForExit(GlobalConstants.DefaultProcessExitTimeOutMilliseconds);
+                        var exited = process.WaitForExit(Constants.DefaultProcessExitTimeOutMilliseconds);
                         if (exited)
                         {
                             outputWaitHandle.WaitOne(100);

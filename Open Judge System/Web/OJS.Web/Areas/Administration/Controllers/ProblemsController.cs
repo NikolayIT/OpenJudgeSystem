@@ -42,6 +42,8 @@
     using OJS.Web.Common.Extensions;
     using OJS.Web.Common.ZippedTestManipulator;
     using OJS.Web.ViewModels.Common;
+    using OJS.Workers.Common;
+    using OJS.Workers.Common.Extensions;
 
     using GeneralResource = Resources.Areas.Administration.AdministrationGeneral;
     using GlobalResource = Resources.Areas.Administration.Problems.ProblemsControllers;
@@ -557,7 +559,7 @@
             }
 
             var additionalFiles = problem.AdditionalFiles;
-            var zipFileName = $"{problem.Name}_AdditionalFiles_{DateTime.Now}.{GlobalConstants.ZipFileExtension}";
+            var zipFileName = $"{problem.Name}_AdditionalFiles_{DateTime.Now}.{Constants.ZipFileExtension}";
 
             var stream = new MemoryStream();
             using (var additionalFilesStream = new MemoryStream(additionalFiles))
@@ -857,7 +859,7 @@
         {
             var extension = Path.GetExtension(file.FileName);
 
-            if (extension != GlobalConstants.ZipFileExtension)
+            if (extension != Constants.ZipFileExtension)
             {
                 this.ModelState.AddModelError(propertyName, GlobalResource.Must_be_zip_file);
             }
