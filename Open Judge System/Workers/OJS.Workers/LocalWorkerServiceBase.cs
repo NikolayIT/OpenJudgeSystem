@@ -38,14 +38,11 @@
 
             this.DependencyContainer = this.GetDependencyContainer();
 
-            this.SpawnSubmissionProcessorsAndThreads(
-                this.submissionProcessors,
-                this.threads,
-                new ConcurrentQueue<TSubmission>());
+            this.SpawnSubmissionProcessorsAndThreads();
 
             this.BeforeStartingThreads();
 
-            this.StartThreads(this.threads);
+            this.StartThreads();
 
             this.Logger.Info("LocalWorkerService started.");
         }
@@ -54,11 +51,11 @@
         {
             this.Logger.Info("LocalWorkerService stopping...");
 
-            this.StopSubmissionProcessors(this.submissionProcessors);
+            this.StopSubmissionProcessors();
 
             Thread.Sleep(this.TimeBeforeAbortingThreadsInMilliseconds);
 
-            this.StopThreads(this.threads);
+            this.StopThreads();
 
             this.Logger.Info("LocalWorkerService stopped.");
         }
@@ -75,17 +72,15 @@
         protected virtual int TimeBeforeAbortingThreadsInMilliseconds =>
             Constants.DefaultTimeBeforeAbortingThreadsInMilliseconds;
 
-        private void SpawnSubmissionProcessorsAndThreads(
-            ICollection<ISubmissionProcessor> processors,
-            ICollection<Thread> threadsToSpawn,
-            ConcurrentQueue<TSubmission> submissionsForProcessing)
+        private void SpawnSubmissionProcessorsAndThreads()
         {
+            var submissionsForProcessing = new ConcurrentQueue<TSubmission>();
             var sharedLockObject = new object();
 
             for (var i = 1; i <= Settings.ThreadsCount; i++)
             {
                 var submissionProcessor = new SubmissionProcessor<TSubmission>(
-                    $"{nameof(SubmissionProcessor<TSubmission>)} #{i}",
+                    $"SP #{i}",
                     this.DependencyContainer,
                     submissionsForProcessing,
                     Settings.GanacheCliDefaultPortNumber + i,
@@ -96,14 +91,14 @@
                     Name = $"{nameof(Thread)} #{i}"
                 };
 
-                processors.Add(submissionProcessor);
-                threadsToSpawn.Add(thread);
+                this.submissionProcessors.Add(submissionProcessor);
+                this.threads.Add(thread);
             }
         }
 
-        private void StartThreads(IEnumerable<Thread> threadsToStart)
+        private void StartThreads()
         {
-            foreach (var thread in threadsToStart)
+            foreach (var thread in this.threads)
             {
                 this.Logger.InfoFormat($"Starting {thread.Name}...");
                 thread.Start();
@@ -112,18 +107,18 @@
             }
         }
 
-        private void StopSubmissionProcessors(IEnumerable<ISubmissionProcessor> processors)
+        private void StopSubmissionProcessors()
         {
-            foreach (var processor in processors)
+            foreach (var submissionProcessor in this.submissionProcessors)
             {
-                processor.Stop();
-                this.Logger.InfoFormat($"{processor.Name} stopped.");
+                submissionProcessor.Stop();
+                this.Logger.InfoFormat($"{submissionProcessor.Name} stopped.");
             }
         }
 
-        private void StopThreads(IEnumerable<Thread> threadsToStop)
+        private void StopThreads()
         {
-            foreach (var thread in threadsToStop)
+            foreach (var thread in this.threads)
             {
                 thread.Abort();
                 this.Logger.InfoFormat($"{thread.Name} aborted.");
