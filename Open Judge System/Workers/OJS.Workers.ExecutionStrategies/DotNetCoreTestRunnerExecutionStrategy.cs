@@ -8,9 +8,9 @@
 
     using Microsoft.CSharp;
 
-    using OJS.Common.Extensions;
-    using OJS.Common.Models;
     using OJS.Workers.Common;
+    using OJS.Workers.Common.Helpers;
+    using OJS.Workers.Common.Models;
     using OJS.Workers.Executors;
 
     public class DotNetCoreTestRunnerExecutionStrategy : CSharpProjectTestsExecutionStrategy

@@ -4,8 +4,8 @@
     using System.IO;
     using System.Reflection;
 
-    using OJS.Common.Extensions;
     using OJS.Workers.Common;
+    using OJS.Workers.Common.Extensions;
 
     public abstract class Checker : IChecker
     {

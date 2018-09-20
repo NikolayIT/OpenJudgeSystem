@@ -5,10 +5,11 @@
     using System.IO;
     using System.Text.RegularExpressions;
 
-    using OJS.Common.Extensions;
     using OJS.Workers.Common;
+    using OJS.Workers.Common.Helpers;
 
-    public class NodeJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy : NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy
+    public class NodeJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy
+        : NodeJsPreprocessExecuteAndRunUnitTestsWithMochaExecutionStrategy
     {
         public NodeJsPreprocessExecuteAndRunJsDomUnitTestsExecutionStrategy(
             string nodeJsExecutablePath,

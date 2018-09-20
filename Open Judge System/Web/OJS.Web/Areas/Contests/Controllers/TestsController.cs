@@ -5,13 +5,13 @@
     using System.Web;
     using System.Web.Mvc;
 
-    using OJS.Common.Extensions;
     using OJS.Data;
     using OJS.Services.Data.Participants;
     using OJS.Services.Data.Submissions;
     using OJS.Services.Data.Tests;
     using OJS.Web.Areas.Contests.ViewModels.Tests;
     using OJS.Web.Controllers;
+    using OJS.Workers.Common.Extensions;
 
     using Resource = Resources.Areas.Contests.Controllers.Tests;
 

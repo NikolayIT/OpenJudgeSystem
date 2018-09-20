@@ -1,6 +1,6 @@
 ﻿namespace OJS.Workers.Common
 {
-    using OJS.Common.Helpers;
+    using OJS.Workers.Common.Helpers;
 
     public static class Settings
     {

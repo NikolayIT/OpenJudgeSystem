@@ -3,9 +3,9 @@
     using System.Collections.Generic;
     using System.IO;
 
-    using OJS.Common;
-    using OJS.Common.Extensions;
     using OJS.Workers.Checkers;
+    using OJS.Workers.Common;
+    using OJS.Workers.Common.Helpers;
     using OJS.Workers.ExecutionStrategies.SqlStrategies.MySql;
     using OJS.Workers.Executors;
 
@@ -52,7 +52,7 @@
             result.IsCompiledSuccessfully = true;
 
             string submissionPath =
-                $@"{this.WorkingDirectory}\\{ZippedSubmissionName}{GlobalConstants.ZipFileExtension}";
+                $@"{this.WorkingDirectory}\\{ZippedSubmissionName}{Constants.ZipFileExtension}";
             File.WriteAllBytes(submissionPath, executionContext.FileContent);
             FileHelpers.UnzipFile(submissionPath, this.WorkingDirectory);
             File.Delete(submissionPath);

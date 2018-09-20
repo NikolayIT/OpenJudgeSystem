@@ -10,6 +10,7 @@
     using OJS.Common.DataAnnotations;
     using OJS.Common.Models;
     using OJS.Data.Models;
+    using OJS.Workers.Common.Models;
 
     using Resource = Resources.Areas.Administration.SubmissionTypes.ViewModels.SubmissionTypeAdministration;
 

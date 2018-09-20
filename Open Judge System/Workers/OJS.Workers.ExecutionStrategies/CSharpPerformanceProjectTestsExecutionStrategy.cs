@@ -3,9 +3,9 @@
     using System;
     using System.Collections.Generic;
 
-    using OJS.Common.Models;
     using OJS.Workers.Common;
     using OJS.Workers.Common.Helpers;
+    using OJS.Workers.Common.Models;
 
     public class CSharpPerformanceProjectTestsExecutionStrategy : CSharpProjectTestsExecutionStrategy
     {

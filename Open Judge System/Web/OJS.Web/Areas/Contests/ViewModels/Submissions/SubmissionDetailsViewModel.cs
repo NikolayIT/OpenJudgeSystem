@@ -5,8 +5,8 @@
     using System.Linq;
     using System.Linq.Expressions;
 
-    using OJS.Common.Extensions;
     using OJS.Data.Models;
+    using OJS.Workers.Common.Extensions;
 
     public class SubmissionDetailsViewModel
     {

@@ -16,6 +16,7 @@
     using OJS.Web.Common.Attributes;
     using OJS.Web.Common.Extensions;
     using OJS.Web.ViewModels.Submission;
+    using OJS.Workers.Common;
 
     public class SubmissionsController : BaseController
     {
@@ -128,7 +129,7 @@
                 {
                     cmdProcess.StartInfo = processStartInfo;
                     cmdProcess.Start();
-                    cmdProcess.WaitForExit(GlobalConstants.DefaultProcessExitTimeOutMilliseconds);
+                    cmdProcess.WaitForExit(Constants.DefaultProcessExitTimeOutMilliseconds);
 
                     var error = cmdProcess.StandardError.ReadToEnd();
                     if (string.IsNullOrWhiteSpace(error))

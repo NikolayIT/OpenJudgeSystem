@@ -4,12 +4,12 @@
     using System.IO;
     using System.Text;
 
-    using OJS.Common;
-    using OJS.Common.Extensions;
+    using OJS.Workers.Common;
+    using OJS.Workers.Common.Helpers;
 
     public class SolidityCompiler : Compiler
     {
-        private readonly string binaryFilePattern = $"*{GlobalConstants.ByteCodeFileExtension}";
+        private readonly string binaryFilePattern = $"*{Constants.ByteCodeFileExtension}";
 
         public SolidityCompiler(int processExitTimeOutMultiplier)
             : base(processExitTimeOutMultiplier)

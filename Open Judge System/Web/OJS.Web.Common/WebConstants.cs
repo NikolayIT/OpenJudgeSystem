@@ -1,6 +1,7 @@
 ﻿namespace OJS.Web.Common
 {
     using OJS.Common;
+    using OJS.Workers.Common;
 
     public static class WebConstants
     {
@@ -12,11 +13,11 @@
         // Tests
         public const string TestInputZipFileExtension =
             GlobalConstants.InputFileExtension +
-            GlobalConstants.ZipFileExtension;
+            Constants.ZipFileExtension;
 
         public const string TestOutputZipFileExtension =
             GlobalConstants.OutputFileExtension +
-            GlobalConstants.ZipFileExtension;
+            Constants.ZipFileExtension;
 
         public const string TestInputTxtFileExtension =
             GlobalConstants.InputFileExtension +

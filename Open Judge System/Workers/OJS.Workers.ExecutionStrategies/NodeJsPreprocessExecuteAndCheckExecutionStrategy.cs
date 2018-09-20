@@ -4,9 +4,9 @@
     using System.Collections.Generic;
     using System.IO;
 
-    using OJS.Common.Extensions;
     using OJS.Workers.Checkers;
     using OJS.Workers.Common;
+    using OJS.Workers.Common.Helpers;
     using OJS.Workers.Executors;
 
     public class NodeJsPreprocessExecuteAndCheckExecutionStrategy : ExecutionStrategy

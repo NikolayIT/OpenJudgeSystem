@@ -3,8 +3,8 @@
     using System;
     using System.Text;
 
-    using OJS.Common.Extensions;
-    using OJS.Common.Models;
+    using OJS.Workers.Common.Extensions;
+    using OJS.Workers.Common.Models;
 
     public class JavaCompiler : Compiler
     {

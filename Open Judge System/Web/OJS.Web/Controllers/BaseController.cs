@@ -18,9 +18,10 @@
     using OJS.Services.Data.Contests;
     using OJS.Web.Common;
     using OJS.Web.Common.Extensions;
+    using OJS.Workers.Common;
 
     // TODO: handle setting ViewBag data throught the help of this attribute
-    //[PopulateMainContestCategoriesIntoViewBag]
+    // [PopulateMainContestCategoriesIntoViewBag]
     public class BaseController : Controller
     {
         public BaseController(IOjsData data) => this.Data = data;

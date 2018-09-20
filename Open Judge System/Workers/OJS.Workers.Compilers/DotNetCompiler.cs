@@ -3,8 +3,8 @@
     using System.IO;
     using System.Text;
 
-    using OJS.Common;
-    using OJS.Common.Extensions;
+    using OJS.Workers.Common;
+    using OJS.Workers.Common.Helpers;
 
     public class DotNetCompiler : Compiler
     {
@@ -22,7 +22,7 @@
             string compiledFile =
                 FileHelpers.FindFileMatchingPattern(
                     rootDir,
-                    $"{compiledFileName}{GlobalConstants.ClassLibraryFileExtension}");
+                    $"{compiledFileName}{Constants.ClassLibraryFileExtension}");
 
             return compiledFile;
         }

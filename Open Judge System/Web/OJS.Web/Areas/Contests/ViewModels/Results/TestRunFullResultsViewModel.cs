@@ -2,7 +2,8 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using OJS.Common.Models;
+
+    using OJS.Workers.Common.Models;
 
     public class TestRunFullResultsViewModel
     {

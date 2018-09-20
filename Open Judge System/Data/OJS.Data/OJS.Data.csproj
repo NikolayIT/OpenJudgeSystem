@@ -134,6 +134,10 @@
       <Project>{69b10b02-22cf-47d6-b5f3-8a5ffb7dc771}</Project>
       <Name>OJS.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Workers\OJS.Workers.Common\OJS.Workers.Common.csproj">
+      <Project>{7F714D0B-CE81-4DD7-B6B2-62080FE22CD8}</Project>
+      <Name>OJS.Workers.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OJS.Data.Contracts\OJS.Data.Contracts.csproj">
       <Project>{8c4bf453-24ef-46f3-b947-31505fb905de}</Project>
       <Name>OJS.Data.Contracts</Name>

@@ -7,11 +7,10 @@
     using System.Text.RegularExpressions;
     using System.Xml;
 
-    using OJS.Common;
-    using OJS.Common.Extensions;
-    using OJS.Common.Models;
     using OJS.Workers.Checkers;
+    using OJS.Workers.Common;
     using OJS.Workers.Common.Helpers;
+    using OJS.Workers.Common.Models;
     using OJS.Workers.ExecutionStrategies.Helpers;
     using OJS.Workers.Executors;
 
@@ -277,9 +276,10 @@
             this.ProjectRootDirectoryInSubmissionZip = $"{IntelliJProjectTemplatePattern}/{normalizedPath}/";
             this.ProjectTestDirectoryInSubmissionZip = $"{IntelliJTestProjectTemplatePattern}/{normalizedPath}/";
 
-            this.MainClassFileName = this.MainClassFileName.Substring(
-                this.MainClassFileName.LastIndexOf(".", StringComparison.Ordinal) + 1)
-                + GlobalConstants.JavaSourceFileExtension;
+            var fileNameWithoutExtension = this.MainClassFileName.Substring(
+                this.MainClassFileName.LastIndexOf(".", StringComparison.Ordinal) + 1);
+
+            this.MainClassFileName = fileNameWithoutExtension + Constants.JavaSourceFileExtension;
         }
 
         protected void OverwriteApplicationProperties(string submissionZipFilePath)
@@ -344,7 +344,7 @@
             {
                 var className = JavaCodePreprocessorHelper.GetPublicClassName(test.Input);
                 var testFileName =
-                        $"{this.WorkingDirectory}\\{className}{GlobalConstants.JavaSourceFileExtension}";
+                        $"{this.WorkingDirectory}\\{className}{Constants.JavaSourceFileExtension}";
                 File.WriteAllText(testFileName, $"package {this.PackageName};{Environment.NewLine}{test.Input}");
                 filePaths[testNumber] = testFileName;
                 this.TestNames.Add($"{this.PackageName}.{className}");
@@ -362,7 +362,7 @@
         {
             this.UserClassNames.AddRange(FileHelpers
                 .GetFilePathsFromZip(submissionFilePath)
-                .Where(x => !x.EndsWith("/") && x.EndsWith(GlobalConstants.JavaSourceFileExtension))
+                .Where(x => !x.EndsWith("/") && x.EndsWith(Constants.JavaSourceFileExtension))
                     .Select(x => x.Contains(IntelliJProjectTemplatePattern)
                     ? x.Substring(x.LastIndexOf(
                         IntelliJProjectTemplatePattern,

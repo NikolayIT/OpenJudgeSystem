@@ -5,9 +5,9 @@
     using System.IO;
     using System.Text.RegularExpressions;
 
-    using OJS.Common;
-    using OJS.Common.Extensions;
     using OJS.Workers.Checkers;
+    using OJS.Workers.Common;
+    using OJS.Workers.Common.Helpers;
     using OJS.Workers.Executors;
 
     public class NodeJsZipPreprocessExecuteAndRunUnitTestsWithDomAndMochaExecutionStrategy :
@@ -214,7 +214,7 @@ function afterBundling() {
                 ? $".{trimmedAllowedFileExtensions}"
                 : trimmedAllowedFileExtensions;
 
-            if (allowedFileExtensions != GlobalConstants.ZipFileExtension)
+            if (allowedFileExtensions != Constants.ZipFileExtension)
             {
                 throw new ArgumentException("Submission file is not a zip file!");
             }

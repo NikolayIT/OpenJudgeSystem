@@ -4006,6 +4006,10 @@
       <Project>{44659a90-f81e-4007-8729-c37f4f650a81}</Project>
       <Name>OJS.Services</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Workers\OJS.Workers.Common\OJS.Workers.Common.csproj">
+      <Project>{7F714D0B-CE81-4DD7-B6B2-62080FE22CD8}</Project>
+      <Name>OJS.Workers.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Workers\OJS.Workers.Compilers\OJS.Workers.Compilers.csproj">
       <Project>{8570183B-9D7A-408D-9EA6-F86F59B05A10}</Project>
       <Name>OJS.Workers.Compilers</Name>

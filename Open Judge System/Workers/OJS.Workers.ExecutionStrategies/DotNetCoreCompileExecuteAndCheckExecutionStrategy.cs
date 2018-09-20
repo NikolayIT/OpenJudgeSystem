@@ -4,8 +4,8 @@
     using System.IO;
     using System.Linq;
 
-    using OJS.Common.Models;
     using OJS.Workers.Checkers;
+    using OJS.Workers.Common.Models;
     using OJS.Workers.Executors;
 
     public class DotNetCoreCompileExecuteAndCheckExecutionStrategy : ExecutionStrategy

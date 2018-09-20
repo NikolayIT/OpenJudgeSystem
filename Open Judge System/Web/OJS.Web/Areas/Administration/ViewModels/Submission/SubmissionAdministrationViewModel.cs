@@ -10,9 +10,9 @@
     using MissingFeatures;
 
     using OJS.Common.DataAnnotations;
-    using OJS.Common.Extensions;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
+    using OJS.Workers.Common.Extensions;
 
     using Resource = Resources.Areas.Administration.Submissions.ViewModels.SubmissionAdministration;
 

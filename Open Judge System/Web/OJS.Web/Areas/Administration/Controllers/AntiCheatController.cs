@@ -7,7 +7,6 @@
 
     using OJS.Common;
     using OJS.Common.Extensions;
-    using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Services.Data.Contests;
@@ -16,6 +15,8 @@
     using OJS.Web.Areas.Administration.InputModels.AntiCheat;
     using OJS.Web.Areas.Administration.ViewModels.AntiCheat;
     using OJS.Web.ViewModels.Common;
+    using OJS.Workers.Common.Extensions;
+    using OJS.Workers.Common.Models;
     using OJS.Workers.Tools.AntiCheat;
     using OJS.Workers.Tools.AntiCheat.Contracts;
     using OJS.Workers.Tools.Similarity;

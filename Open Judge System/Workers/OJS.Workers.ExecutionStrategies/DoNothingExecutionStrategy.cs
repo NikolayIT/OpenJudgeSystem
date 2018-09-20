@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    using OJS.Common.Extensions;
+    using OJS.Workers.Common.Helpers;
 
     public class DoNothingExecutionStrategy : IExecutionStrategy
     {
@@ -21,14 +21,12 @@
             }
         }
 
-        public ExecutionResult Execute(ExecutionContext executionContext)
-        {
-            return new ExecutionResult
-                       {
-                           CompilerComment = null,
-                           IsCompiledSuccessfully = true,
-                           TestResults = new List<TestResult>(),
-                       };
-        }
+        public ExecutionResult Execute(ExecutionContext executionContext) =>
+            new ExecutionResult
+            {
+                CompilerComment = null,
+                IsCompiledSuccessfully = true,
+                TestResults = new List<TestResult>()
+            };
     }
 }
