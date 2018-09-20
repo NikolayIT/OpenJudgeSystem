@@ -34,7 +34,7 @@
             this.Name = name;
 
             this.logger = LogManager.GetLogger(name);
-            this.logger.Info($"{this.Name} initializing...");
+            this.logger.Info($"{nameof(SubmissionProcessor<TSubmission>)} initializing...");
 
             this.stopping = false;
 
@@ -44,14 +44,14 @@
             this.sharedLockObject = sharedLockObject;
 
 
-            this.logger.Info($"{this.Name} initialized.");
+            this.logger.Info($"{nameof(SubmissionProcessor<TSubmission>)} initialized.");
         }
 
         public string Name { get; set; }
 
         public void Start()
         {
-            this.logger.Info($"{this.Name} starting...");
+            this.logger.Info($"{nameof(SubmissionProcessor<TSubmission>)} starting...");
 
             while (!this.stopping)
             {
@@ -78,7 +78,7 @@
                 }
             }
 
-            this.logger.Info($"{this.Name} stopped.");
+            this.logger.Info($"{nameof(SubmissionProcessor<TSubmission>)} stopped.");
         }
 
         public void Stop()
