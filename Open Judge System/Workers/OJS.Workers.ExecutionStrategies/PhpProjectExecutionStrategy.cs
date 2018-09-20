@@ -13,7 +13,6 @@
     {
         protected const string ZippedSubmissionName = "_$Submission";
         protected const string ApplicationEntryPoint = "index.php";
-        protected readonly string phpCliExecutablePath;
         private const string SuperGlobalsTemplateName = "_Superglobals.php";
         private const string SuperGlobalsRequireStatementTemplate = "<?php require_once '##templateName##'; ?>";
 
@@ -30,10 +29,12 @@
                     nameof(phpCliExecutablePath));
             }
 
-            this.phpCliExecutablePath = phpCliExecutablePath;
+            this.PhpCliExecutablePath = phpCliExecutablePath;
         }
 
         public string SuperGlobalsTemplatePath => $"{this.WorkingDirectory}\\{SuperGlobalsTemplateName}";
+
+        protected string PhpCliExecutablePath { get; }
 
         public override ExecutionResult Execute(ExecutionContext executionContext)
         {
@@ -71,7 +72,7 @@
                 File.WriteAllText(this.SuperGlobalsTemplatePath, test.Input);
 
                 var processExecutionResult = executor.Execute(
-                    this.phpCliExecutablePath,
+                    this.PhpCliExecutablePath,
                     string.Empty,
                     executionContext.TimeLimit,
                     executionContext.MemoryLimit,
