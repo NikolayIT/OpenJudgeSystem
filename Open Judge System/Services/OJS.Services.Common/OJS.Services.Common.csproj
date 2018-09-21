@@ -110,7 +110,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Data\OJS.Data.Models\OJS.Data.Models.csproj">
+    <ProjectReference Include="..\..\Data\OJS.Data.Models\OJS.Data.Models.csproj">
       <Project>{341CA732-D483-4487-923E-27ED2A6E9A4F}</Project>
       <Name>OJS.Data.Models</Name>
     </ProjectReference>

@@ -138,23 +138,23 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Data\OJS.Data.Contracts\OJS.Data.Contracts.csproj">
+    <ProjectReference Include="..\..\Data\OJS.Data.Contracts\OJS.Data.Contracts.csproj">
       <Project>{8c4bf453-24ef-46f3-b947-31505fb905de}</Project>
       <Name>OJS.Data.Contracts</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Data\OJS.Data.Models\OJS.Data.Models.csproj">
+    <ProjectReference Include="..\..\Data\OJS.Data.Models\OJS.Data.Models.csproj">
       <Project>{341ca732-d483-4487-923e-27ed2a6e9a4f}</Project>
       <Name>OJS.Data.Models</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Data\OJS.Data\OJS.Data.csproj">
+    <ProjectReference Include="..\..\Data\OJS.Data\OJS.Data.csproj">
       <Project>{1807194c-9e25-4365-b3be-fe1df627612b}</Project>
       <Name>OJS.Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OJS.Common\OJS.Common.csproj">
+    <ProjectReference Include="..\..\OJS.Common\OJS.Common.csproj">
       <Project>{69B10B02-22CF-47D6-B5F3-8A5FFB7DC771}</Project>
       <Name>OJS.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OJS.Data.Archives\OJS.Data.Archives.csproj">
+    <ProjectReference Include="..\..\OJS.Data.Archives\OJS.Data.Archives.csproj">
       <Project>{7d684e33-0aa6-44f8-bcfe-a82b70bd48bc}</Project>
       <Name>OJS.Data.Archives</Name>
     </ProjectReference>
@@ -162,7 +162,7 @@
       <Project>{a7de52ac-62e7-43f0-8f73-047728eb5af2}</Project>
       <Name>OJS.Services.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Workers\OJS.Workers.Common\OJS.Workers.Common.csproj">
+    <ProjectReference Include="..\..\Workers\OJS.Workers.Common\OJS.Workers.Common.csproj">
       <Project>{7F714D0B-CE81-4DD7-B6B2-62080FE22CD8}</Project>
       <Name>OJS.Workers.Common</Name>
     </ProjectReference>
