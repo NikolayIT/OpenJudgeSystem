@@ -93,7 +93,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Services.Common", "Serv
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Services", "Services\OJS.Services\OJS.Services.csproj", "{44659A90-F81E-4007-8729-C37F4F650A81}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Data.Archives", "OJS.Data.Archives\OJS.Data.Archives.csproj", "{7D684E33-0AA6-44F8-BCFE-A82B70BD48BC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Data.Archives", "Data\OJS.Data.Archives\OJS.Data.Archives.csproj", "{7D684E33-0AA6-44F8-BCFE-A82B70BD48BC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.LocalWorkerMonitoring", "LocalWorker\OJS.LocalWorkerMonitoring\OJS.LocalWorkerMonitoring.csproj", "{91080721-1B4B-49E6-BB1B-3684268D12DD}"
 EndProject

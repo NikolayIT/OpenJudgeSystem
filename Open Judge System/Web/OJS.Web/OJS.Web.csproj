@@ -3994,7 +3994,7 @@
       <Project>{69b10b02-22cf-47d6-b5f3-8a5ffb7dc771}</Project>
       <Name>OJS.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\OJS.Data.Archives\OJS.Data.Archives.csproj">
+    <ProjectReference Include="..\..\Data\OJS.Data.Archives\OJS.Data.Archives.csproj">
       <Project>{7d684e33-0aa6-44f8-bcfe-a82b70bd48bc}</Project>
       <Name>OJS.Data.Archives</Name>
     </ProjectReference>
