@@ -74,7 +74,12 @@
 
             if (id.HasValue && this.contestCategoriesData.HasContestsById(id.Value))
             {
-                contestCategory.Contests = this.GetContestsInCategory(id.Value);
+                contestCategory.Contests = this.contestsData
+                    .GetAllVisibleByCategory(id.Value)
+                    .OrderBy(c => c.OrderBy)
+                    .ThenByDescending(c => c.EndTime ?? c.PracticeEndTime ?? c.PracticeStartTime)
+                    .Select(ContestListViewModel.FromContest(this.UserProfile?.Id, this.User.IsAdmin()))
+                    .ToList();
             }
 
             contestCategory.IsUserLecturerInContestCategory =
@@ -120,29 +125,6 @@
 
             this.ViewBag.SubmissionType = submissionType.Name;
             return this.View(contests);
-        }
-
-        private IEnumerable<ContestListViewModel> GetContestsInCategory(int categoryId)
-        {
-            var contests = this.contestsData
-                .GetAllVisibleByCategory(categoryId)
-                .OrderBy(c => c.OrderBy)
-                .ThenByDescending(c => c.EndTime ?? c.PracticeEndTime ?? c.PracticeStartTime)
-                .Select(ContestListViewModel.FromContest)
-                .ToList();
-
-            foreach (var contest in contests)
-            {
-                contest.UserIsAdminOrLecturerInContest = this.CheckIfUserHasContestPermissions(contest.Id);
-
-                contest.UserCanCompete = this.contestsBusiness
-                    .CanUserCompeteByContestByUserAndIsAdmin(contest.Id, this.UserProfile?.Id, this.User.IsAdmin());
-
-                contest.UserIsParticipant = this.contestsData
-                    .IsUserParticipantInByContestAndUser(contest.Id, this.UserProfile?.Id);
-            }
-
-            return contests;
         }
 
         private ContestCategoryViewModel GetContestCategoryFromCache(int? id)

@@ -27,7 +27,7 @@
                     <td>
                         <a href="@ContestsHelper.GetUrl(contest.Id, contest.Name)">@contest.Name</a>
                     </td>
-                    @if (contest.CanBePracticed && contest.UserCanCompete && contest.OfficialParticipants > 0)
+                    @if (contest.CanBePracticed && contest.CanBeCompeted && contest.OfficialParticipants > 0)
                     {
                         <td colspan="2">
                             @Html.RouteLink(
@@ -72,7 +72,7 @@
                     else
                     {
                         <td class="paricipate-compete-buttons">
-                            @if (contest.UserCanCompete && !contest.CanBePracticed)
+                            @if (contest.CanBeCompeted && !contest.CanBePracticed)
                             {
                                 @Html.RouteLink(
                                     Resource.Compete,
