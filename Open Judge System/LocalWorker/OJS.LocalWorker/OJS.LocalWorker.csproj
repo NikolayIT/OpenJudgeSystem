@@ -141,11 +141,11 @@
       <Project>{7D684E33-0AA6-44F8-BCFE-A82B70BD48BC}</Project>
       <Name>OJS.Data.Archives</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\OJS.Services.Common\OJS.Services.Common.csproj">
+    <ProjectReference Include="..\..\Services\OJS.Services.Common\OJS.Services.Common.csproj">
       <Project>{A7DE52AC-62E7-43F0-8F73-047728EB5AF2}</Project>
       <Name>OJS.Services.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\OJS.Services\OJS.Services.csproj">
+    <ProjectReference Include="..\..\Services\OJS.Services\OJS.Services.csproj">
       <Project>{44659A90-F81E-4007-8729-C37F4F650A81}</Project>
       <Name>OJS.Services</Name>
     </ProjectReference>

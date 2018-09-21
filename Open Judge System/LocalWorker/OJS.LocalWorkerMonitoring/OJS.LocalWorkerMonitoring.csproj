@@ -69,7 +69,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\OJS.Services.Common\OJS.Services.Common.csproj">
+    <ProjectReference Include="..\..\Services\OJS.Services.Common\OJS.Services.Common.csproj">
       <Project>{A7DE52AC-62E7-43F0-8F73-047728EB5AF2}</Project>
       <Name>OJS.Services.Common</Name>
     </ProjectReference>
