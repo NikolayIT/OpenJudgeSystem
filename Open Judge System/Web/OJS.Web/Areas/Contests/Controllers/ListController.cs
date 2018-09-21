@@ -7,7 +7,6 @@
     using System.Web.Mvc;
 
     using OJS.Data;
-    using OJS.Services.Business.Contests;
     using OJS.Services.Cache;
     using OJS.Services.Data.ContestCategories;
     using OJS.Services.Data.Contests;
@@ -16,24 +15,25 @@
     using OJS.Web.Common.Extensions;
     using OJS.Web.Controllers;
 
+    using X.PagedList;
+
     using Resource = Resources.Areas.Contests.ContestsGeneral;
 
     public class ListController : BaseController
     {
-        private readonly IContestsBusinessService contestsBusiness;
+        private const int DefaultContestsPerPage = 10;
+
         private readonly IContestsDataService contestsData;
         private readonly IContestCategoriesDataService contestCategoriesData;
         private readonly ICacheItemsProviderService cacheItems;
 
         public ListController(
             IOjsData data,
-            IContestsBusinessService contestsBusiness,
             IContestsDataService contestsData,
             IContestCategoriesDataService contestCategoriesData,
             ICacheItemsProviderService cacheItems)
             : base(data)
         {
-            this.contestsBusiness = contestsBusiness;
             this.contestsData = contestsData;
             this.contestCategoriesData = contestCategoriesData;
             this.cacheItems = cacheItems;
@@ -63,7 +63,7 @@
             return this.Json(categoryIds, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult ByCategory(int? id)
+        public ActionResult ByCategory(int? id, int? page)
         {
             var contestCategory = this.GetContestCategoryFromCache(id);
 
@@ -74,12 +74,14 @@
 
             if (id.HasValue && this.contestCategoriesData.HasContestsById(id.Value))
             {
+                page = page ?? 1;
+
                 contestCategory.Contests = this.contestsData
                     .GetAllVisibleByCategory(id.Value)
                     .OrderBy(c => c.OrderBy)
                     .ThenByDescending(c => c.EndTime ?? c.PracticeEndTime ?? c.PracticeStartTime)
                     .Select(ContestListViewModel.FromContest(this.UserProfile?.Id, this.User.IsAdmin()))
-                    .ToList();
+                    .ToPagedList(page.Value, DefaultContestsPerPage);
             }
 
             contestCategory.IsUserLecturerInContestCategory =
