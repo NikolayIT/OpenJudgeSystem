@@ -11,6 +11,8 @@
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
 
+    using static OJS.Common.Constants.EditorTemplateConstants;
+
     using Resource = Resources.Areas.Administration.Feedback.ViewModels.FeedbackReport;
 
     public class FeedbackReportViewModel : AdministrationViewModel<FeedbackReport>
@@ -41,41 +43,41 @@
         public int? Id { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Name", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Name), ResourceType = typeof(Resource))]
         [Required(
-            ErrorMessageResourceName = "Name_required",
+            ErrorMessageResourceName = nameof(Resource.Name_required),
             ErrorMessageResourceType = typeof(Resource))]
-        [UIHint("SingleLineText")]
+        [UIHint(SingleLineText)]
         public string Name { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Mail", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Mail), ResourceType = typeof(Resource))]
         [DataType(DataType.EmailAddress)]
         [RegularExpression(
             GlobalConstants.EmailRegEx,
-            ErrorMessageResourceName = "Mail_invalid",
+            ErrorMessageResourceName = nameof(Resource.Mail_invalid),
             ErrorMessageResourceType = typeof(Resource))]
         [Required(
-            ErrorMessageResourceName = "Mail_required",
+            ErrorMessageResourceName = nameof(Resource.Mail_required),
             ErrorMessageResourceType = typeof(Resource))]
-        [UIHint("SingleLineText")]
+        [UIHint(SingleLineText)]
         public string Email { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Contet", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Contet), ResourceType = typeof(Resource))]
         [Required(
-            ErrorMessageResourceName = "Contet_required",
+            ErrorMessageResourceName = nameof(Resource.Contet_required),
             ErrorMessageResourceType = typeof(Resource))]
         [DataType(DataType.MultilineText)]
-        [UIHint("MultiLineText")]
+        [UIHint(MultiLineText)]
         public string Content { get; set; }
 
-        [Display(Name = "UserName", ResourceType = typeof(Resource))]
-        [UIHint("NonEditable")]
+        [Display(Name = nameof(Resource.UserName), ResourceType = typeof(Resource))]
+        [UIHint(NonEditable)]
         public string Username { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Is_fixed", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Is_fixed), ResourceType = typeof(Resource))]
         public bool IsFixed { get; set; }
     }
 }

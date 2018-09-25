@@ -11,6 +11,8 @@
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
 
+    using static OJS.Common.Constants.EditorTemplateConstants;
+
     using Resource = Resources.Areas.Administration.Users.ViewModels.UserProfileAdministration;
 
     public class UserProfileAdministrationViewModel : AdministrationViewModel<UserProfile>
@@ -43,125 +45,121 @@
         [HiddenInput(DisplayValue = false)]
         public string Id { get; set; }
 
-        [Display(Name = "UserName", ResourceType = typeof(Resource))]
-        [UIHint("NonEditable")]
+        [Display(Name = nameof(Resource.UserName), ResourceType = typeof(Resource))]
+        [UIHint(NonEditable)]
         public string UserName { get; set; }
 
         [DataType(DataType.EmailAddress)]
         [RegularExpression(
             GlobalConstants.EmailRegEx,
-            ErrorMessageResourceName = "Mail_invalid",
+            ErrorMessageResourceName = nameof(Resource.Mail_invalid),
             ErrorMessageResourceType = typeof(Resource))]
         [Required(
-            ErrorMessageResourceName = "Mail_required",
+            ErrorMessageResourceName = nameof(Resource.Mail_required),
             ErrorMessageResourceType = typeof(Resource))]
         [StringLength(
             GlobalConstants.EmailMaxLength,
-            ErrorMessageResourceName = "Mail_length",
+            ErrorMessageResourceName = nameof(Resource.Mail_length),
             ErrorMessageResourceType = typeof(Resource))]
-        [UIHint("SingleLineText")]
+        [UIHint(SingleLineText)]
         public string Email { get; set; }
 
-        [Display(Name = "First_name", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.First_name), ResourceType = typeof(Resource))]
         [StringLength(
             GlobalConstants.NameMaxLength,
-            ErrorMessageResourceName = "First_name_length",
+            ErrorMessageResourceName = nameof(Resource.First_name_length),
             ErrorMessageResourceType = typeof(Resource))]
         [LocalizedDisplayFormat(
-            NullDisplayTextResourceName = "Null_display_text",
+            NullDisplayTextResourceName = nameof(Resource.Null_display_text),
             NullDisplayTextResourceType = typeof(Resource),
             ConvertEmptyStringToNull = true)]
-        [UIHint("SingleLineText")]
+        [UIHint(SingleLineText)]
         public string FirstName { get; set; }
 
-        [Display(Name = "Last_name", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Last_name), ResourceType = typeof(Resource))]
         [StringLength(
             GlobalConstants.NameMaxLength,
-            ErrorMessageResourceName = "Last_name_length",
+            ErrorMessageResourceName = nameof(Resource.Last_name_length),
             ErrorMessageResourceType = typeof(Resource))]
         [LocalizedDisplayFormat(
-            NullDisplayTextResourceName = "Null_display_text",
+            NullDisplayTextResourceName = nameof(Resource.Null_display_text),
             NullDisplayTextResourceType = typeof(Resource),
             ConvertEmptyStringToNull = true)]
-        [UIHint("SingleLineText")]
+        [UIHint(SingleLineText)]
         public string LastName { get; set; }
 
-        [Display(Name = "City", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.City), ResourceType = typeof(Resource))]
         [StringLength(
             GlobalConstants.CityMaxLength,
-            ErrorMessageResourceName = "City_length",
+            ErrorMessageResourceName = nameof(Resource.City_length),
             ErrorMessageResourceType = typeof(Resource))]
         [LocalizedDisplayFormat(
-            NullDisplayTextResourceName = "Null_display_text",
+            NullDisplayTextResourceName = nameof(Resource.Null_display_text),
             NullDisplayTextResourceType = typeof(Resource),
             ConvertEmptyStringToNull = true)]
-        [UIHint("SingleLineText")]
+        [UIHint(SingleLineText)]
         public string City { get; set; }
 
-        [Display(Name = "Educational_institution", ResourceType = typeof(Resource))]
-        ////[StringLength(
-        ////    GlobalConstants.EducationalInstitutionMaxLength,
-        ////    ErrorMessageResourceName = "Educational_institution_length",
-        ////    ErrorMessageResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Educational_institution), ResourceType = typeof(Resource))]
         [LocalizedDisplayFormat(
-            NullDisplayTextResourceName = "Null_display_text",
+            NullDisplayTextResourceName = nameof(Resource.Null_display_text),
             NullDisplayTextResourceType = typeof(Resource),
             ConvertEmptyStringToNull = true)]
-        [UIHint("SingleLineText")]
+        [UIHint(SingleLineText)]
         public string EducationalInstitution { get; set; }
 
-        [Display(Name = "Faculty_number", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Faculty_number), ResourceType = typeof(Resource))]
         [StringLength(
             GlobalConstants.FacultyNumberMaxLength,
-            ErrorMessageResourceName = "Faculty_number_length",
+            ErrorMessageResourceName = nameof(Resource.Faculty_number_length),
             ErrorMessageResourceType = typeof(Resource))]
         [LocalizedDisplayFormat(
-            NullDisplayTextResourceName = "Null_display_text",
+            NullDisplayTextResourceName = nameof(Resource.Null_display_text),
             NullDisplayTextResourceType = typeof(Resource),
             ConvertEmptyStringToNull = true)]
-        [UIHint("PositiveInteger")]
+        [UIHint(KendoPositiveInteger)]
         public string FacultyNumber { get; set; }
 
-        [Display(Name = "Date_of_birth", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Date_of_birth), ResourceType = typeof(Resource))]
         [LocalizedDisplayFormat(
-            NullDisplayTextResourceName = "Null_display_text",
+            NullDisplayTextResourceName = nameof(Resource.Null_display_text),
             NullDisplayTextResourceType = typeof(Resource),
             ConvertEmptyStringToNull = true,
             DataFormatString = "{0:dd-MM-yyyy}")]
         [DataType(DataType.Date)]
-        [UIHint("Date")]
+        [UIHint(KendoDatePicker)]
         public DateTime? DateOfBirth { get; set; }
 
-        [Display(Name = "Company", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Company), ResourceType = typeof(Resource))]
         [StringLength(
             GlobalConstants.CompanyMaxLength,
-            ErrorMessageResourceName = "Company_length",
+            ErrorMessageResourceName = nameof(Resource.Company_length),
             ErrorMessageResourceType = typeof(Resource))]
         [LocalizedDisplayFormat(
-            NullDisplayTextResourceName = "Null_display_text",
+            NullDisplayTextResourceName = nameof(Resource.Null_display_text),
             NullDisplayTextResourceType = typeof(Resource),
             ConvertEmptyStringToNull = true)]
-        [UIHint("SingleLineText")]
+        [UIHint(SingleLineText)]
         public string Company { get; set; }
 
-        [Display(Name = "Job_title", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Job_title), ResourceType = typeof(Resource))]
         [StringLength(
             GlobalConstants.JobTitleMaxLength,
-            ErrorMessageResourceName = "Job_title_length",
+            ErrorMessageResourceName = nameof(Resource.Job_title_length),
             ErrorMessageResourceType = typeof(Resource))]
         [LocalizedDisplayFormat(
-            NullDisplayTextResourceName = "Null_display_text",
+            NullDisplayTextResourceName = nameof(Resource.Null_display_text),
             NullDisplayTextResourceType = typeof(Resource),
             ConvertEmptyStringToNull = true)]
-        [UIHint("SingleLineText")]
+        [UIHint(SingleLineText)]
         public string JobTitle { get; set; }
 
-        [Display(Name = "Age", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Age), ResourceType = typeof(Resource))]
         [LocalizedDisplayFormat(
-            NullDisplayTextResourceName = "Null_display_text",
+            NullDisplayTextResourceName = nameof(Resource.Null_display_text),
             NullDisplayTextResourceType = typeof(Resource),
             ConvertEmptyStringToNull = true)]
-        [UIHint("NonEditable")]
+        [UIHint(NonEditable)]
         public byte Age => Calculator.Age(this.DateOfBirth) ?? default(byte);
 
         public override UserProfile GetEntityModel(UserProfile model = null)
@@ -180,7 +178,7 @@
                 FacultyNumber = this.FacultyNumber,
                 DateOfBirth = this.DateOfBirth,
                 Company = this.Company,
-                JobTitle = this.JobTitle,
+                JobTitle = this.JobTitle
             };
             model.CreatedOn = this.CreatedOn.GetValueOrDefault();
             model.ModifiedOn = this.ModifiedOn;

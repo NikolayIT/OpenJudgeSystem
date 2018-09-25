@@ -4,12 +4,13 @@
     using System.ComponentModel.DataAnnotations;
     using System.Linq.Expressions;
     using System.Web.Mvc;
-
     using OJS.Common.DataAnnotations;
     using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
+
+    using static OJS.Common.Constants.EditorTemplateConstants;
 
     using ProblemResource = Resources.Areas.Administration.Problems.ViewModels.DetailedProblem;
     using Resource = Resources.Areas.Administration.ProblemGroups.ViewModels.ProblemGroupAdministration;
@@ -31,16 +32,16 @@
         public int Id { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Order", ResourceType = typeof(ProblemResource))]
+        [Display(Name = nameof(ProblemResource.Order), ResourceType = typeof(ProblemResource))]
         [Required(
-            ErrorMessageResourceName = "Order_required",
+            ErrorMessageResourceName = nameof(ProblemResource.Order_required),
             ErrorMessageResourceType = typeof(ProblemResource))]
-        [UIHint("PositiveInteger")]
+        [UIHint(KendoPositiveInteger)]
         public int OrderBy { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Type", ResourceType = typeof(Resource))]
-        [UIHint("DropDownListCustom")]
+        [Display(Name = nameof(Resource.Type), ResourceType = typeof(Resource))]
+        [UIHint(KendoDropDownList)]
         public ProblemGroupType? Type { get; set; }
 
         [HiddenInput(DisplayValue = false)]
@@ -50,8 +51,8 @@
         [HiddenInput(DisplayValue = false)]
         public int ContestId { get; set; }
 
-        [Display(Name = "Contest", ResourceType = typeof(ProblemResource))]
-        [UIHint("NonEditable")]
+        [Display(Name = nameof(ProblemResource.Contest), ResourceType = typeof(ProblemResource))]
+        [UIHint(NonEditable)]
         public string ContestName { get; set; }
     }
 }

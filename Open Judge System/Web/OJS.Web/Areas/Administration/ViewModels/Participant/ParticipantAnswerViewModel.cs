@@ -4,8 +4,9 @@
     using System.ComponentModel.DataAnnotations;
     using System.Linq.Expressions;
     using System.Web.Mvc;
-
     using OJS.Data.Models;
+
+    using static OJS.Common.Constants.EditorTemplateConstants;
 
     using Resource = Resources.Areas.Administration.Participants.ViewModels.ParticipantViewModels;
 
@@ -31,15 +32,15 @@
         [HiddenInput(DisplayValue = false)]
         public int ContestQuestionId { get; set; }
 
-        [Display(Name = "Question", ResourceType = typeof(Resource))]
-        [UIHint("NonEditable")]
+        [Display(Name = nameof(Resource.Question), ResourceType = typeof(Resource))]
+        [UIHint(NonEditable)]
         public string QuestionText { get; set; }
 
-        [Display(Name = "Answer", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Answer), ResourceType = typeof(Resource))]
         [Required(
-            ErrorMessageResourceName = "Answer_required",
+            ErrorMessageResourceName = nameof(Resource.Answer_required),
             ErrorMessageResourceType = typeof(Resource))]
-        [UIHint("SingleLineText")]
+        [UIHint(SingleLineText)]
         public string Answer { get; set; }
     }
 }

@@ -11,6 +11,8 @@
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
 
+    using static OJS.Common.Constants.EditorTemplateConstants;
+
     using Resource = Resources.Areas.Administration.Contests.ViewModels.ContestQuestionAnswer;
 
     public class ContestQuestionAnswerViewModel : AdministrationViewModel<ContestQuestionAnswer>
@@ -41,22 +43,22 @@
         [HiddenInput(DisplayValue = false)]
         public int? QuestionId { get; set; }
 
-        [Display(Name = "Question", ResourceType = typeof(Resource))]
-        [UIHint("NonEditable")]
+        [Display(Name = nameof(Resource.Question), ResourceType = typeof(Resource))]
+        [UIHint(NonEditable)]
         public string QuestionText { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Text", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Text), ResourceType = typeof(Resource))]
         [Required(
             AllowEmptyStrings = false,
-            ErrorMessageResourceName = "Text_required",
+            ErrorMessageResourceName = nameof(Resource.Text_required),
             ErrorMessageResourceType = typeof(Resource))]
         [StringLength(
             GlobalConstants.ContestQuestionAnswerMaxLength,
             MinimumLength = GlobalConstants.ContestQuestionAnswerMinLength,
-            ErrorMessageResourceName = "Text_length",
+            ErrorMessageResourceName = nameof(Resource.Text_length),
             ErrorMessageResourceType = typeof(Resource))]
-        [UIHint("SingleLineText")]
+        [UIHint(SingleLineText)]
         public string Text { get; set; }
     }
 }

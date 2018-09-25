@@ -4,6 +4,8 @@
     using System.ComponentModel.DataAnnotations;
     using System.Web.Mvc;
 
+    using static OJS.Common.Constants.EditorTemplateConstants;
+
     using Resource = Resources.Areas.Administration.Problems.ViewModels.CopyProblem;
 
     public class CopyProblemViewModel
@@ -18,16 +20,16 @@
         [HiddenInput(DisplayValue = false)]
         public int Id { get; set; }
 
-        [Display(Name = "Contest_label", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Contest_label), ResourceType = typeof(Resource))]
         [Required(
-            ErrorMessageResourceName = "Contest_required",
+            ErrorMessageResourceName = nameof(Resource.Contest_required),
             ErrorMessageResourceType = typeof(Resource))]
         [DefaultValue(null)]
-        [UIHint("ContestsComboBox")]
+        [UIHint(ContestsComboBox)]
         public int? ContestId { get; set; }
 
-        [Display(Name = "Problem_group_label", ResourceType = typeof(Resource))]
-        [UIHint("ProblemGroupsCascadeDropDown")]
+        [Display(Name = nameof(Resource.Problem_group_label), ResourceType = typeof(Resource))]
+        [UIHint(ProblemGroupsCascadeDropDown)]
         public int? ProblemGroupId { get; set; }
     }
 }
