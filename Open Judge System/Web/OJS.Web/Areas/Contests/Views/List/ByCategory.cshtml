@@ -4,7 +4,7 @@
 @using OJS.Web.Areas.Contests.Controllers
 
 @using ContestsController = OJS.Web.Areas.Administration.Controllers.ContestsController
-@using Resource = Resources.Areas.Contests.Views.ListByCategory;
+@using Resource = Resources.Areas.Contests.Views.ListByCategory
 
 @{
     const string contestsListContainerId = "contests-list-container";
@@ -20,13 +20,17 @@
         @if (Model.Id != default(int) && Model.IsUserLecturerInContestCategory && !Model.SubCategories.Any())
         {
             <div class="col-xs-6 pull-right">
-                @(Html.ActionLink<ContestsController>(Resource.Create_contest, c => c.Create(Model.Id), null, new { @class = "btn btn-sm btn-primary pull-right top-buffer-lg" }))
+                @(Html.ActionLink<ContestsController>(
+                    Resource.Create_contest,
+                    c => c.Create(Model.Id),
+                    null,
+                    new { @class = "btn btn-sm btn-primary pull-right top-buffer-lg" }))
             </div>
         }
     </div>
 
     <div>
-        @if (Model.Contests?.Any() == true)
+        @if (Model.Contests?.Any() ?? false)
         {
             <table class="table table-striped contests-by-category">
                 @foreach (var contest in Model.Contests)
@@ -74,7 +78,8 @@
                                 }
 
                                 <div class="row-results">
-                                    <div class="glyphicon glyphicon-user" title="@Resource.Participant_count"></div> <span>@contest.PracticeParticipants</span>
+                                    <div class="glyphicon glyphicon-user" title="@Resource.Participant_count"></div>
+                                    <span>@contest.PracticeParticipants</span>
                                     <a class="btn-sm" href="@(Url.Action<ResultsController>(c => c.Simple(contest.Id, false, null)))">
                                         @Resource.Practice_results
                                     </a>
@@ -122,8 +127,7 @@
                                         Resource.Practice,
                                         "Contests_practice",
                                         new { id = contest.Id, action = GlobalConstants.Index },
-                                        new { @class = "btn btn-sm btn-primary practice-button" + (contest.OfficialParticipants <= 0 ? " practice-only" : "") }
-                                        )
+                                        new { @class = "btn btn-sm btn-primary practice-button" + (contest.OfficialParticipants <= 0 ? " practice-only" : "") })
 
                                     if (contest.HasPracticePassword)
                                     {
@@ -136,7 +140,8 @@
                                 @if (contest.PracticeParticipants > 0)
                                 {
                                     <div class="results">
-                                        <div class="glyphicon glyphicon-user" title="@Resource.Participant_count"></div> <span>@contest.PracticeParticipants</span>
+                                        <div class="glyphicon glyphicon-user" title="@Resource.Participant_count"></div>
+                                        <span>@contest.PracticeParticipants</span>
                                         <a class="btn-sm" href="@(Url.Action<ResultsController>(c => c.Simple(contest.Id, false, null)))">
                                             @Resource.Practice_results
                                         </a>
@@ -173,50 +178,50 @@
                 }
             </table>
 
-        if (Model.Contests.PageCount > 1)
-        {
-            @Html.PagedListPager(
-                Model.Contests,
-                page => Url.Action<ListController>(c => c.ByCategory(Model.Id, page)),
-                PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
-                    new AjaxOptions
-                    {
-                        HttpMethod = "GET",
-                        UpdateTargetId = contestsListContainerId,
-                        LoadingElementId = loadingMaskContainerId
-                    }))
-        }
+            if (Model.Contests.PageCount > 1)
+            {
+                @Html.PagedListPager(
+                    Model.Contests,
+                    page => Url.Action<ListController>(c => c.ByCategory(Model.Id, page)),
+                    PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
+                        new AjaxOptions
+                        {
+                            HttpMethod = "GET",
+                            UpdateTargetId = contestsListContainerId,
+                            LoadingElementId = loadingMaskContainerId
+                        }))
+            }
 
-        @Html.Partial("_LoadingMask", loadingMaskContainerId)
-    }
-    else
-    {
-        if (Model.SubCategories.Count() != 0)
-        {
-            <table class="table table-striped">
-                @foreach (var subCategory in Model.SubCategories)
-                {
-                    string url;
-                    if (ViewBag.IsAjax ?? false)
-                    {
-                        url = $"#!/List/ByCategory/{subCategory.Id}/{subCategory.NameUrl}?nonTreeCall=true";
-                    }
-                    else
-                    {
-                        url = $"/Contests/List/ByCategory/{subCategory.Id}/{subCategory.NameUrl}";
-                    }
-                    <tr>
-                        <td>
-                            <a href="@url" data-id="@subCategory.Id">@subCategory.Name</a>
-                        </td>
-                    </tr>
-                }
-            </table>
+            @Html.Partial("_LoadingMask", loadingMaskContainerId)
         }
         else
         {
-            <p class="lead text-warning">@Resource.Category_is_empty</p>
+            if (Model.SubCategories.Count() != 0)
+            {
+                <table class="table table-striped">
+                    @foreach (var subCategory in Model.SubCategories)
+                    {
+                        string url;
+                        if (ViewBag.IsAjax ?? false)
+                        {
+                            url = $"#!/List/ByCategory/{subCategory.Id}/{subCategory.NameUrl}?nonTreeCall=true";
+                        }
+                        else
+                        {
+                            url = $"/Contests/List/ByCategory/{subCategory.Id}/{subCategory.NameUrl}";
+                        }
+                        <tr>
+                            <td>
+                                <a href="@url" data-id="@subCategory.Id">@subCategory.Name</a>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            }
+            else
+            {
+                <p class="lead text-warning">@Resource.Category_is_empty</p>
+            }
         }
-    }
     </div>
 </div>
