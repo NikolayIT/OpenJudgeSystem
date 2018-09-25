@@ -48,14 +48,14 @@
             this.GetAllByContest(contestId)
                 .Where(p => p.IsOfficial);
 
-        public IQueryable<Participant> GetAllOfficialInOnlineContestByContestAndContestStartTimeRange(
+        public IQueryable<Participant> GetAllOfficialInOnlineContestByContestAndParticipationStartTimeRange(
             int contestId,
-            DateTime contestStartTimeRangeStart,
-            DateTime contestStartTimeRangeEnd) =>
+            DateTime participationStartTimeRangeStart,
+            DateTime participationStartTimeRangeEnd) =>
                 this.GetAllOfficialByContest(contestId)
                     .Where(p =>
-                        p.ParticipationStartTime >= contestStartTimeRangeStart &&
-                        p.ParticipationStartTime <= contestStartTimeRangeEnd &&
+                        p.ParticipationStartTime >= participationStartTimeRangeStart &&
+                        p.ParticipationStartTime <= participationStartTimeRangeEnd &&
                         p.Contest.Type == ContestType.OnlinePracticalExam);
 
         public bool ExistsByIdAndContest(int id, int contestId) =>

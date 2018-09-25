@@ -88,11 +88,20 @@ namespace Resources.Areas.Administration.Contests {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Successfully added {0} minutes to the times of all active participants in the contest {1}.
+        ///   Looks up a localized string similar to Successfully added {0} minutes to the times of all selected active participants in the contest {1}.
         /// </summary>
         public static string Added_time_to_participants_online {
             get {
                 return ResourceManager.GetString("Added_time_to_participants_online", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successfully added {0} minutes to the time of the participant with username: {1}, in the contest {2}.
+        /// </summary>
+        public static string Added_time_to_single_participant_online {
+            get {
+                return ResourceManager.GetString("Added_time_to_single_participant_online", resourceCulture);
             }
         }
         
@@ -196,6 +205,15 @@ namespace Resources.Areas.Administration.Contests {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The participant is not in the contest!.
+        /// </summary>
+        public static string Participant_not_in_contest {
+            get {
+                return ResourceManager.GetString("Participant_not_in_contest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Participants transferred successfully.
         /// </summary>
         public static string Participants_transferred {
@@ -250,11 +268,20 @@ namespace Resources.Areas.Administration.Contests {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Successfully subtracted {0} minutes from the times of all active participants in the contest {1}.
+        ///   Looks up a localized string similar to Successfully subtracted {0} minutes from the times of all selected active participants in the contest {1}.
         /// </summary>
         public static string Subtracted_time_from_participants_online {
             get {
                 return ResourceManager.GetString("Subtracted_time_from_participants_online", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Successfully subtracted {0} minutes from the time of the participant with username: {1}, in the contest {2}.
+        /// </summary>
+        public static string Subtracted_time_from_single_participant_online {
+            get {
+                return ResourceManager.GetString("Subtracted_time_from_single_participant_online", resourceCulture);
             }
         }
     }

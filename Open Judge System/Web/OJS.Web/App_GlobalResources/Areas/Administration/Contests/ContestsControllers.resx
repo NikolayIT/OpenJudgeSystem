@@ -127,7 +127,10 @@
     <value>Contest is active and participants cannot be transferred</value>
   </data>
   <data name="Added_time_to_participants_online" xml:space="preserve">
-    <value>Successfully added {0} minutes to the times of all active participants in the contest {1}</value>
+    <value>Successfully added {0} minutes to the times of all selected active participants in the contest {1}</value>
+  </data>
+  <data name="Added_time_to_single_participant_online" xml:space="preserve">
+    <value>Successfully added {0} minutes to the time of the participant with username: {1}, in the contest {2}</value>
   </data>
   <data name="Contest_added" xml:space="preserve">
     <value>Contest added successfully</value>
@@ -165,6 +168,9 @@
   <data name="Participants_transferred" xml:space="preserve">
     <value>Participants transferred successfully</value>
   </data>
+  <data name="Participant_not_in_contest" xml:space="preserve">
+    <value>The participant is not in the contest!</value>
+  </data>
   <data name="Practice_start_date_before_end" xml:space="preserve">
     <value>Practice start date must be before the practice end date</value>
   </data>
@@ -181,6 +187,9 @@
     <value>Choose at least one submission type!</value>
   </data>
   <data name="Subtracted_time_from_participants_online" xml:space="preserve">
-    <value>Successfully subtracted {0} minutes from the times of all active participants in the contest {1}</value>
+    <value>Successfully subtracted {0} minutes from the times of all selected active participants in the contest {1}</value>
+  </data>
+  <data name="Subtracted_time_from_single_participant_online" xml:space="preserve">
+    <value>Successfully subtracted {0} minutes from the time of the participant with username: {1}, in the contest {2}</value>
   </data>
 </root>

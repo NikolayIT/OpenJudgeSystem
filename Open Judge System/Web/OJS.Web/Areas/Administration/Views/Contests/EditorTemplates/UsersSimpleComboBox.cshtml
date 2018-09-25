@@ -1,0 +1,24 @@
+﻿@model string
+
+@using Resource = Resources.Areas.Administration.Roles.Views.RolesIndex
+
+@(Html.Kendo().ComboBoxFor(m => m)
+    .Name("UserId")
+    .DataTextField("Text")
+    .DataValueField("Value")
+    .Filter(FilterType.Contains)
+    .MinLength(2)
+    .Placeholder(Resource.Choose_user)
+    .DataSource(data => data
+        .ServerFiltering(true)
+        .Read(read =>
+        {
+            read
+                .Action("GetUsersContaining", "KendoRemoteData")
+                .Data(@<text>
+                        function () { return { userFilter: $('\#UserId').data("kendoComboBox").input.val() };}
+                    </text>);
+        }))
+    .AutoBind(false)
+    .HtmlAttributes(new { style = "width: 100%;" })
+)
