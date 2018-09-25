@@ -2445,7 +2445,7 @@
     <Content Include="Views\Shared\EditorTemplates\MultiLineText.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\SingleLineText.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\PositiveInteger.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\DateAndTime.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\DateTime.cshtml" />
     <Content Include="Areas\Contests\Views\Submissions\View.cshtml" />
     <Content Include="Areas\Administration\Views\Settings\Index.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\DisabledCheckbox.cshtml" />
