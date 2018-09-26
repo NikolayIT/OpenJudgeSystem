@@ -158,7 +158,7 @@
       <Project>{7d684e33-0aa6-44f8-bcfe-a82b70bd48bc}</Project>
       <Name>OJS.Data.Archives</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OJS.Resources\OJS.Resources.csproj">
+    <ProjectReference Include="..\..\OJS.Resources\OJS.Resources.csproj">
       <Project>{a89a7071-f099-4730-9876-7b1fdadf1412}</Project>
       <Name>OJS.Resources</Name>
     </ProjectReference>
