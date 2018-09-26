@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Globalization;
     using System.Linq;
@@ -332,22 +333,22 @@
 
             var contest = this.contestsData
                 .GetByIdQuery(id)
-                .Select(ChangeTimeForParticipantsViewModel.FromContest)
+                .Select(ChangeParticipationEndTimeViewModel.FromContest)
                 .FirstOrDefault();
 
-            if (contest != null)
+            if (contest == null)
             {
-                this.ViewBag.CurrentUsername = this.UserProfile.UserName;
-                return this.View(contest);
+                this.TempData.AddDangerMessage(Resource.Contest_not_valid);
+                return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
-            this.TempData.AddDangerMessage(Resource.Contest_not_valid);
-            return this.RedirectToAction<ContestsController>(c => c.Index());
+            return this.View(contest);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ChangeActiveParticipantsEndTime(ChangeTimeForParticipantsViewModel model)
+        public ActionResult ChangeParticipationEndTimeByTimeInterval(
+            ChangeParticipationEndTimeByTimeIntervalViewModel model)
         {
             if (!this.User.IsAdmin())
             {
@@ -356,8 +357,13 @@
 
             if (!this.ModelState.IsValid)
             {
-                this.ViewBag.CurrentUsername = this.UserProfile.UserName;
-                return this.View(model);
+                return this.View("ChangeActiveParticipantsEndTime", new ChangeParticipationEndTimeViewModel(model));
+            }
+
+            if (!this.contestsData.IsActiveById(model.ContesId))
+            {
+                this.TempData.AddDangerMessage(Resource.Contest_not_valid);
+                return this.RedirectToAction<ContestsController>(c => c.Index());
             }
 
             if (model.ParticipantsCreatedBeforeDateTime < model.ParticipantsCreatedAfterDateTime)
@@ -365,53 +371,79 @@
                 this.ModelState.AddModelError(
                     nameof(model.ParticipantsCreatedAfterDateTime),
                     ChangeTimeResource.Participants_created_after_must_be_before_Participants_created_before);
-                this.ViewBag.CurrentUsername = this.UserProfile.UserName;
-                return this.View(model);
+                return this.View("ChangeActiveParticipantsEndTime", new ChangeParticipationEndTimeViewModel(model));
             }
 
-            if (!this.contestsData.GetAllActive().Any(c => c.Id == model.ContesId))
-            {
-                this.TempData.AddDangerMessage(Resource.Contest_not_valid);
-                return this.RedirectToAction<ContestsController>(c => c.Index());
-            }
-
-            var notUpdatedUsersUsernames = this.participantsBusiness
-                .GetAllParticipantsWhoWouldBeReducedBelowDefaultContestDuration(
-                    model.ContesId,
-                    model.TimeInMinutes,
-                    model.ParticipantsCreatedAfterDateTime.Value,
-                    model.ParticipantsCreatedBeforeDateTime.Value)
-                .Select(u => u.User.UserName)
-                .ToList();
-
-            this.participantsBusiness
-                .UpdateContestEndTimeForAllParticipantsByContestByParticipantContestStartTimeRangeAndTimeIntervalInMinutes(
+            var result = this.participantsBusiness
+                .UpdateParticipationsEndTimeByContestByParticipationStartTimeRangeAndTimeInMinutes(
                     model.ContesId,
                     model.TimeInMinutes,
                     model.ParticipantsCreatedAfterDateTime.Value,
                     model.ParticipantsCreatedBeforeDateTime.Value);
 
-            var minutesForDisplay = model.TimeInMinutes.ToString();
-
-            var sb = new StringBuilder();
-
-            var successMessage = model.TimeInMinutes >= 0
-                ? string.Format(Resource.Added_time_to_participants_online, minutesForDisplay, model.ContestName)
-                : string.Format(
-                    Resource.Subtracted_time_from_participants_online,
-                    minutesForDisplay.Substring(1, minutesForDisplay.Length - 1),
-                    model.ContestName);
-            sb.AppendLine(successMessage);
-
-            if (notUpdatedUsersUsernames.Any())
+            if (!result.IsError)
             {
-                var warningMessage = string.Format(
-                    Resource.Failed_to_update_participants_duration,
-                    string.Join(", ", notUpdatedUsersUsernames));
-              sb.AppendLine(warningMessage);
+                var systemMessage = this.GetMessageForChangedParticipantsEndTimeByTimeInterval(
+                    model.TimeInMinutes,
+                    model.ContestName,
+                    result.Data);
+
+                this.TempData.AddInfoMessage(systemMessage);
+            }
+            else
+            {
+                this.TempData.AddDangerMessage(result.Error);
             }
 
-            this.TempData.AddInfoMessage(sb.ToString());
+            return this.RedirectToAction("Details", "Contests", new { id = model.ContesId, area = "Contests" });
+        }
+
+        [HttpPost]
+        public ActionResult ChangeParticipationEndTimeByUser(
+            ChangeParticipationEndTimeByUserViewModel model)
+        {
+            if (!this.User.IsAdmin())
+            {
+                return this.RedirectToContestsAdminPanelWithNoPrivilegesMessage();
+            }
+
+            if (!this.ModelState.IsValid)
+            {
+                return this.View("ChangeActiveParticipantsEndTime", new ChangeParticipationEndTimeViewModel(model));
+            }
+
+            if (!this.contestsData.IsActiveById(model.ContesId))
+            {
+                this.TempData.AddDangerMessage(Resource.Contest_not_valid);
+                return this.RedirectToAction<ContestsController>(c => c.Index());
+            }
+
+            var participant = this.participantsData
+                .GetByContestByUserAndByIsOfficial(model.ContesId, model.UserId, isOfficial: true);
+
+            if (participant == null)
+            {
+                this.ModelState.AddModelError(nameof(model.UserId), Resource.Participant_not_in_contest);
+                return this.View("ChangeActiveParticipantsEndTime", new ChangeParticipationEndTimeViewModel(model));
+            }
+
+            var result = this.participantsBusiness.UpdateParticipationEndTimeByIdAndTimeInMinutes(
+                participant.Id,
+                model.TimeInMinutes);
+
+            if (!result.IsError)
+            {
+                var systemMessage = this.GetMessageForChangedParticipantsEndTimeByUser(
+                    model.TimeInMinutes,
+                    model.ContestName,
+                    result.Data);
+
+                this.TempData.AddInfoMessage(systemMessage);
+            }
+            else
+            {
+                this.TempData.AddDangerMessage(result.Error);
+            }
 
             return this.RedirectToAction("Details", "Contests", new { id = model.ContesId, area = "Contests" });
         }
@@ -576,6 +608,54 @@
             {
                 this.participantsData.InvalidateByContestAndIsOfficial(contest.Id, isOfficial: false);
             }
+        }
+
+        private string GetMessageForChangedParticipantsEndTimeByTimeInterval(
+            int timeInMinutes,
+            string contestName,
+            ICollection<string> notUpdatedParticipantUsernames)
+        {
+            var minutesForDisplay = timeInMinutes.ToString();
+            var formatString = Resource.Added_time_to_participants_online;
+
+            if (timeInMinutes < 0)
+            {
+                formatString = Resource.Subtracted_time_from_participants_online;
+                minutesForDisplay = minutesForDisplay.Substring(1, minutesForDisplay.Length - 1);
+            }
+
+            var message = string.Format(formatString, minutesForDisplay, contestName);
+
+            if (notUpdatedParticipantUsernames.Any())
+            {
+                var warningMessage = string.Format(
+                    Resource.Failed_to_update_participants_duration,
+                    string.Join(", ", notUpdatedParticipantUsernames));
+
+                message += Environment.NewLine + warningMessage;
+            }
+
+            return message;
+        }
+
+        private string GetMessageForChangedParticipantsEndTimeByUser(
+            int timeInMinutes,
+            string contestName,
+            string username)
+        {
+            var minutesForDisplay = timeInMinutes.ToString();
+
+            var formatString = Resource.Added_time_to_single_participant_online;
+
+            if (timeInMinutes < 0)
+            {
+                formatString = Resource.Subtracted_time_from_single_participant_online;
+                minutesForDisplay = minutesForDisplay.Substring(1, minutesForDisplay.Length - 1);
+            }
+
+            var message = string.Format(formatString, minutesForDisplay, username, contestName);
+
+            return message;
         }
     }
 }

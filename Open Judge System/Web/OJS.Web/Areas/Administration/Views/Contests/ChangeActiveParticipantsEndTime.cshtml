@@ -1,9 +1,7 @@
-﻿@model OJS.Web.Areas.Administration.ViewModels.Contest.ChangeTimeForParticipantsViewModel
-
-@using OJS.Web.Areas.Administration.Controllers
+﻿@model OJS.Web.Areas.Administration.ViewModels.Contest.ChangeParticipationEndTimeViewModel
 
 @using Resource = Resources.Areas.Administration.Contests.Views.ChangeTime
-@using SharedResource = Resources.Areas.Contests.ContestsGeneral;
+@using SharedResource = Resources.Areas.Contests.ContestsGeneral
 
 @{
     ViewBag.Title = Resource.Page_title;
@@ -15,88 +13,62 @@
 
 <div id="change-time-container">
     <h1>@ViewBag.Title</h1>
-    <h2>@Resource.Contest : <strong class="text-success">@Model.ContestName</strong></h2>
+    <h2>@Resource.Contest :
+        <a href="@ContestsHelper.GetUrl(Model.ContesId, Model.ContestName)">
+            <strong class="text-success">@Model.ContestName</strong>
+        </a>
+    </h2>
     <h3>@Resource.Change_time_legend</h3>
-    <div id="change-time-for-active-participants" class="container">
-        @using (Html.BeginForm<ContestsController>(c => c.ChangeActiveParticipantsEndTime(null), FormMethod.Post))
-        {
-            @Html.AntiForgeryToken()
-            @Html.HiddenFor(m => m.ContesId)
-            @Html.HiddenFor(m => m.ContestName)
+    
+    <ul class="nav nav-tabs nav-justified top-buffer-lg">
+        <li role="presentation" class="active">
+            <a href="#change-time-by-interval" role="tab" data-toggle="tab">@Resource.Change_time_by_time_interval</a>
+        </li>
+        <li role="presentation">
+            <a href="#change-time-by-user" role="tab" data-toggle="tab">@Resource.Change_time_by_user</a>
+        </li>
+    </ul>
 
-            <div class="top-buffer">
-                <div class="row">
-                    <div class="col-xs-12 bottom-buffer">
-                        <div class="center-block">
-                            <span class="right-buffer glyphicon glyphicon-time"></span>
-                            @Html.LabelFor(m => m.TimeInMinutes)
-                        </div>
-                    </div>
-                    <div class="editor-field col-xs-3 text-center">
-                        <div class="number-input">
-                            @Html.EditorFor(m => m.TimeInMinutes, new { @class = "pull-left" })
-                        </div>
-                    </div>
-                    <div class="editor-field col-xs-4">
-                        @Html.ValidationMessageFor(m => m.TimeInMinutes)
-                    </div>
-                </div>
-            </div>              
-            <div>
-                <div class="row">
-                    <div class="col-xs-12 bottom-buffer">
-                        <div>
-                            <h5>@Html.Raw(Resource.Participants_created_in_time_interval_information)</h5>
-                        </div>
-                    </div>
+    <div class="top-buffer">
+        <div class="row">
+            <div class="col-xs-12 bottom-buffer">
+                <div class="center-block">
+                    <span class="right-buffer glyphicon glyphicon-time"></span>
+                    @Html.LabelFor(m => m.TimeInMinutes)
                 </div>
             </div>
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="center-block">
-                        @Html.LabelFor(m => m.ParticipantsCreatedAfterDateTime)
-                    </div>
-                </div>
-                <div class="editor-field col-xs-10">
-                    @Html.EditorFor(m => m.ParticipantsCreatedAfterDateTime)
-                    <p>@Html.Raw(Resource.Default_participants_created_after_value_explanation)</p>
-                </div>
-                <div class="editor-field col-xs-4">
-                    @Html.ValidationMessageFor(m => m.ParticipantsCreatedAfterDateTime)
+            <div class="editor-field col-xs-3 text-center">
+                <div class="number-input">
+                    @Html.EditorFor(m => m.TimeInMinutes, new { @class = "pull-left" })
                 </div>
             </div>
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="center-block">
-                        @Html.LabelFor(m => m.ParticipantsCreatedBeforeDateTime)
-                    </div>
-                </div>
-                <div class="editor-field col-xs-10">
-                    @Html.EditorFor(m => m.ParticipantsCreatedBeforeDateTime)
-                    <p>@Html.Raw(Resource.Default_participants_created_before_value_explanation)</p>
-                </div>
-                <div class="editor-field col-xs-4">
-                    @Html.ValidationMessageFor(m => m.ParticipantsCreatedBeforeDateTime)
-                </div>
+            <div class="editor-field col-xs-4">
+                @Html.ValidationMessageFor(m => m.TimeInMinutes)
             </div>
-            <div class="row top-buffer">
-                <div class="editor-label col-xs-2">
-                    <span id="add-time-for-participants-btn" class="btn btn-success pull-left top-buffer">@Resource.Add_time</span>
-                    <span id="subtract-time-for-participants-btn" class="btn btn-danger pull-left top-buffer hidden">@Resource.Subtract_time</span>
-                </div>
-                <div class="editor-label col-sm-2">
-                    @(Html.ActionLink<OJS.Web.Areas.Contests.Controllers.ContestsController>(
-                          SharedResource.Cancel, c => c.Details(Model.ContesId), null, new { @class = "btn btn-primary top-buffer" }))
-                </div>
-            </div>
-        }
+        </div>
+    </div>
+
+    <div class="tab-content">
+        @Html.Partial("_ChangeParticipationEndTimeByTimeInterval", Model.ChangeByInterval)
+        @Html.Partial("_ChangeParticipationEndTimeByUser", Model.ChangeByUser)
+    </div>
+
+    <div class="row top-buffer">
+        <div class="editor-label col-xs-2">
+            <span id="add-time-for-participants-btn" class="btn btn-success pull-left top-buffer">@Resource.Add_time</span>
+            <span id="subtract-time-for-participants-btn" class="btn btn-danger pull-left top-buffer hidden">@Resource.Subtract_time</span>
+        </div>
+        <div class="editor-label col-sm-2">
+            @(Html.ActionLink<OJS.Web.Areas.Contests.Controllers.ContestsController>(
+                  SharedResource.Cancel, c => c.Details(Model.ContesId), null, new { @class = "btn btn-primary top-buffer" }))
+        </div>
     </div>
 </div>
 <div id="confirm-window-pop-up-container" style="display: none">
     <div id="confirm-window-pop-up" class="row">
-        <h3>@Html.Raw(Resource.Confirmation_message_header)</h3>
+        <h3 id="confirm-window-header"></h3>
         <label name="Name">@Resource.Enter_your_username</label>
-        <input id="username-confirmation-input" class="form-control" type="text" />
+        <input id="username-confirmation-input" class="form-control" type="text"/>
         <div class="container-fluid row">
             <input id="submit-form-button" type="submit" class="btn btn-success pull-left top-buffer col-xs-3" disabled="disabled"value="@SharedResource.Yes"/>
             <span id="cancel-btn-confirm-pop-up" class="btn btn-primary pull-right top-buffer col-xs-6">@SharedResource.Cancel</span>
@@ -107,90 +79,117 @@
 
 @section Scripts{
     <script>
-        ($(function () {
-            var timeInput = $('#TimeInMinutes');
-            changeAddSubractButton(timeInput.val());
-
-            timeInput.on('input',
-                function () {
-                    changeAddSubractButton(timeInput.val());
-                });
-
+        $(function () {
             var addButtonSelector = '#add-time-for-participants-btn';
             var subtractButtonSelector = '#subtract-time-for-participants-btn';
+            var timeInput = $('#TimeInMinutes');
+            var changeTimeContainer = $('#change-time-container');
+            var confirmWindow = $('#confirm-window-pop-up-container');
+            var submitFormButton = $('#submit-form-button');
+            var changeTimeByInterval = $('#change-time-by-interval');
+            var changeTimeByUser = $('#change-time-by-user');
 
-            var buttons = [addButtonSelector, subtractButtonSelector];
+            showTabWithError();
+            changeAddSubractButton(timeInput.val());
 
-            $(buttons.join()).click(
-                function() {
-                    var changeTimeContainer = $('#change-time-container');
-                    var confirmWindow = $('#confirm-window-pop-up-container');
-                    var confirmPopUp = confirmWindow.find('#confirm-window-pop-up');
+            $([addButtonSelector, subtractButtonSelector].join(',')).click(setConfirmWindow);
 
-                    var inputValue = timeInput.val();
-                    var createdBeforeValue = $("#ParticipantsCreatedBeforeDateTime").val();
-                    var createdAfterValue = $("#ParticipantsCreatedAfterDateTime").val();
+            submitFormButton.click(submitForm);
 
-                    var submitFormButton = $('#submit-form-button');
-                    var action = $('#action');
-                    var minutes = $('#minutes');
-                    var preposition = $('#preposition');
-                    var createdBefore = $("#createdBefore");
-                    var createdAfter = $("#createdAfter");
-                    var headerStrongElements = confirmPopUp.find('h3 strong');
+            timeInput.on('input', function () {
+                changeAddSubractButton(timeInput.val());
+            });
 
-                    if (inputValue >= 0) {
-                        action.text('@Resource.Add_are_you_sure');
-                        headerStrongElements.css('color', "#13987E");
-                        preposition.text('@Resource.To');
-                    } else {
-                        action.text('@Resource.Subtract_are_you_sure');
-                        headerStrongElements.css('color', "#DF2E1B");
-                        preposition.text('@Resource.From');
-                    }
+            $('#username-confirmation-input').on('input', function () {
+                var value = $(this).val();
+                var submitFormButtonState = value !== '@this.User.Identity.Name';
+                submitFormButton.attr('disabled', submitFormButtonState);
+            });
 
-                    createdBefore.text(createdBeforeValue);
-                    createdAfter.text(createdAfterValue);
-                    minutes.text(Math.abs(inputValue));
+            $('#cancel-btn-confirm-pop-up').click(function () {
+                confirmWindow.hide();
+                changeTimeContainer.removeClass('faded');
+            });
 
-                    $('#username-confirmation-input').on('input',
-                        function () {
-                            var value = $(this).val();
-                            if (value === '@this.ViewBag.CurrentUsername') {
-                                submitFormButton.attr("disabled", false);
-                            } else {
-                                submitFormButton.attr("disabled", true);
-                            }
-                        });
+            function submitForm() {
+                $('form input[name=TimeInMinutes]').val(timeInput.val());
 
-                    confirmWindow.show();
-                    changeTimeContainer.css('opacity', 0.3);
+                var formContainer = changeTimeByInterval;
 
-                    submitFormButton.click(
-                        function () {
-                            $('#change-time-for-active-participants>form').submit();
-                        });
+                if (changeTimeByUser.is(':visible')) {
+                    formContainer = changeTimeByUser;
+                }
 
-                    $('#cancel-btn-confirm-pop-up').click(
-                        function () {
-                            confirmWindow.hide();
-                            changeTimeContainer.css('opacity', 1);
-                        });
-                });
+                formContainer.find('form').submit();
+            }
+
+            function setConfirmWindow() {
+                setConfirmWindowHeaderPrefix();
+
+                var inputValue = timeInput.val();
+
+                var action = $('#action');
+                var preposition = $('#preposition');
+                var headerStrongElements = confirmWindow.find('#confirm-window-pop-up h3 strong');
+
+                if (inputValue >= 0) {
+                    action.text('@Resource.Add_are_you_sure');
+                    headerStrongElements.css('color', "#13987E");
+                    preposition.text('@Resource.To');
+                } else {
+                    action.text('@Resource.Subtract_are_you_sure');
+                    headerStrongElements.css('color', "#DF2E1B");
+                    preposition.text('@Resource.From');
+                }
+
+                var createdBeforeValue = $('#ParticipantsCreatedBeforeDateTime').val();
+                var createdAfterValue = $('#ParticipantsCreatedAfterDateTime').val();
+                var participantUsername = $('#UserId').data('kendoComboBox').text();
+
+                $('#createdBefore').text(createdBeforeValue);
+                $('#createdAfter').text(createdAfterValue);
+                $('#username-placeholder').text(participantUsername);
+                $('#minutes').text(Math.abs(inputValue));
+
+                confirmWindow.show();
+                changeTimeContainer.addClass('faded');
+            }
+
+            function setConfirmWindowHeaderPrefix() {
+                var confirmWindowHeader = $('#confirm-window-header');
+                var headerPrefix = '@Resource.Confirmation_message_header_prefix ';
+                var headerText = '@Resource.Confirmation_message_header_change_by_interval';
+
+                if (changeTimeByUser.is(':visible')) {
+                    headerText = '@Resource.Confirmation_message_header_change_by_user';
+                }
+
+                var parser = new DOMParser();
+                var header = parser.parseFromString(headerPrefix + headerText, 'text/html');
+
+                confirmWindowHeader.html(header.body.textContent);
+            }
 
             function changeAddSubractButton(value) {
                 var addButton = $(addButtonSelector);
                 var subtractButton = $(subtractButtonSelector);
-                var hiddenClass = "hidden";
 
-                if (value >= 0) {
-                    addButton.removeClass(hiddenClass);
-                    subtractButton.addClass(hiddenClass);
-                } else if (value < 0) {
-                    addButton.addClass(hiddenClass);
-                    subtractButton.removeClass(hiddenClass);
+                var isSubtraction = value < 0;
+                var isAddition = !isSubtraction;
+
+                addButton.toggleClass('hidden', isSubtraction);
+                subtractButton.toggleClass('hidden', isAddition);
+            }
+
+            function showTabWithError() {
+                var error = $('span.field-validation-error');
+
+                if (error.length > 0) {
+                    var tabWithError = error.parents('.tab-pane').first();
+                    var tabId = tabWithError.get(0).id;
+                    $('.nav-tabs a[href="#' + tabId + '"]').tab('show');
                 }
             }
-        }))
+        })
     </script>
 }

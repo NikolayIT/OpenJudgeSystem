@@ -79,7 +79,25 @@ namespace Resources.Areas.Administration.Contests.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Changes the contest duration only for participants who started competing in a specified time interval in this contest. Does not affect the total duration of the contest nor its start or end time..
+        ///   Looks up a localized string similar to Change time for multiple participants by time interval.
+        /// </summary>
+        public static string Change_time_by_time_interval {
+            get {
+                return ResourceManager.GetString("Change_time_by_time_interval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change time for single participant by username.
+        /// </summary>
+        public static string Change_time_by_user {
+            get {
+                return ResourceManager.GetString("Change_time_by_user", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Changes the contest duration only for participants who started competing in a specified time interval in this contest or for a specific user. Does not affect the total duration of the contest nor its start or end time..
         /// </summary>
         public static string Change_time_legend {
             get {
@@ -88,11 +106,29 @@ namespace Resources.Areas.Administration.Contests.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Are you sure you want to &lt;strong id=&quot;action&quot;&gt;&lt;/strong&gt; &lt;strong id=&quot;minutes&quot;&gt;&lt;/strong&gt; &lt;strong&gt;minutes&lt;/strong&gt; &lt;span id=&quot;preposition&quot;&gt;&lt;/span&gt; the contest duration of all participants created in the time interval between &lt;strong id=&quot;createdAfter&quot;&gt;&lt;/strong&gt; and  &lt;strong id=&quot;createdBefore&quot;&gt;&lt;/strong&gt;?.
+        ///   Looks up a localized string similar to all participants created in the time interval between &lt;strong id=&quot;createdAfter&quot;&gt;&lt;/strong&gt; and  &lt;strong id=&quot;createdBefore&quot;&gt;&lt;/strong&gt;?.
         /// </summary>
-        public static string Confirmation_message_header {
+        public static string Confirmation_message_header_change_by_interval {
             get {
-                return ResourceManager.GetString("Confirmation_message_header", resourceCulture);
+                return ResourceManager.GetString("Confirmation_message_header_change_by_interval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to the participant with username &lt;strong id=&quot;username-placeholder&quot;&gt;&lt;/strong&gt;?.
+        /// </summary>
+        public static string Confirmation_message_header_change_by_user {
+            get {
+                return ResourceManager.GetString("Confirmation_message_header_change_by_user", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to &lt;strong id=&quot;action&quot;&gt;&lt;/strong&gt; &lt;strong id=&quot;minutes&quot;&gt;&lt;/strong&gt; &lt;strong&gt;minutes&lt;/strong&gt; &lt;span id=&quot;preposition&quot;&gt;&lt;/span&gt; the contest duration of.
+        /// </summary>
+        public static string Confirmation_message_header_prefix {
+            get {
+                return ResourceManager.GetString("Confirmation_message_header_prefix", resourceCulture);
             }
         }
         
@@ -178,7 +214,7 @@ namespace Resources.Areas.Administration.Contests.Views {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;strong&gt;Change the contest duration for participants created in the following interval&lt;/strong&gt;:.
+        ///   Looks up a localized string similar to Change the contest duration for participants created in the following interval.
         /// </summary>
         public static string Participants_created_in_time_interval_information {
             get {
@@ -228,6 +264,15 @@ namespace Resources.Areas.Administration.Contests.Views {
         public static string To {
             get {
                 return ResourceManager.GetString("To", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The username is required!.
+        /// </summary>
+        public static string Username_required {
+            get {
+                return ResourceManager.GetString("Username_required", resourceCulture);
             }
         }
     }

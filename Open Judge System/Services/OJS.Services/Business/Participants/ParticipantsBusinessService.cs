@@ -1,12 +1,17 @@
 ﻿namespace OJS.Services.Business.Participants
 {
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity.SqlServer;
     using System.Linq;
-    using OJS.Common.Models;
+
     using OJS.Data.Models;
+    using OJS.Services.Common;
     using OJS.Services.Data.Contests;
     using OJS.Services.Data.Participants;
+
+    using SharedResource = Resources.Contests.ContestsGeneral;
+    using Resource = Resources.Services.Participants.ParticipantsBusiness;
 
     public class ParticipantsBusinessService : IParticipantsBusinessService
     {
@@ -45,53 +50,95 @@
             return participant;
         }
 
-        public void UpdateContestEndTimeForAllParticipantsByContestByParticipantContestStartTimeRangeAndTimeIntervalInMinutes(
-            int contestId,
-            int minutes,
-            DateTime contestStartTimeRangeStart,
-            DateTime contestStartTimeRangeEnd)
+        public ServiceResult<string> UpdateParticipationEndTimeByIdAndTimeInMinutes(int id, int minutes)
         {
+            var participant = this.participantsData.GetById(id);
+            if (participant == null)
+            {
+                throw new ArgumentException(Resource.Participant_does_not_exist);
+            }
+
+            if (!participant.Contest.Duration.HasValue)
+            {
+                return new ServiceResult<string>(Resource.Contest_duration_not_set);
+            }
+
+            if (!participant.ParticipationEndTime.HasValue ||
+                !participant.ParticipationStartTime.HasValue)
+            {
+                throw new ArgumentException(Resource.Participant_participation_time_not_set);
+            }
+
+            var newEndTime = participant.ParticipationEndTime.Value.AddMinutes(minutes);
+            var minAllowedEndTime = participant.ParticipationStartTime.Value
+                .AddMinutes(participant.Contest.Duration.Value.TotalMinutes);
+
+            if (newEndTime < minAllowedEndTime)
+            {
+                return new ServiceResult<string>(Resource.Participation_time_reduce_below_duration_warning);
+            }
+
+            participant.ParticipationEndTime = newEndTime;
+
+            this.participantsData.Update(participant);
+
+            return ServiceResult<string>.Success(participant.User.UserName);
+        }
+
+        public ServiceResult<ICollection<string>> UpdateParticipationsEndTimeByContestByParticipationStartTimeRangeAndTimeInMinutes(
+            int contestId,
+            int timeInMinutes,
+            DateTime participationStartTimeRangeStart,
+            DateTime participationStartTimeRangeEnd)
+        {
+            const string minuteParamName = "minute";
+
             var contest = this.contestsData.GetById(contestId);
+
+            if (contest == null)
+            {
+                return new ServiceResult<ICollection<string>>(SharedResource.Contest_not_found);
+            }
+
+            if (!contest.Duration.HasValue)
+            {
+                return new ServiceResult<ICollection<string>>(Resource.Contest_duration_not_set);
+            }
+
             var contestTotalDurationInMinutes = contest.Duration.Value.TotalMinutes;
 
+            var invalidForUpdateParticipantUsernames =
+                this.participantsData
+                    .GetAllOfficialInOnlineContestByContestAndParticipationStartTimeRange(
+                        contestId,
+                        participationStartTimeRangeStart,
+                        participationStartTimeRangeEnd)
+                    .Where(p =>
+                        SqlFunctions.DateAdd(minuteParamName, timeInMinutes, p.ParticipationEndTime) <
+                        SqlFunctions.DateAdd(minuteParamName, contestTotalDurationInMinutes, p.ParticipationStartTime))
+                    .Select(p => p.User.UserName)
+                    .ToList();
+
             var participantsInTimeRange =
-                this.participantsData.GetAllOfficialInOnlineContestByContestAndContestStartTimeRange(
+                this.participantsData.GetAllOfficialInOnlineContestByContestAndParticipationStartTimeRange(
                     contestId,
-                    contestStartTimeRangeStart,
-                    contestStartTimeRangeEnd);
+                    participationStartTimeRangeStart,
+                    participationStartTimeRangeEnd);
 
             this.participantsData.Update(
                 participantsInTimeRange
-                    .Where(p => SqlFunctions.DateAdd("minute", minutes, p.ParticipationEndTime) >=
-                        SqlFunctions.DateAdd("minute", contestTotalDurationInMinutes, p.ParticipationStartTime)),
+                    .Where(p =>
+                        SqlFunctions.DateAdd(minuteParamName, timeInMinutes, p.ParticipationEndTime) >=
+                        SqlFunctions.DateAdd(minuteParamName, contestTotalDurationInMinutes, p.ParticipationStartTime)),
                 p => new Participant
                 {
                     ParticipationEndTime = SqlFunctions.DateAdd(
-                    "minute",
-                    minutes,
-                    p.ParticipationEndTime)
+                        minuteParamName,
+                        timeInMinutes,
+                        p.ParticipationEndTime)
                 });
-        }
 
-        public IQueryable<Participant> GetAllParticipantsWhoWouldBeReducedBelowDefaultContestDuration(
-            int contestId,
-            int minutes,
-            DateTime contestStartTimeRangeStart,
-            DateTime contestStartTimeRangeEnd)
-        {
-            var contest = this.contestsData.GetById(contestId);
-            var contestTotalDurationInMinutes = contest.Duration.Value.TotalMinutes;
-
-            var participantsInvalidForUpdate =
-                this.participantsData
-                    .GetAllOfficialInOnlineContestByContestAndContestStartTimeRange(
-                        contestId,
-                        contestStartTimeRangeStart,
-                        contestStartTimeRangeEnd)
-                    .Where(p => SqlFunctions.DateAdd("minute", minutes, p.ParticipationEndTime) <
-                                SqlFunctions.DateAdd("minute", contestTotalDurationInMinutes, p.ParticipationStartTime));
-
-            return participantsInvalidForUpdate;
+            return ServiceResult<ICollection<string>>.Success(invalidForUpdateParticipantUsernames);
         }
 
         private void AssignRandomProblemsToParticipant(Participant participant, Contest contest)

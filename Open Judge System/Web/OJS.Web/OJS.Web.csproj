@@ -1747,7 +1747,9 @@
     <Compile Include="Areas\Administration\Controllers\TestsController.cs" />
     <Compile Include="Areas\Administration\Controllers\UsersController.cs" />
     <Compile Include="Areas\Administration\InputModels\AntiCheat\SubmissionSimilarityFiltersInputModel.cs" />
-    <Compile Include="Areas\Administration\ViewModels\Contest\ChangeTimeForParticipantsViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\Contest\ChangeParticipationEndTimeByUserViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\Contest\ChangeParticipationEndTimeViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\Contest\ChangeParticipationEndTimeByTimeIntervalViewModel.cs" />
     <Compile Include="Areas\Administration\Models\ParticipantModel.cs" />
     <Compile Include="Areas\Administration\Models\ProblemModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\AccessLogs\AccessLogGridViewModel.cs" />
@@ -2439,16 +2441,15 @@
     <Content Include="Areas\Administration\Views\Resources\Create.cshtml" />
     <Content Include="Areas\Administration\Views\Resources\Edit.cshtml" />
     <Content Include="Areas\Contests\Views\List\BySubmissionType.cshtml" />
-    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\NonEditable.cshtml" />
-    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\MultiLineText.cshtml" />
-    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\SingleLineText.cshtml" />
-    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\PositiveInteger.cshtml" />
-    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\DateAndTime.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\NonEditable.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\MultiLineText.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\SingleLineText.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\PositiveInteger.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\DateTime.cshtml" />
     <Content Include="Areas\Contests\Views\Submissions\View.cshtml" />
     <Content Include="Areas\Administration\Views\Settings\Index.cshtml" />
-    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\DisabledCheckbox.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\DisabledCheckbox.cshtml" />
     <Content Include="Areas\Administration\Views\Users\Index.cshtml" />
-    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\Date.cshtml" />
     <Content Include="Areas\Administration\Views\Submissions\Index.cshtml" />
     <Content Include="Areas\Contests\Views\Shared\_AllContestSubmissionsByUser.cshtml" />
     <Content Include="Areas\Administration\Views\Submissions\EditorTemplates\ParticipantDropDownList.cshtml" />
@@ -2456,7 +2457,7 @@
     <Content Include="Areas\Administration\Views\Submissions\Create.cshtml" />
     <Content Include="Areas\Administration\Views\Submissions\_SubmissionForm.cshtml" />
     <Content Include="Areas\Administration\Views\Submissions\Update.cshtml" />
-    <Content Include="Areas\Administration\Views\Submissions\EditorTemplates\ProblemComboBox.cshtml" />
+    <Content Include="Areas\Administration\Views\Submissions\EditorTemplates\ProblemsComboBox.cshtml" />
     <Content Include="Areas\Administration\Views\Submissions\Delete.cshtml" />
     <Content Include="Areas\Administration\Views\Roles\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Submissions\_SubmissionsGrid.cshtml" />
@@ -2471,7 +2472,6 @@
     <Content Include="Areas\Contests\Views\Labs\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Lecturers\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\EditorTemplates\LecturerInContest.cshtml" />
-    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\DropDownListCustom.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\_CopyQuestionsFromContest.cshtml" />
     <Content Include="Areas\Administration\Views\Submissions\EditorTemplates\SubmissionAdministrationViewModel.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\_DownloadSubmissionsPopupWindow.cshtml" />
@@ -2484,7 +2484,7 @@
     <Content Include="Areas\Contests\Views\Results\_StatsPartial.cshtml" />
     <Content Include="Areas\Contests\Views\Results\_StatsChartPartial.cshtml" />
     <Content Include="Areas\Administration\Views\SubmissionTypes\Index.cshtml" />
-    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\Enum.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\EnumDropDown.cshtml" />
     <Content Include="Areas\Administration\Views\AccessLogs\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Problems\EditorTemplates\SubmissionTypeViewModel.cshtml" />
     <Content Include="package.json" />
@@ -2509,8 +2509,8 @@
     <Content Include="Dependencies\diff_match_patch\.npmignore" />
     <Content Include="Dependencies\diff_match_patch\package.json" />
     <Content Include="Dependencies\diff_match_patch\README.markdown" />
-    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\PositiveShortInteger.cshtml" />
-    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\TimeSpan.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\PositiveShortInteger.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\TimeSpan.cshtml" />
     <Content Include="Areas\Administration\Views\Contests\ChangeActiveParticipantsEndTime.cshtml" />
     <Content Include="Areas\Contests\Views\Compete\ConfirmCompete.cshtml" />
     <Content Include="Areas\Contests\Views\Results\_SimpleResultsPagedList.cshtml" />
@@ -2530,6 +2530,9 @@
     <Content Include="Areas\Administration\Views\Shared\_CopyProblemToAnotherContest.cshtml" />
     <Content Include="Areas\Administration\Views\Problems\EditorTemplates\ProblemGroupsCascadeDropDown.cshtml" />
     <Content Include="Areas\Administration\Views\ExamGroups\_BulkAddUsersToExamGroup.cshtml" />
+    <Content Include="Areas\Administration\Views\Contests\EditorTemplates\UsersSimpleComboBox.cshtml" />
+    <Content Include="Areas\Administration\Views\Contests\_ChangeParticipationEndTimeByUser.cshtml" />
+    <Content Include="Areas\Administration\Views\Contests\_ChangeParticipationEndTimeByTimeInterval.cshtml" />
     <None Include="Properties\PublishProfiles\Dev Suls Judge System.pubxml" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Properties\PublishProfiles\Suls Judge System.pubxml" />
@@ -2545,7 +2548,7 @@
     <Content Include="Areas\Administration\Views\Contests\EditorTemplates\CategoryDropDown.cshtml" />
     <Content Include="Areas\Administration\Views\Contests\_ContestEditor.cshtml" />
     <Content Include="Areas\Administration\Views\Contests\Edit.cshtml" />
-    <Content Include="Areas\Administration\Views\Shared\EditorTemplates\HtmlContent.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\HtmlContent.cshtml" />
     <Content Include="Areas\Administration\Views\Checkers\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Participants\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Participants\_Participants.cshtml" />
@@ -2932,6 +2935,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ProblemGroupsIndex.bg.designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Areas.Administration.ProblemGroups.Views</CustomToolNamespace>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Areas\Administration\Problems\ProblemsControllers.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -3429,28 +3433,18 @@
     <Content Include="Views\Account\Manage.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\Currency.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Date.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\DateTime.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\GridForeignKey.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Integer.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\Number.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\String.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\Time.cshtml" />
     <Content Include="webpack.config.js" />
     <Content Include="Xapp_offline.htm" />
     <Content Include="_ViewStart.cshtml" />
     <Content Include="Views\Feedback\Index.cshtml" />
     <Content Include="Views\Feedback\Submitted.cshtml" />
     <Content Include="Views\Submissions\AdvancedSubmissions.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\QuestionViewModel.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\EmailAddress.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Account\ForgottenPassword.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
     <Content Include="Views\Account\ChangeEmail.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\Password.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\MultilineText.cshtml" />
     <Content Include="Views\Search\Results.cshtml" />
     <Content Include="Views\Search\Index.cshtml" />
     <Content Include="Views\Shared\_Pagination.cshtml" />

@@ -1,0 +1,63 @@
+﻿@using OJS.Web.Areas.Administration.Controllers
+@using OJS.Web.Areas.Administration.ViewModels.Contest
+
+@using Resource = Resources.Areas.Administration.Contests.Views.ChangeTime
+
+@model ChangeParticipationEndTimeByTimeIntervalViewModel
+
+<div class="tab-pane active" role="tabpanel" id="change-time-by-interval">
+    @using (Html.BeginForm<ContestsController>(c => c.ChangeParticipationEndTimeByTimeInterval(null), FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.ContesId)
+        @Html.HiddenFor(m => m.ContestName)
+
+        <input type="hidden" name="TimeInMinutes" hidden>
+
+        <div class="row top-buffer-lg container">
+            <div class="row">
+                <div class="col-xs-12 bottom-buffer">
+                    <div>
+                        <h5><strong>@Resource.Participants_created_in_time_interval_information:</strong></h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="center-block">
+                        @Html.LabelFor(m => m.ParticipantsCreatedAfterDateTime)
+                    </div>
+                </div>
+                <div class="editor-field col-xs-3">
+                    @Html.EditorFor(m => m.ParticipantsCreatedAfterDateTime)
+                </div>
+
+                <div class="col-xs-10">
+                    @Html.Raw(Resource.Default_participants_created_after_value_explanation)
+                </div>
+
+                <div class="editor-field col-xs-4">
+                    <p>@Html.ValidationMessageFor(m => m.ParticipantsCreatedAfterDateTime)</p>
+                </div>
+            </div>
+            <div class="row top-buffer-lg">
+                <div class="col-xs-12">
+                    <div class="center-block">
+                        @Html.LabelFor(m => m.ParticipantsCreatedBeforeDateTime)
+                    </div>
+                </div>
+                <div class="editor-field col-xs-3">
+                    @Html.EditorFor(m => m.ParticipantsCreatedBeforeDateTime)
+                </div>
+                
+                <div class="col-xs-10">
+                    <p>@Html.Raw(Resource.Default_participants_created_before_value_explanation)</p>
+                </div>
+                <div class="editor-field col-xs-4">
+                    @Html.ValidationMessageFor(m => m.ParticipantsCreatedBeforeDateTime)
+                </div>
+            </div>
+        </div>
+    }
+</div>

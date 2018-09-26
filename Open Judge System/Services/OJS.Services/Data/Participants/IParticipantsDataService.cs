@@ -24,14 +24,14 @@
 
         IQueryable<Participant> GetAllByContest(int contestId);
 
-        IQueryable<Participant> GetAllByContestAndIsOfficial(int contestId, bool isOfficial);
-
         IQueryable<Participant> GetAllOfficialByContest(int contestId);
 
-        IQueryable<Participant> GetAllOfficialInOnlineContestByContestAndContestStartTimeRange(
+        IQueryable<Participant> GetAllByContestAndIsOfficial(int contestId, bool isOfficial);
+
+        IQueryable<Participant> GetAllOfficialInOnlineContestByContestAndParticipationStartTimeRange(
             int contestId,
-            DateTime contestStartTimeRangeStart,
-            DateTime contestStartTimeRangeEnd);
+            DateTime participationStartTimeRangeStart,
+            DateTime participationStartTimeRangeEnd);
 
         bool ExistsByIdAndContest(int id, int contestId);
 

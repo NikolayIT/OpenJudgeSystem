@@ -6,9 +6,10 @@
     using System.Web.Mvc;
 
     using Microsoft.AspNet.Identity.EntityFramework;
-
     using OJS.Common.DataAnnotations;
     using OJS.Web.Areas.Administration.ViewModels.Common;
+
+    using static OJS.Common.Constants.EditorTemplateConstants;
 
     using Resource = Resources.Areas.Administration.Roles.ViewModels.RolesViewModels;
 
@@ -32,11 +33,11 @@
         public string RoleId { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Name", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Name), ResourceType = typeof(Resource))]
         [Required(
-            ErrorMessageResourceName = "Name_required",
+            ErrorMessageResourceName = nameof(Resource.Name_required),
             ErrorMessageResourceType = typeof(Resource))]
-        [UIHint("SingleLineText")]
+        [UIHint(SingleLineText)]
         public string Name { get; set; }
     }
 }

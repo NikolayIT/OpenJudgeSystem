@@ -11,6 +11,8 @@
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
 
+    using static OJS.Common.Constants.EditorTemplateConstants;
+
     using Resource = Resources.Areas.Administration.Checkers.ViewModels.CheckerAdministrationViewModel;
 
     public class CheckerAdministrationViewModel : AdministrationViewModel<Checker>
@@ -41,46 +43,46 @@
         public int? Id { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Name", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Name), ResourceType = typeof(Resource))]
         [Required(
             AllowEmptyStrings = false,
             ErrorMessageResourceType = typeof(Resource),
-            ErrorMessageResourceName = "Name_required")]
+            ErrorMessageResourceName = nameof(Resource.Name_required))]
         [StringLength(
             GlobalConstants.CheckerNameMaxLength,
             MinimumLength = GlobalConstants.CheckerNameMinLength,
             ErrorMessageResourceType = typeof(Resource),
-            ErrorMessageResourceName = "Name_length")]
-        [UIHint("SingleLineText")]
+            ErrorMessageResourceName = nameof(Resource.Name_length))]
+        [UIHint(SingleLineText)]
         public string Name { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Description", ResourceType = typeof(Resource))]
-        [UIHint("MultiLineText")]
+        [Display(Name = nameof(Resource.Description), ResourceType = typeof(Resource))]
+        [UIHint(MultiLineText)]
         public string Description { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Dll_file", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Dll_file), ResourceType = typeof(Resource))]
         [Required(
             AllowEmptyStrings = false,
             ErrorMessageResourceType = typeof(Resource),
-            ErrorMessageResourceName = "Dll_file_required")]
-        [UIHint("SingleLineText")]
+            ErrorMessageResourceName = nameof(Resource.Dll_file_required))]
+        [UIHint(SingleLineText)]
         public string DllFile { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Class_name", ResourceType = typeof(Resource))]
+        [Display(Name =nameof(Resource.Class_name), ResourceType = typeof(Resource))]
         [Required(
             AllowEmptyStrings = false,
             ErrorMessageResourceType = typeof(Resource),
-            ErrorMessageResourceName = "Class_name_required")]
-        [UIHint("SingleLineText")]
+            ErrorMessageResourceName = nameof(Resource.Class_name_required))]
+        [UIHint(SingleLineText)]
         public string ClassName { get; set; }
 
         [AllowHtml]
         [DatabaseProperty]
-        [Display(Name = "Param", ResourceType = typeof(Resource))]
-        [UIHint("MultiLineText")]
+        [Display(Name = nameof(Resource.Param), ResourceType = typeof(Resource))]
+        [UIHint(MultiLineText)]
         public string Parameter { get; set; }
     }
 }

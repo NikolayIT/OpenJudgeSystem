@@ -11,6 +11,8 @@
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
 
+    using static OJS.Common.Constants.EditorTemplateConstants;
+
     using Resource = Resources.Areas.Administration.ExamGroups.ViewModels.ExamGroupAdministration;
     using SharedResource = Resources.Areas.Administration.Shared.EditorTemplatesGeneral;
 
@@ -34,37 +36,37 @@
         public int? Id { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Name", ResourceType = typeof(SharedResource))]
+        [Display(Name = nameof(SharedResource.Name), ResourceType = typeof(SharedResource))]
         [Required(
-            ErrorMessageResourceName = "Name_required",
+            ErrorMessageResourceName = nameof(SharedResource.Name_required),
             ErrorMessageResourceType = typeof(SharedResource))]
         [StringLength(
             GlobalConstants.ExamGroupNameMaxLength,
             MinimumLength = GlobalConstants.ExamGroupNameMinLength,
-            ErrorMessageResourceName = "Name_length",
+            ErrorMessageResourceName = nameof(SharedResource.Name_length),
             ErrorMessageResourceType = typeof(SharedResource))]
-        [UIHint("SingleLineText")]
+        [UIHint(SingleLineText)]
         public string Name { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "External_id", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.External_id), ResourceType = typeof(Resource))]
         [HiddenInput(DisplayValue = false)]
         public int? ExternalExamGroupId { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Extenral_app_id", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Extenral_app_id), ResourceType = typeof(Resource))]
         [HiddenInput(DisplayValue = false)]
         public string ExternalAppId { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Contest", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Contest), ResourceType = typeof(Resource))]
         [Required(
-            ErrorMessageResourceName = "Contest_required",
+            ErrorMessageResourceName = nameof(Resource.Contest_required),
             ErrorMessageResourceType = typeof(Resource))]
-        [UIHint("ContestsComboBox")]
+        [UIHint(ContestsComboBox)]
         public int? ContestId { get; set; }
 
-        [Display(Name = "Contest", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Contest), ResourceType = typeof(Resource))]
         [HiddenInput(DisplayValue = false)]
         public string ContestName { get; set; }
     }

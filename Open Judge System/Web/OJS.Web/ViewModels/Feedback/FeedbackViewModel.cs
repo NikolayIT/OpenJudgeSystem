@@ -4,6 +4,8 @@
 
     using OJS.Common;
 
+    using static OJS.Common.Constants.EditorTemplateConstants;
+
     using Resource = Resources.Feedback.ViewModels.FeedbackViewModels;
 
     public class FeedbackViewModel
@@ -12,25 +14,25 @@
 
         [DataType(DataType.EmailAddress)]
         [Display(
-            Name = "Email",
+            Name = nameof(Resource.Email),
             ResourceType = typeof(Resource))]
         [EmailAddress(
             ErrorMessage = null,
-            ErrorMessageResourceName = "Invalid_email",
+            ErrorMessageResourceName = nameof(Resource.Invalid_email),
             ErrorMessageResourceType = typeof(Resource))]
         public string Email { get; set; }
 
-        [UIHint("MultilineText")]
+        [UIHint(MultiLineText)]
         [Display(
-            Name = "Content",
+            Name = nameof(Resource.Content),
             ResourceType = typeof(Resource))]
         [Required(
-            ErrorMessageResourceName = "Content_required",
+            ErrorMessageResourceName = nameof(Resource.Content_required),
             ErrorMessageResourceType = typeof(Resource))]
         [StringLength(
             int.MaxValue,
             MinimumLength = GlobalConstants.FeedbackContentMinLength,
-            ErrorMessageResourceName = "Content_too_short",
+            ErrorMessageResourceName = nameof(Resource.Content_too_short),
             ErrorMessageResourceType = typeof(Resource))]
         public string Content { get; set; }
     }

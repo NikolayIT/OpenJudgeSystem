@@ -6,6 +6,8 @@
     using OJS.Common.DataAnnotations;
     using OJS.Data.Models;
 
+    using static OJS.Common.Constants.EditorTemplateConstants;
+
     using Resource = Resources.Areas.Administration.Settings.ViewModels.SettingAdministration;
 
     public class SettingAdministrationViewModel
@@ -24,19 +26,19 @@
         }
 
         [DatabaseProperty]
-        [Display(Name = "Name", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Name), ResourceType = typeof(Resource))]
         [Required(
-            ErrorMessageResourceName = "Name_required",
+            ErrorMessageResourceName = nameof(Resource.Name_required),
             ErrorMessageResourceType = typeof(Resource))]
-        [UIHint("SingleLineText")]
+        [UIHint(SingleLineText)]
         public string Name { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Value", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Value), ResourceType = typeof(Resource))]
         [Required(
-            ErrorMessageResourceName = "Value_required",
+            ErrorMessageResourceName = nameof(Resource.Value_required),
             ErrorMessageResourceType = typeof(Resource))]
-        [UIHint("MultiLineText")]
+        [UIHint(MultiLineText)]
         public string Value { get; set; }
 
         public Setting GetEntityModel(Setting model = null)

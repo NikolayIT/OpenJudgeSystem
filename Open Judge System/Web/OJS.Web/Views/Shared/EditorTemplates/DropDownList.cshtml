@@ -11,7 +11,7 @@
 
     var htmlAttributes = new
     {
-        placeholder = placeholder,
+        placeholder,
         style = "width: 100%;",
         data_value_primitive = "true"
     };
@@ -20,8 +20,10 @@
 @(Html.Kendo()
     .DropDownListFor(m => m)
     .BindTo((IEnumerable<DropdownViewModel>)this.ViewData[this.ViewData.TemplateInfo.GetFullHtmlFieldName(string.Empty) + "Data"])
+    .Events(e => e.Open("Ojs.KendoControls.DropDownList.alignDropDownToInput"))
     .DataValueField("Id")
     .DataTextField("Name")
     .Value(Model.ToString())
     .OptionLabel(placeholder)
-    .HtmlAttributes(htmlAttributes))
+    .HtmlAttributes(htmlAttributes)
+)

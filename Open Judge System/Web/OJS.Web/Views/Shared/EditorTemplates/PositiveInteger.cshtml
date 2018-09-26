@@ -1,0 +1,25 @@
+﻿@using System.Dynamic
+
+@model int?
+
+@{
+    var htmlAttributes = new ExpandoObject() as IDictionary<string, object>;
+
+    htmlAttributes.Add("class", "full-kendo-editor");
+
+    if (ViewData.ContainsKey(WebConstants.IsDisabled) && (bool)ViewData[WebConstants.IsDisabled])
+    {
+        htmlAttributes.Add("disabled", "disabled");
+    }
+}
+
+@(Html
+    .Kendo()
+    .NumericTextBoxFor(m => m)
+    .Spinners(true)
+    .Min(0)
+    .Max(int.MaxValue)
+    .Step(1)
+    .Format("#")
+    .HtmlAttributes(htmlAttributes)
+)

@@ -11,6 +11,8 @@
     using OJS.Data.Models;
     using OJS.Web.Areas.Administration.ViewModels.Common;
 
+    using static OJS.Common.Constants.EditorTemplateConstants;
+
     using Resource = Resources.Areas.Administration.ContestCategories.ViewModels.ContestCategoryAdministrationViewModel;
 
     public class ContestCategoryAdministrationViewModel : AdministrationViewModel<ContestCategory>
@@ -39,28 +41,28 @@
         public int? Id { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Name", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Name), ResourceType = typeof(Resource))]
         [Required(
-            ErrorMessageResourceName = "Name_required",
+            ErrorMessageResourceName = nameof(Resource.Name_required),
             ErrorMessageResourceType = typeof(Resource))]
         [StringLength(
             GlobalConstants.ContestCategoryNameMaxLength,
             MinimumLength = GlobalConstants.ContestCategoryNameMinLength,
-            ErrorMessageResourceName = "Name_length",
+            ErrorMessageResourceName = nameof(Resource.Name_length),
             ErrorMessageResourceType = typeof(Resource))]
-        [UIHint("SingleLineText")]
+        [UIHint(SingleLineText)]
         public string Name { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Order_by", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Order_by), ResourceType = typeof(Resource))]
         [Required(
-            ErrorMessageResourceName = "Order_by_required",
+            ErrorMessageResourceName = nameof(Resource.Order_by_required),
             ErrorMessageResourceType = typeof(Resource))]
-        [UIHint("Integer")]
+        [UIHint(KendoInteger)]
         public int OrderBy { get; set; }
 
         [DatabaseProperty]
-        [Display(Name = "Visibility", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Visibility), ResourceType = typeof(Resource))]
         public bool IsVisible { get; set; }
     }
 }

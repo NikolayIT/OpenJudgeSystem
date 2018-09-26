@@ -1,0 +1,24 @@
+﻿@using OJS.Web.Areas.Administration.Controllers
+@using OJS.Web.Areas.Administration.ViewModels.Contest
+
+@model ChangeParticipationEndTimeByUserViewModel
+
+<div class="tab-pane" role="tabpanel" id="change-time-by-user">
+    @using (Html.BeginForm<ContestsController>(c => c.ChangeParticipationEndTimeByUser(null), FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.ContesId)
+        @Html.HiddenFor(m => m.ContestName)
+
+        <input type="hidden" name="TimeInMinutes" id="time-input-for-user">
+
+        <div class="row top-buffer-lg">
+            <div class="editor-field col-xs-4">
+                @Html.EditorFor(m => m.UserId)
+            </div>
+            <div class="editor-field col-xs-4">
+                @Html.ValidationMessageFor(m => m.UserId)
+            </div>
+        </div>
+    }
+</div>
