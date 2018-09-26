@@ -29,22 +29,29 @@
                         @Html.LabelFor(m => m.ParticipantsCreatedAfterDateTime)
                     </div>
                 </div>
-                <div class="editor-field col-xs-10">
+                <div class="editor-field col-xs-3">
                     @Html.EditorFor(m => m.ParticipantsCreatedAfterDateTime)
-                    <p>@Html.Raw(Resource.Default_participants_created_after_value_explanation)</p>
                 </div>
+
+                <div class="col-xs-10">
+                    @Html.Raw(Resource.Default_participants_created_after_value_explanation)
+                </div>
+
                 <div class="editor-field col-xs-4">
-                    @Html.ValidationMessageFor(m => m.ParticipantsCreatedAfterDateTime)
+                    <p>@Html.ValidationMessageFor(m => m.ParticipantsCreatedAfterDateTime)</p>
                 </div>
             </div>
-            <div class="row">
+            <div class="row top-buffer-lg">
                 <div class="col-xs-12">
                     <div class="center-block">
                         @Html.LabelFor(m => m.ParticipantsCreatedBeforeDateTime)
                     </div>
                 </div>
-                <div class="editor-field col-xs-10">
+                <div class="editor-field col-xs-3">
                     @Html.EditorFor(m => m.ParticipantsCreatedBeforeDateTime)
+                </div>
+                
+                <div class="col-xs-10">
                     <p>@Html.Raw(Resource.Default_participants_created_before_value_explanation)</p>
                 </div>
                 <div class="editor-field col-xs-4">

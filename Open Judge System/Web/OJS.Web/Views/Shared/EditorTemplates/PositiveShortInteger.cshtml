@@ -3,14 +3,13 @@
 @model short?
     
 @{
-    dynamic htmlAttributes = new ExpandoObject();
+    var htmlAttributes = new ExpandoObject() as IDictionary<string, object>;
 
-    htmlAttributes.style = "width: 100%; height: 30px;";
+    htmlAttributes.Add("class", "full-kendo-editor");
 
-    if (this.ViewData.ContainsKey(WebConstants.IsDisabled) &&
-        (bool)this.ViewData[WebConstants.IsDisabled])
+    if (ViewData.ContainsKey(WebConstants.IsDisabled) && (bool)ViewData[WebConstants.IsDisabled])
     {
-        htmlAttributes.disabled = "disabled";
+        htmlAttributes.Add("disabled", "disabled");
     }
 }
 
@@ -22,4 +21,5 @@
     .Max(short.MaxValue)
     .Step(1)
     .Format("#")
-    .HtmlAttributes(htmlAttributes))
+    .HtmlAttributes(htmlAttributes)
+)
