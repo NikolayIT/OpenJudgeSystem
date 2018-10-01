@@ -1,10 +1,12 @@
 ﻿function CategoryExpander() {
     'use strict';
 
-    var treeview;
-    var treeviewSelector;
-    var containerToFill;
-    var currentlySelectedId;
+    var treeview,
+        treeviewSelector,
+        containerToFill,
+        currentlySelectedId,
+        initialBreadCrumbHtml,
+        breadCrumb;
     var firstLoad = true;
 
     /* eslint consistent-this: 0 */
@@ -15,6 +17,7 @@
         treeviewSelector = treeViewSelector;
         containerToFill = containerToFillSelector;
         self = this;
+        breadCrumb = $('.breadcrumb');
     };
 
     function onDataBound() {
@@ -23,6 +26,7 @@
         }
 
         firstLoad = false;
+        initialBreadCrumbHtml = breadCrumb.html();
 
         if (window.location.hash) {
             var categoryId = getCategoryIdFromHash();
@@ -41,7 +45,7 @@
     }
 
     var categorySelected = function(e) {
-        containerToFill.html('');
+        containerToFill.empty();
         $('#contest-categories-loading-mask').show();
 
         var elementId;
@@ -65,6 +69,8 @@
         if (elementNode) {
             treeview.expand(elementNode);
         }
+
+        initializeCategoriesBreadCrumb(elementId);
 
         if (window.location.hash !== undefined && elementName) {
             window.location.hash = '!/List/ByCategory/' + elementId + '/' + elementName;
@@ -93,7 +99,7 @@
             $.ajax({
                 url: parentsUrl,
                 success: function(result) {
-                    self.expandSubcategories(result);
+                    self.expandSubcategories(result.categoryId);
                 }
             });
         } else {
@@ -114,6 +120,25 @@
             treeview.select(element);
         }
     };
+
+    function initializeCategoriesBreadCrumb(categoryId) {
+        $.get('/Contests/List/GetParents/' + categoryId)
+            .then(function (data) {
+                breadCrumb.html(initialBreadCrumbHtml);
+
+                data.forEach(function (category) {
+                    var categoryName = convertContestNameToUrlName(category.categoryName);
+                    var categoryLink = '#!/List/ByCategory/' + category.categoryId + '/' + categoryName + '?nonTreeCall=true';
+                    breadCrumb.append($('<li><a href="' + categoryLink + ' ">' + category.categoryName + '</a></li>'));
+                });
+
+                var lastItem = breadCrumb.find('li').last();
+                lastItem.addClass('active');
+                var lastItemText = lastItem.find('a').text();
+                lastItem.find('a').remove();
+                lastItem.append(lastItemText);
+            });
+    }
 
     var currentId = function() {
         return currentlySelectedId;

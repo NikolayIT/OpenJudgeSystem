@@ -46,21 +46,30 @@
 
         public ActionResult GetParents(int id)
         {
-            var categoryIds = new List<int>();
+            var categories = new List<object>();
             var category = this.Data.ContestCategories.GetById(id);
 
-            categoryIds.Add(category.Id);
+            AddCategory(category.Id, category.Name);
+
             var parent = category.Parent;
 
             while (parent != null)
             {
-                categoryIds.Add(parent.Id);
+                AddCategory(parent.Id, parent.Name);
+
                 parent = parent.Parent;
             }
 
-            categoryIds.Reverse();
+            categories.Reverse();
 
-            return this.Json(categoryIds, JsonRequestBehavior.AllowGet);
+            void AddCategory(int categoryId, string categoryName) =>
+                categories.Add(new
+                {
+                    categoryId,
+                    categoryName
+                });
+
+            return this.Json(categories, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult ByCategory(int? id, int? page)
