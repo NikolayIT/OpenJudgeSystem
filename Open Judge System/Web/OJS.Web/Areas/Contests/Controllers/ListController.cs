@@ -1,6 +1,5 @@
 ﻿namespace OJS.Web.Areas.Contests.Controllers
 {
-    using System.Collections.Generic;
     using System.Linq;
     using System.Net;
     using System.Web;
@@ -44,33 +43,8 @@
         public ActionResult ReadCategories(int? id) =>
             this.Json(this.cacheItems.GetContestSubCategoriesList(id), JsonRequestBehavior.AllowGet);
 
-        public ActionResult GetParents(int id)
-        {
-            var categories = new List<object>();
-            var category = this.Data.ContestCategories.GetById(id);
-
-            AddCategory(category.Id, category.Name);
-
-            var parent = category.Parent;
-
-            while (parent != null)
-            {
-                AddCategory(parent.Id, parent.Name);
-
-                parent = parent.Parent;
-            }
-
-            categories.Reverse();
-
-            void AddCategory(int categoryId, string categoryName) =>
-                categories.Add(new
-                {
-                    categoryId,
-                    categoryName
-                });
-
-            return this.Json(categories, JsonRequestBehavior.AllowGet);
-        }
+        public ActionResult GetParents(int id) =>
+            this.Json(this.cacheItems.GetContestCategoryParentsList(id), JsonRequestBehavior.AllowGet);
 
         public ActionResult ByCategory(int? id, int? page)
         {

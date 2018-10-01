@@ -12,7 +12,11 @@
             int? categoryId,
             int? cacheSeconds = CacheConstants.OneDayInSeconds);
 
-        IEnumerable<CategoryMenuItemViewModel> GetMainContestCategoeries(
+        IEnumerable<ContestCategoryListViewModel> GetContestCategoryParentsList(
+            int categoryId,
+            int? cacheSeconds = CacheConstants.OneDayInSeconds);
+
+        IEnumerable<CategoryMenuItemViewModel> GetMainContestCategories(
             int? cacheSeconds = CacheConstants.OneDayInSeconds);
 
         string GetContestCategoryName(

@@ -59,10 +59,10 @@
             // Work with data before BeginExecute to prevent "NotSupportedException: A second operation started on this context before a previous asynchronous operation completed."
             this.UserProfile = this.Data.Users.GetByUsername(requestContext.HttpContext.User.Identity.Name);
 
-            // Implement setting the MainContestCategoeries with action filter
+            // Implement setting the MainContestCategories with action filter
             var cacheItems = ObjectFactory.GetInstance<ICacheItemsProviderService>();
 
-            this.ViewBag.MainCategories = cacheItems.GetMainContestCategoeries();
+            this.ViewBag.MainCategories = cacheItems.GetMainContestCategories();
 
             // Calling BeginExecute before PrepareSystemMessages for the TempData to has values
             var result = base.BeginExecute(requestContext, callback, state);

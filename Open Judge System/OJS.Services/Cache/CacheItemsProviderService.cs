@@ -40,7 +40,46 @@
                     .ToList();
         }
 
-        public IEnumerable<CategoryMenuItemViewModel> GetMainContestCategoeries(int? cacheSeconds) =>
+        public IEnumerable<ContestCategoryListViewModel> GetContestCategoryParentsList(int categoryId,
+            int? cacheSeconds = CacheConstants.OneDayInSeconds)
+        {
+            var cacheId = string.Format(CacheConstants.ContestParentCategoriesFormat, categoryId);
+
+            var contestCategories = this.cache.Get(cacheId, GetParentCategories, cacheSeconds);
+
+            IEnumerable<ContestCategoryListViewModel> GetParentCategories()
+            {
+                var categories = new List<ContestCategoryListViewModel>();
+                var category = this.contestCategoriesData.GetById(categoryId);
+
+                categories.Add(new ContestCategoryListViewModel
+                {
+                    Id = category.Id,
+                    Name = category.Name
+                });
+
+                var parent = category.Parent;
+
+                while (parent != null)
+                {
+                    categories.Add(new ContestCategoryListViewModel
+                    {
+                        Id = parent.Id,
+                        Name = parent.Name
+                    });
+
+                    parent = parent.Parent;
+                }
+
+                categories.Reverse();
+
+                return categories;
+            }
+
+            return contestCategories;
+        }
+
+        public IEnumerable<CategoryMenuItemViewModel> GetMainContestCategories(int? cacheSeconds) =>
             this.cache.Get(
                 CacheConstants.MainContestCategoriesDropDown,
                 () =>
@@ -68,20 +107,35 @@
                 return;
             }
 
+            contestCategory.Children
+                .Select(cc => cc.Id)
+                .ToList()
+                .ForEach(RemoveCacheFromCategory);
+
             while (contestCategory != null)
+            {
+                RemoveCacheFromCategory(contestCategory.Id);
+
+                contestCategory = contestCategory.Parent;
+            }
+
+            void RemoveCacheFromCategory(int contestCategoryId)
             {
                 var categoryNameCacheId = string.Format(
                     CacheConstants.ContestCategoryNameFormat,
-                    contestCategory.Id);
+                    contestCategoryId);
 
                 var subCategoriesCacheId = string.Format(
                     CacheConstants.ContestSubCategoriesFormat,
-                    contestCategory.Id);
+                    contestCategoryId);
+
+                var parentCategoriesCacheId = string.Format(
+                    CacheConstants.ContestParentCategoriesFormat,
+                    contestCategoryId);
 
                 this.cache.Remove(categoryNameCacheId);
                 this.cache.Remove(subCategoriesCacheId);
-
-                contestCategory = contestCategory.Parent;
+                this.cache.Remove(parentCategoriesCacheId);
             }
         }
     }

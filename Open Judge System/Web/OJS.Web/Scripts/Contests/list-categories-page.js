@@ -83,9 +83,11 @@
     };
 
     var expandSubcategories = function (data) {
-        var selectedCategoryId = data.pop();
-        treeview.expandPath(data, function () {
-            self.select(selectedCategoryId);
+        var selectedCategory = data.pop();
+        var categoryIds = data.map(c => c.Id);
+
+        treeview.expandPath(categoryIds, function () {
+            self.select(selectedCategory.Id);
         });
     };
 
@@ -99,7 +101,7 @@
             $.ajax({
                 url: parentsUrl,
                 success: function(result) {
-                    self.expandSubcategories(result.categoryId);
+                    self.expandSubcategories(result);
                 }
             });
         } else {
@@ -129,17 +131,17 @@
                 for (var i = 0; i < data.length; i++) {
                     var category = data[i];
 
-                    var categoryName = convertContestNameToUrlName(category.categoryName);
-                    var categoryHref = '#!/List/ByCategory/' + category.categoryId + '/' + categoryName + '?nonTreeCall=true';
+                    var categoryName = convertContestNameToUrlName(category.Name);
+                    var categoryHref = '#!/List/ByCategory/' + category.Id + '/' + categoryName + '?nonTreeCall=true';
 
                     var listItem = $('<li></li>');
                     var listItemHtml;
 
                     if (i < data.length - 1) {
-                        listItemHtml = $('<a href="' + categoryHref + ' ">' + category.categoryName + '</a>');
+                        listItemHtml = $('<a href="' + categoryHref + ' ">' + category.Name + '</a>');
                     } else {
                         listItem.addClass('active');
-                        listItemHtml = category.categoryName;
+                        listItemHtml = category.Name;
                     }
 
                     listItem.html(listItemHtml);
