@@ -126,17 +126,25 @@
             .then(function (data) {
                 breadCrumb.html(initialBreadCrumbHtml);
 
-                data.forEach(function (category) {
-                    var categoryName = convertContestNameToUrlName(category.categoryName);
-                    var categoryLink = '#!/List/ByCategory/' + category.categoryId + '/' + categoryName + '?nonTreeCall=true';
-                    breadCrumb.append($('<li><a href="' + categoryLink + ' ">' + category.categoryName + '</a></li>'));
-                });
+                for (var i = 0; i < data.length; i++) {
+                    var category = data[i];
 
-                var lastItem = breadCrumb.find('li').last();
-                lastItem.addClass('active');
-                var lastItemText = lastItem.find('a').text();
-                lastItem.find('a').remove();
-                lastItem.append(lastItemText);
+                    var categoryName = convertContestNameToUrlName(category.categoryName);
+                    var categoryHref = '#!/List/ByCategory/' + category.categoryId + '/' + categoryName + '?nonTreeCall=true';
+
+                    var listItem = $('<li></li>');
+                    var listItemHtml;
+
+                    if (i < data.length - 1) {
+                        listItemHtml = $('<a href="' + categoryHref + ' ">' + category.categoryName + '</a>');
+                    } else {
+                        listItem.addClass('active');
+                        listItemHtml = category.categoryName;
+                    }
+
+                    listItem.html(listItemHtml);
+                    breadCrumb.append(listItem);
+                }
             });
     }
 
