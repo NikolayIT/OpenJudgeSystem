@@ -18,7 +18,14 @@
 
 <ol class="breadcrumb">
     <li><a href="/">@Resource.Home</a></li>
-    <li>@Html.ActionLink(Resource.Contests, GlobalConstants.Index, "List")</li>
+    <li>@(Html.ActionLink<ListController>(Resource.Contests, c => c.Index()))</li>
+
+    @foreach (var category in Model.ParentCategories)
+    {
+        var href = $"/Contests/#!/List/ByCategory/{category.Id}/{category.Name.ToUrl()}";
+        <li><a href="@href">@category.Name</a></li>
+    }
+
     <li class="active">@Model.Name</li>
 </ol>
 
@@ -84,8 +91,9 @@
                     <h4>@problem.Name</h4>
                     foreach (var resource in problem.Resources)
                     {
-                        var resourceLink = string.IsNullOrWhiteSpace(resource.Link) ?
-                            Url.Action("DownloadResource", new { controller = "Practice", id = resource.ResourceId }) : resource.Link;
+                        var resourceLink = string.IsNullOrWhiteSpace(resource.Link)
+                            ? Url.Action<CompeteController>(c => c.DownloadResource(resource.ResourceId, false))
+                            : resource.Link;
                         <p>
                             @if (resource.ProblemType == ProblemResourceType.ProblemDescription)
                             {
