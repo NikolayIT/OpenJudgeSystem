@@ -42,7 +42,7 @@
 
         public IEnumerable<CategoryMenuItemViewModel> GetMainContestCategoeries(int? cacheSeconds) =>
             this.cache.Get(
-                string.Format(CacheConstants.MainContestCategoriesDropDown),
+                CacheConstants.MainContestCategoriesDropDown,
                 () =>
                      this.contestCategoriesData
                         .GetAllVisible()

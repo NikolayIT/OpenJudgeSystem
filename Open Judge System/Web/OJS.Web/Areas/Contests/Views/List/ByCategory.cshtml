@@ -1,186 +1,227 @@
 ﻿@model OJS.Web.Areas.Contests.ViewModels.Contests.ContestCategoryViewModel
 
-@using OJS.Web.Areas.Administration.Controllers;
+@using OJS.Web.Areas.Administration.Controllers
+@using OJS.Web.Areas.Contests.Controllers
 
-@using Resource = Resources.Areas.Contests.Views.ListByCategory;
+@using ContestsController = OJS.Web.Areas.Administration.Controllers.ContestsController
+@using Resource = Resources.Areas.Contests.Views.ListByCategory
 
-<div class="row">
-    <div class="col-xs-6 pull-left">
-        <h3>@Model.CategoryName</h3>
+@{
+    const string contestsListContainerId = "contests-list-container";
+    const string loadingMaskContainerId = "contests-list-loading-mask-container";
+}
+
+<div class="loading-mask-container" id="@contestsListContainerId">
+    <div class="row">
+        <div class="col-xs-6 pull-left">
+            <h3>@Model.CategoryName</h3>
+        </div>
+
+        @if (Model.Id != default(int) && Model.IsUserLecturerInContestCategory && !Model.SubCategories.Any())
+        {
+            <div class="col-xs-6 pull-right">
+                @(Html.ActionLink<ContestsController>(
+                    Resource.Create_contest,
+                    c => c.Create(Model.Id),
+                    null,
+                    new { @class = "btn btn-sm btn-primary pull-right top-buffer-lg" }))
+            </div>
+        }
     </div>
 
-    @if (Model.Id != default(int) && Model.IsUserLecturerInContestCategory && !Model.SubCategories.Any())
-    {
-        <div class="col-xs-6 pull-right">
-            @(Html.ActionLink<ContestsController>(Resource.Create_contest, c => c.Create(Model.Id), null, new { @class = "btn btn-sm btn-primary pull-right top-buffer-lg"}))
-        </div>
-    }
-</div>
-
-<div>
-    @if (Model.Contests.Any())
-    {
-        <table class="table table-striped contests-by-category">
-            @foreach (var contest in Model.Contests)
-            {
-                <tr>
-                    <td>
-                        <a href="@ContestsHelper.GetUrl(contest.Id, contest.Name)">@contest.Name</a>
-                    </td>
-                    @if (contest.CanBePracticed && contest.UserCanCompete && contest.OfficialParticipants > 0)
-                    {
-                        <td colspan="2">
-                            @Html.RouteLink(
-                                Resource.Compete,
-                                "Contests_compete",
-                                new { id = contest.Id, action = GlobalConstants.Index },
-                                new { @class = "btn btn-sm btn-success compete-button" })
-
-                            @if (contest.HasContestPassword)
-                            {
-                                <div class="glyphicon glyphicon-lock text-white" title="@Resource.Has_compete_password"></div>
-                            }
-
-                            @if (contest.ResultsArePubliclyVisible || User.IsAdmin())
-                            {
-                                <div class="row-results">
-                                    <div class="glyphicon glyphicon-user text-white" title="@Resource.Participant_count"></div>
-                                    <span>@contest.OfficialParticipants</span>
-                                    <a class="btn-sm" href="/Contests/Compete/Results/Simple/@contest.Id">@Resource.Contest_results</a>
-                                </div>
-                            }
+    <div>
+        @if (Model.Contests?.Any() ?? false)
+        {
+            <table class="table table-striped contests-by-category">
+                @foreach (var contest in Model.Contests)
+                {
+                    <tr>
+                        <td>
+                            <a href="@ContestsHelper.GetUrl(contest.Id, contest.Name)">@contest.Name</a>
                         </td>
-
-                        <td colspan="2">
-                            @Html.RouteLink(
-                                Resource.Practice,
-                                "Contests_practice",
-                                new { id = contest.Id, action = GlobalConstants.Index },
-                                new { @class = "btn btn-sm btn-primary practice-button" })
-
-                            @if (contest.HasPracticePassword)
-                            {
-                                <div class="glyphicon glyphicon-lock text-white" title="@Resource.Has_practice_password"></div>
-                            }
-
-                            <div class="row-results">
-                                <div class="glyphicon glyphicon-user text-white" title="@Resource.Participant_count"></div> <span>@contest.PracticeParticipants</span>
-                                <a class="btn-sm" href="/Contests/Practice/Results/Simple/@contest.Id">@Resource.Practice_results</a>
-                            </div>
-                        </td>
-                    }
-                    else
-                    {
-                        <td class="paricipate-compete-buttons">
-                            @if (contest.UserCanCompete && !contest.CanBePracticed)
-                            {
+                        @if (contest.CanBePracticed && contest.CanBeCompeted && contest.OfficialParticipants > 0)
+                        {
+                            <td colspan="2">
                                 @Html.RouteLink(
                                     Resource.Compete,
                                     "Contests_compete",
                                     new { id = contest.Id, action = GlobalConstants.Index },
-                                    new { @class = "btn btn-sm btn-success compete-button" })
+                                    new { @class = "btn btn-sm btn-success" })
 
-                                if (contest.HasContestPassword)
+                                @if (contest.HasContestPassword)
                                 {
-                                    <div class="glyphicon glyphicon-lock text-white" title="@Resource.Has_compete_password"></div>
+                                    <div class="glyphicon glyphicon-lock" title="@Resource.Has_compete_password"></div>
                                 }
-                            }
-                        </td>
 
-                        <td>
-                            @if (contest.OfficialParticipants > 0)
-                            {
-                                if (contest.ResultsArePubliclyVisible || User.IsAdmin() || contest.UserIsParticipant)
+                                @if (contest.ResultsArePubliclyVisible || User.IsAdmin())
                                 {
-                                    <div class="results">
-                                        <div class="glyphicon glyphicon-user text-white" title="@Resource.Participant_count"></div>
+                                    <div class="row-results">
+                                        <div class="glyphicon glyphicon-user" title="@Resource.Participant_count"></div>
                                         <span>@contest.OfficialParticipants</span>
-                                        <a class="btn-sm" href="/Contests/Compete/Results/Simple/@contest.Id">@Resource.Contest_results</a>
+                                        <a class="btn-sm" href="@(Url.Action<ResultsController>(c => c.Simple(contest.Id, true, null)))">
+                                            @Resource.Contest_results
+                                        </a>
                                     </div>
                                 }
-                            }
-                        </td>
+                            </td>
 
-                        <td class="paricipate-compete-buttons">
-                            @if (contest.CanBePracticed && !contest.CanBeCompeted)
-                            {
+                            <td colspan="2">
                                 @Html.RouteLink(
                                     Resource.Practice,
                                     "Contests_practice",
                                     new { id = contest.Id, action = GlobalConstants.Index },
-                                    new { @class = "btn btn-sm btn-primary practice-button" + (contest.OfficialParticipants <= 0 ? " practice-only" : "") }
-                                    )
+                                    new { @class = "btn btn-sm btn-primary" })
 
-                                if (contest.HasPracticePassword)
+                                @if (contest.HasPracticePassword)
                                 {
-                                    <div class="glyphicon glyphicon-lock text-white" title="@Resource.Has_practice_password"></div>
+                                    <div class="glyphicon glyphicon-lock" title="@Resource.Has_practice_password"></div>
                                 }
-                            }
-                        </td>
 
-                        <td>
-                            @if (contest.PracticeParticipants > 0)
-                            {
-                                <div class="results">
-                                    <div class="glyphicon glyphicon-user text-white" title="@Resource.Participant_count"></div> <span>@contest.PracticeParticipants</span>
-                                    <a class="btn-sm" href="/Contests/Practice/Results/Simple/@contest.Id">@Resource.Practice_results</a>
+                                <div class="row-results">
+                                    <div class="glyphicon glyphicon-user" title="@Resource.Participant_count"></div>
+                                    <span>@contest.PracticeParticipants</span>
+                                    <a class="btn-sm" href="@(Url.Action<ResultsController>(c => c.Simple(contest.Id, false, null)))">
+                                        @Resource.Practice_results
+                                    </a>
                                 </div>
-                            }
+                            </td>
+                        }
+                        else
+                        {
+                            <td class="paricipate-compete-buttons">
+                                @if (contest.CanBeCompeted && !contest.CanBePracticed)
+                                {
+                                    @Html.RouteLink(
+                                        Resource.Compete,
+                                        "Contests_compete",
+                                        new { id = contest.Id, action = GlobalConstants.Index },
+                                        new { @class = "btn btn-sm btn-success" })
+
+                                    if (contest.HasContestPassword)
+                                    {
+                                        <div class="glyphicon glyphicon-lock" title="@Resource.Has_compete_password"></div>
+                                    }
+                                }
+                            </td>
+
+                            <td>
+                                @if (contest.OfficialParticipants > 0)
+                                {
+                                    if (contest.ResultsArePubliclyVisible || User.IsAdmin() || contest.UserIsParticipant)
+                                    {
+                                        <div class="results">
+                                            <div class="glyphicon glyphicon-user" title="@Resource.Participant_count"></div>
+                                            <span>@contest.OfficialParticipants</span>
+                                            <a class="btn-sm" href="@(Url.Action<ResultsController>(c => c.Simple(contest.Id, true, null)))">
+                                                @Resource.Contest_results
+                                            </a>
+                                        </div>
+                                    }
+                                }
+                            </td>
+
+                            <td class="paricipate-compete-buttons">
+                                @if (contest.CanBePracticed && !contest.CanBeCompeted)
+                                {
+                                    @Html.RouteLink(
+                                        Resource.Practice,
+                                        "Contests_practice",
+                                        new { id = contest.Id, action = GlobalConstants.Index },
+                                        new { @class = "btn btn-sm btn-primary practice-button" + (contest.OfficialParticipants <= 0 ? " practice-only" : "") })
+
+                                    if (contest.HasPracticePassword)
+                                    {
+                                        <div class="glyphicon glyphicon-lock" title="@Resource.Has_practice_password"></div>
+                                    }
+                                }
+                            </td>
+
+                            <td>
+                                @if (contest.PracticeParticipants > 0)
+                                {
+                                    <div class="results">
+                                        <div class="glyphicon glyphicon-user" title="@Resource.Participant_count"></div>
+                                        <span>@contest.PracticeParticipants</span>
+                                        <a class="btn-sm" href="@(Url.Action<ResultsController>(c => c.Simple(contest.Id, false, null)))">
+                                            @Resource.Practice_results
+                                        </a>
+                                    </div>
+                                }
+                            </td>
+                        }
+
+                        <td class="problems-count">
+                            <div class="glyphicon glyphicon-file" title="@Resource.Problems_count"></div> <span>@contest.ProblemsCount</span>
                         </td>
-                    }
 
-                    <td class="problems-count">
-                        <div class="glyphicon glyphicon-file text-white" title="@Resource.Problems_count"></div> <span>@contest.ProblemsCount</span>
-                    </td>
-
-                    @if (Model.IsUserLecturerInContestCategory)
-                    {
-                        <td class="edit-contest">
-                            <a href=@(Url.Action<ContestsController>(c => c.Edit(contest.Id), new { area = GlobalConstants.AdministrationAreaName }))>
-                                <span class='glyphicon glyphicon-pencil text-primary' title='@Resource.Edit'></span>
-                            </a>
-                            <a href=@(Url.Action<ProblemsController>(c => c.Index(contest.Id), new { area = GlobalConstants.AdministrationAreaName }))>
-                                <span class='glyphicon glyphicon-list text-primary' title='@Resource.Problems'></span>
-                            </a>
-                            @if (contest.OfficialParticipants > 0 && !contest.CanBeCompeted)
-                            {
-                                <a href=@(Url.Action<ContestsController>(c => c.TransferParticipants(contest.Id, null), new { returnUrl = this.Request.Url?.AbsolutePath, area = GlobalConstants.AdministrationAreaName }))>
-                                    <span class='glyphicon glyphicon-transfer text-primary' title=@Resource.Transfer></span>
+                        @if (Model.IsUserLecturerInContestCategory)
+                        {
+                            <td class="edit-contest">
+                                <a href=@(Url.Action<ContestsController>(c => c.Edit(contest.Id), new { area = GlobalConstants.AdministrationAreaName }))>
+                                    <span class='glyphicon glyphicon-pencil text-primary' title='@Resource.Edit'></span>
                                 </a>
-                            }
-                        </td>
-                    }
-                </tr>
-            }
-        </table>
-    }
-    else
-    {
-        if (Model.SubCategories.Count() != 0)
-        {
-            <table class="table table-striped">
-                @foreach (var subCategory in Model.SubCategories)
-                {
-                    string url;
-                    if (ViewBag.IsAjax ?? false)
-                    {
-                        url = $"#!/List/ByCategory/{subCategory.Id}/{subCategory.NameUrl}?nonTreeCall=true";
-                    }
-                    else
-                    {
-                        url = $"/Contests/List/ByCategory/{subCategory.Id}/{subCategory.NameUrl}";
-                    }
-                    <tr>
-                        <td>
-                            <a href="@url" class='subcategory' data-id="@subCategory.Id">@subCategory.Name</a>
-                        </td>
+                                <a href=@(Url.Action<ProblemsController>(c => c.Index(contest.Id), new { area = GlobalConstants.AdministrationAreaName }))>
+                                    <span class='glyphicon glyphicon-list text-primary' title='@Resource.Problems'></span>
+                                </a>
+                                @if (contest.OfficialParticipants > 0 && !contest.CanBeCompeted)
+                                {
+                                    <a href="@(Url.Action<ContestsController>(c =>
+                                          c.TransferParticipants(contest.Id, null),
+                                          new {returnUrl = Request.Url?.AbsolutePath, area = GlobalConstants.AdministrationAreaName}))">
+
+                                        <span class='glyphicon glyphicon-transfer text-primary' title=@Resource.Transfer></span>
+                                    </a>
+                                }
+                            </td>
+                        }
                     </tr>
                 }
             </table>
+
+            if (Model.Contests.PageCount > 1)
+            {
+                @Html.PagedListPager(
+                    Model.Contests,
+                    page => Url.Action<ListController>(c => c.ByCategory(Model.Id, page)),
+                    PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
+                        new AjaxOptions
+                        {
+                            HttpMethod = "GET",
+                            UpdateTargetId = contestsListContainerId,
+                            LoadingElementId = loadingMaskContainerId
+                        }))
+            }
+
+            @Html.Partial("_LoadingMask", loadingMaskContainerId)
         }
         else
         {
-            <p class="lead text-warning">@Resource.Category_is_empty</p>
+            if (Model.SubCategories.Count() != 0)
+            {
+                <table class="table table-striped">
+                    @foreach (var subCategory in Model.SubCategories)
+                    {
+                        string url;
+                        if (ViewBag.IsAjax ?? false)
+                        {
+                            url = $"#!/List/ByCategory/{subCategory.Id}/{subCategory.NameUrl}?nonTreeCall=true";
+                        }
+                        else
+                        {
+                            url = $"/Contests/List/ByCategory/{subCategory.Id}/{subCategory.NameUrl}";
+                        }
+                        <tr>
+                            <td>
+                                <a href="@url" data-id="@subCategory.Id">@subCategory.Name</a>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            }
+            else
+            {
+                <p class="lead text-warning">@Resource.Category_is_empty</p>
+            }
         }
-    }
+    </div>
 </div>
