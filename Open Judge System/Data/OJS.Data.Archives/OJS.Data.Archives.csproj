@@ -31,10 +31,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -59,19 +59,19 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Data\OJS.Data.Contracts\OJS.Data.Contracts.csproj">
+    <ProjectReference Include="..\OJS.Data.Contracts\OJS.Data.Contracts.csproj">
       <Project>{8c4bf453-24ef-46f3-b947-31505fb905de}</Project>
       <Name>OJS.Data.Contracts</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Data\OJS.Data.Models\OJS.Data.Models.csproj">
+    <ProjectReference Include="..\OJS.Data.Models\OJS.Data.Models.csproj">
       <Project>{341ca732-d483-4487-923e-27ed2a6e9a4f}</Project>
       <Name>OJS.Data.Models</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Data\OJS.Data\OJS.Data.csproj">
+    <ProjectReference Include="..\OJS.Data\OJS.Data.csproj">
       <Project>{1807194C-9E25-4365-B3BE-FE1DF627612B}</Project>
       <Name>OJS.Data</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OJS.Common\OJS.Common.csproj">
+    <ProjectReference Include="..\..\OJS.Common\OJS.Common.csproj">
       <Project>{69B10B02-22CF-47D6-B5F3-8A5FFB7DC771}</Project>
       <Name>OJS.Common</Name>
     </ProjectReference>
