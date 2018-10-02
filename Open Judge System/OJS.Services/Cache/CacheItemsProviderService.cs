@@ -52,23 +52,15 @@
                 var categories = new List<ContestCategoryListViewModel>();
                 var category = this.contestCategoriesData.GetById(categoryId);
 
-                categories.Add(new ContestCategoryListViewModel
-                {
-                    Id = category.Id,
-                    Name = category.Name
-                });
-
-                var parent = category.Parent;
-
-                while (parent != null)
+                while (category != null)
                 {
                     categories.Add(new ContestCategoryListViewModel
                     {
-                        Id = parent.Id,
-                        Name = parent.Name
+                        Id = category.Id,
+                        Name = category.Name
                     });
 
-                    parent = parent.Parent;
+                    category = category.Parent;
                 }
 
                 categories.Reverse();
