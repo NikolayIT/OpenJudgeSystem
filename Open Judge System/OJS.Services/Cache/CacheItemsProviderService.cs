@@ -40,7 +40,8 @@
                     .ToList();
         }
 
-        public IEnumerable<ContestCategoryListViewModel> GetContestCategoryParentsList(int categoryId,
+        public IEnumerable<ContestCategoryListViewModel> GetContestCategoryParentsList(
+            int categoryId,
             int? cacheSeconds = CacheConstants.OneDayInSeconds)
         {
             var cacheId = string.Format(CacheConstants.ContestParentCategoriesFormat, categoryId);

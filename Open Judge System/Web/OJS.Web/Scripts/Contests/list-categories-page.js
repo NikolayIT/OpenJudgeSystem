@@ -131,8 +131,8 @@
                 for (var i = 0; i < data.length; i++) {
                     var category = data[i];
 
-                    var categoryName = convertContestNameToUrlName(category.Name);
-                    var categoryHref = '#!/List/ByCategory/' + category.Id + '/' + categoryName + '?nonTreeCall=true';
+                    var categoryNameAsUrl = convertContestNameToUrlName(category.Name);
+                    var categoryHref = '#!/List/ByCategory/' + category.Id + '/' + categoryNameAsUrl + '?nonTreeCall=true';
 
                     var listItem = $('<li></li>');
                     var listItemHtml;
