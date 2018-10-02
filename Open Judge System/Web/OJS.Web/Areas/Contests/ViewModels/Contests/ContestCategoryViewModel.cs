@@ -5,14 +5,15 @@
 
     using OJS.Services.Cache.Models;
 
+    using X.PagedList;
+
     public class ContestCategoryViewModel
     {
         public int Id { get; set; }
 
         public string CategoryName { get; set; }
 
-        public IEnumerable<ContestListViewModel> Contests { get; set; } =
-            Enumerable.Empty<ContestListViewModel>();
+        public IPagedList<ContestListViewModel> Contests { get; set; }
 
         public IEnumerable<ContestCategoryListViewModel> SubCategories { get; set; } =
             Enumerable.Empty<ContestCategoryListViewModel>();
