@@ -1,0 +1,3 @@
+[submodule "Open Judge System/Workers"]
+	path = Open Judge System/Workers
+	url = https://github.com/SoftUni-Internal/judge-worker.git

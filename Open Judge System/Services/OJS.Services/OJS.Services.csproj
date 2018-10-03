@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{44659A90-F81E-4007-8729-C37F4F650A81}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OJS.Services</RootNamespace>
+    <AssemblyName>OJS.Services</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Dev|AnyCPU'">
+    <OutputPath>bin\Dev\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.Extended, Version=6.0.0.0, Culture=neutral, PublicKeyToken=05b7e29bdd433584, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.Extended.6.1.0.168\lib\net45\EntityFramework.Extended.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Hangfire.Core, Version=1.6.15.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Hangfire.Core.1.6.15\lib\net45\Hangfire.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+    <Reference Include="MissingFeatures, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MissingFeatures.NET.1.1\lib\MissingFeatures.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.5.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Business\Contests\ContestsBusinessService.cs" />
+    <Compile Include="Business\Contests\IContestsBusinessService.cs" />
+    <Compile Include="Business\ExamGroups\ExamGroupsBusinessService.cs" />
+    <Compile Include="Business\ExamGroups\IExamGroupsBusinessService.cs" />
+    <Compile Include="Business\ParticipantScores\IParticipantScoresBusinessService.cs" />
+    <Compile Include="Business\ParticipantScores\ParticipantScoresBusinessService.cs" />
+    <Compile Include="Business\Participants\IParticipantsBusinessService.cs" />
+    <Compile Include="Business\Participants\ParticipantsBusinessService.cs" />
+    <Compile Include="Business\Problems\IProblemsBusinessService.cs" />
+    <Compile Include="Business\Problems\ProblemsBusinessService.cs" />
+    <Compile Include="Business\ProblemGroups\IProblemGroupsBusinessService.cs" />
+    <Compile Include="Business\ProblemGroups\ProblemGroupsBusinessService.cs" />
+    <Compile Include="Business\SubmissionsForProcessing\ISubmissionsForProcessingBusinessService.cs" />
+    <Compile Include="Business\SubmissionsForProcessing\SubmissionsForProcessingBusinessService.cs" />
+    <Compile Include="Business\Submissions\ArchivedSubmissions\ArchivedSubmissionsBusinessService.cs" />
+    <Compile Include="Business\Submissions\ArchivedSubmissions\IArchivedSubmissionsBusinessService.cs" />
+    <Compile Include="Business\Submissions\ISubmissionsBusinessService.cs" />
+    <Compile Include="Business\Submissions\Models\ParticipantScoreModel.cs" />
+    <Compile Include="Business\Submissions\SubmissionsBusinessService.cs" />
+    <Compile Include="Cache\CacheItemsProviderService.cs" />
+    <Compile Include="Cache\Models\CategoryMenuItemViewModel.cs" />
+    <Compile Include="Cache\Models\ContestCategoryListViewModel.cs" />
+    <Compile Include="Data\Checkers\CheckersDataService.cs" />
+    <Compile Include="Data\Checkers\ICheckersDataService.cs" />
+    <Compile Include="Data\ContestCategories\ContestCategoriesDataService.cs" />
+    <Compile Include="Data\ContestCategories\IContestCategoriesDataService.cs" />
+    <Compile Include="Data\Contests\ContestsDataService.cs" />
+    <Compile Include="Data\Contests\IContestsDataService.cs" />
+    <Compile Include="Data\ExamGroups\ExamGroupsDataService.cs" />
+    <Compile Include="Data\ExamGroups\IExamGroupsDataService.cs" />
+    <Compile Include="Cache\ICacheItemsProviderService.cs" />
+    <Compile Include="Data\Ips\IIpsDataService.cs" />
+    <Compile Include="Data\Ips\IpsDataService.cs" />
+    <Compile Include="Data\Participants\IParticipantsDataService.cs" />
+    <Compile Include="Data\Participants\ParticipantsDataService.cs" />
+    <Compile Include="Data\ParticipantScores\IParticipantScoresDataService.cs" />
+    <Compile Include="Data\ParticipantScores\ParticipantScoresDataService.cs" />
+    <Compile Include="Data\Submissions\ArchivedSubmissions\ArchivedSubmissionsDataService.cs" />
+    <Compile Include="Data\Submissions\ArchivedSubmissions\IArchivedSubmissionsDataService.cs" />
+    <Compile Include="Data\Submissions\ISubmissionsDataService.cs" />
+    <Compile Include="Data\Submissions\SubmissionsDataService.cs" />
+    <Compile Include="Data\ProblemGroups\IProblemGroupsDataService.cs" />
+    <Compile Include="Data\ProblemGroups\ProblemGroupsDataService.cs" />
+    <Compile Include="Data\Problems\IProblemsDataService.cs" />
+    <Compile Include="Data\Problems\ProblemsDataService.cs" />
+    <Compile Include="Data\ProblemResources\IProblemResourcesDataService.cs" />
+    <Compile Include="Data\ProblemResources\ProblemResourcesDataService.cs" />
+    <Compile Include="Data\SubmissionsForProcessing\ISubmissionsForProcessingDataService.cs" />
+    <Compile Include="Data\SubmissionsForProcessing\SubmissionsForProcessingDataService.cs" />
+    <Compile Include="Data\SubmissionTypes\ISubmissionTypesDataService.cs" />
+    <Compile Include="Data\SubmissionTypes\SubmissionTypesDataService.cs" />
+    <Compile Include="Data\TestRuns\ITestRunsDataService.cs" />
+    <Compile Include="Data\TestRuns\TestRunsDataService.cs" />
+    <Compile Include="Data\Tests\ITestsDataService.cs" />
+    <Compile Include="Data\Tests\TestsDataService.cs" />
+    <Compile Include="Data\Users\IUsersDataService.cs" />
+    <Compile Include="Data\Users\UsersDataService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Data\OJS.Data.Contracts\OJS.Data.Contracts.csproj">
+      <Project>{8c4bf453-24ef-46f3-b947-31505fb905de}</Project>
+      <Name>OJS.Data.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Data\OJS.Data.Models\OJS.Data.Models.csproj">
+      <Project>{341ca732-d483-4487-923e-27ed2a6e9a4f}</Project>
+      <Name>OJS.Data.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Data\OJS.Data\OJS.Data.csproj">
+      <Project>{1807194c-9e25-4365-b3be-fe1df627612b}</Project>
+      <Name>OJS.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\OJS.Common\OJS.Common.csproj">
+      <Project>{69B10B02-22CF-47D6-B5F3-8A5FFB7DC771}</Project>
+      <Name>OJS.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Data\OJS.Data.Archives\OJS.Data.Archives.csproj">
+      <Project>{7d684e33-0aa6-44f8-bcfe-a82b70bd48bc}</Project>
+      <Name>OJS.Data.Archives</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\OJS.Resources\OJS.Resources.csproj">
+      <Project>{a89a7071-f099-4730-9876-7b1fdadf1412}</Project>
+      <Name>OJS.Resources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OJS.Services.Common\OJS.Services.Common.csproj">
+      <Project>{a7de52ac-62e7-43f0-8f73-047728eb5af2}</Project>
+      <Name>OJS.Services.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Workers\OJS.Workers.Common\OJS.Workers.Common.csproj">
+      <Project>{7F714D0B-CE81-4DD7-B6B2-62080FE22CD8}</Project>
+      <Name>OJS.Workers.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
