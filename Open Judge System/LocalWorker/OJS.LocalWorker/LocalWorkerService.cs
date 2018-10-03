@@ -16,6 +16,15 @@
         {
             try
             {
+                EncryptionHelper.EncryptAppConfigSections(Constants.AppSettingsConfigSectionName);
+            }
+            catch (Exception ex)
+            {
+                this.Logger.Warn("Cannot encrypt App.config", ex);
+            }
+
+            try
+            {
                 using (this.DependencyContainer.BeginDefaultScope())
                 {
                     var submissionsForProcessingBusiness =
@@ -42,6 +51,20 @@
             }
 
             base.BeforeStartingThreads();
+        }
+
+        protected override void BeforeAbortingThreads()
+        {
+            try
+            {
+                EncryptionHelper.DecryptAppConfigSections(Constants.AppSettingsConfigSectionName);
+            }
+            catch (Exception ex)
+            {
+                this.Logger.Warn("Cannot decrypt App.config", ex);
+            }
+
+            base.BeforeAbortingThreads();
         }
 
         private void StartMonitoringService()

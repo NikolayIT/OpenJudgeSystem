@@ -41,6 +41,15 @@
 
         protected override void OnStart(string[] args)
         {
+            try
+            {
+                EncryptionHelper.EncryptAppConfigSections(Constants.AppSettingsConfigSectionName);
+            }
+            catch (Exception ex)
+            {
+                logger.Warn("Cannot encrypt App.config", ex);
+            }
+
             var timer = new Timer { Interval = IntervalInMilliseconds };
             timer.Elapsed += this.OnTimerElapsed;
             timer.Start();
@@ -50,6 +59,15 @@
 
         protected override void OnStop()
         {
+            try
+            {
+                EncryptionHelper.DecryptAppConfigSections(Constants.AppSettingsConfigSectionName);
+            }
+            catch (Exception ex)
+            {
+                logger.Warn("Cannot decrypt App.config", ex);
+            }
+
             logger.Info($"{nameof(LocalWorkerMonitoringService)} stopped.");
         }
 
