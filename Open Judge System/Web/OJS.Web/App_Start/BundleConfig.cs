@@ -68,7 +68,8 @@
                 "~/Scripts/Helpers/kendo-helper.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/list-categories").Include(
-                "~/Scripts/Contests/list-categories-page.js"));
+                "~/Scripts/Contests/list-categories-page.js",
+                "~/Scripts/Administration/Contests/contests-helper.js"));
         }
 
         private static void RegisterStyles(BundleCollection bundles)

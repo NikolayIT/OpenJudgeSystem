@@ -6,12 +6,12 @@
         return null;
     }
 
-    var urlName = convertContestnameToUrlName(contestName);
+    var urlName = convertContestNameToUrlName(contestName);
 
     return "<a class='kendo-grid-link text-bold' href='/Contests/" + contestId + '/' + urlName + "' >" + contestName + "</a>";
 }
 
-function convertContestnameToUrlName(contestName) {
+function convertContestNameToUrlName(contestName) {
     return contestName
         .replace('C#', 'CSharp')
         .replace('C++', 'CPlusPlus')

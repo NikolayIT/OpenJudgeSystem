@@ -1,4 +1,5 @@
 ﻿@using OJS.Web.Areas.Administration.Controllers
+@using OJS.Web.Areas.Contests.Controllers
 
 @using Resource = Resources.Areas.Contests.Views.ListIndex
 
@@ -12,7 +13,7 @@
 
 <ol class="breadcrumb">
     <li><a href="/">@Resource.Home</a></li>
-    <li class="active">@Resource.Contests</li>
+    <li><a href="@(Url.Action<ListController>(c => c.Index()))">@Resource.Contests</a></li>
 </ol>
 
 <div class="row loading-mask-container">

@@ -9,6 +9,7 @@
     using OJS.Common.Extensions;
     using OJS.Common.Models;
     using OJS.Data.Models;
+    using OJS.Services.Cache.Models;
     using OJS.Web.Areas.Contests.ViewModels.Submissions;
 
     using Resource = Resources.Areas.Contests.ViewModels.ContestsViewModels;
@@ -17,56 +18,50 @@
     {
         private string contestName;
 
-        public static Expression<Func<Contest, ContestViewModel>> FromContest
-        {
-            get
+        public static Expression<Func<Contest, ContestViewModel>> FromContest =>
+            contest => new ContestViewModel
             {
-                return contest =>
-                    new ContestViewModel
-                    {
-                        Id = contest.Id,
-                        Name = contest.Name,
-                        CategoryId = contest.CategoryId,
-                        CategoryName = contest.Category.Name,
-                        StartTime = contest.StartTime,
-                        EndTime = contest.EndTime,
-                        PracticeStartTime = contest.PracticeStartTime,
-                        PracticeEndTime = contest.PracticeEndTime,
-                        IsDeleted = contest.IsDeleted,
-                        IsVisible = contest.IsVisible,
-                        IsOnline = contest.Type == ContestType.OnlinePracticalExam,
-                        ContestPassword = contest.ContestPassword,
-                        PracticePassword = contest.PracticePassword,
-                        HasContestQuestions = contest.Questions.Any(x => x.AskOfficialParticipants),
-                        HasPracticeQuestions = contest.Questions.Any(x => x.AskPracticeParticipants),
-                        ContestType = contest.Type,
-                        OfficialParticipants = contest.Participants.Count(x => x.IsOfficial),
-                        PracticeParticipants = contest.Participants.Count(x => !x.IsOfficial),
-                        ProblemsCount = contest.ProblemGroups.SelectMany(pg => pg.Problems).Count(p => !p.IsDeleted),
-                        Problems = contest.ProblemGroups
-                            .SelectMany(pg => pg.Problems)
-                            .AsQueryable()
-                            .Where(p => !p.IsDeleted)
-                            .OrderBy(p => p.ProblemGroup.OrderBy)
-                            .ThenBy(p => p.OrderBy)
-                            .ThenBy(p => p.Name)
-                            .Select(ContestProblemViewModel.FromProblem),
-                        LimitBetweenSubmissions = contest.LimitBetweenSubmissions,
-                        Description = contest.Description,
-                        AllowedSubmissionTypes = contest.ProblemGroups
-                            .SelectMany(pg => pg.Problems)
-                            .AsQueryable()
-                            .SelectMany(p => p.SubmissionTypes)
-                            .GroupBy(st => st.Id)
-                            .Select(g => g.FirstOrDefault())
-                            .Select(SubmissionTypeViewModel.FromSubmissionType)
-                    };
-            }
-        }
+                Id = contest.Id,
+                Name = contest.Name,
+                CategoryId = contest.CategoryId,
+                CategoryName = contest.Category.Name,
+                StartTime = contest.StartTime,
+                EndTime = contest.EndTime,
+                PracticeStartTime = contest.PracticeStartTime,
+                PracticeEndTime = contest.PracticeEndTime,
+                IsDeleted = contest.IsDeleted,
+                IsVisible = contest.IsVisible,
+                IsOnline = contest.Type == ContestType.OnlinePracticalExam,
+                ContestPassword = contest.ContestPassword,
+                PracticePassword = contest.PracticePassword,
+                HasContestQuestions = contest.Questions.Any(x => x.AskOfficialParticipants),
+                HasPracticeQuestions = contest.Questions.Any(x => x.AskPracticeParticipants),
+                ContestType = contest.Type,
+                OfficialParticipants = contest.Participants.Count(x => x.IsOfficial),
+                PracticeParticipants = contest.Participants.Count(x => !x.IsOfficial),
+                ProblemsCount = contest.ProblemGroups.SelectMany(pg => pg.Problems).Count(p => !p.IsDeleted),
+                Problems = contest.ProblemGroups
+                    .SelectMany(pg => pg.Problems)
+                    .AsQueryable()
+                    .Where(p => !p.IsDeleted)
+                    .OrderBy(p => p.ProblemGroup.OrderBy)
+                    .ThenBy(p => p.OrderBy)
+                    .ThenBy(p => p.Name)
+                    .Select(ContestProblemViewModel.FromProblem),
+                LimitBetweenSubmissions = contest.LimitBetweenSubmissions,
+                Description = contest.Description,
+                AllowedSubmissionTypes = contest.ProblemGroups
+                    .SelectMany(pg => pg.Problems)
+                    .AsQueryable()
+                    .SelectMany(p => p.SubmissionTypes)
+                    .GroupBy(st => st.Id)
+                    .Select(g => g.FirstOrDefault())
+                    .Select(SubmissionTypeViewModel.FromSubmissionType)
+            };
 
         public int Id { get; set; }
 
-        [Display(Name = "Name", ResourceType = typeof(Resource))]
+        [Display(Name = nameof(Resource.Name), ResourceType = typeof(Resource))]
         public string Name { get; set; }
 
         public int Type { get; set; }
@@ -117,6 +112,9 @@
         public IEnumerable<SubmissionTypeViewModel> AllowedSubmissionTypes { get; set; }
 
         public IEnumerable<ContestProblemViewModel> Problems { get; set; }
+
+        public IEnumerable<ContestCategoryListViewModel> ParentCategories { get; set; } =
+            Enumerable.Empty<ContestCategoryListViewModel>();
 
         public bool CanBeCompeted
         {

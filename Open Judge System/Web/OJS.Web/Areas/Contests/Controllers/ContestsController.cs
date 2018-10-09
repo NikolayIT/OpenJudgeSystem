@@ -10,6 +10,7 @@
 
     using OJS.Data;
     using OJS.Services.Business.Contests;
+    using OJS.Services.Cache;
     using OJS.Services.Data.Contests;
     using OJS.Services.Data.Problems;
     using OJS.Web.Areas.Contests.ViewModels.Contests;
@@ -24,17 +25,20 @@
     {
         private readonly IContestsDataService contestsData;
         private readonly IProblemsDataService problemsData;
+        private readonly ICacheItemsProviderService cacheItems;
         private readonly IContestsBusinessService contestsBusiness;
 
         public ContestsController(
             IOjsData data,
             IContestsDataService contestsData,
             IProblemsDataService problemsData,
+            ICacheItemsProviderService cacheItems,
             IContestsBusinessService contestsBusiness)
             : base(data)
         {
             this.contestsData = contestsData;
             this.problemsData = problemsData;
+            this.cacheItems = cacheItems;
             this.contestsBusiness = contestsBusiness;
         }
 
@@ -54,6 +58,12 @@
             if (contestViewModel == null || (!userHasContestRights && !contestViewModel.IsVisible))
             {
                 throw new HttpException((int)HttpStatusCode.NotFound, Resource.Contest_not_found);
+            }
+
+            if (contestViewModel.CategoryId.HasValue)
+            {
+                contestViewModel.ParentCategories =
+                    this.cacheItems.GetContestCategoryParentsList(contestViewModel.CategoryId.Value);
             }
 
             this.ViewBag.ContestProblems = this.problemsData

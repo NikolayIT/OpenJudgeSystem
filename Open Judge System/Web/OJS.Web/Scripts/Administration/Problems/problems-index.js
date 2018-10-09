@@ -41,7 +41,7 @@ function initializeGrid(contestId) {
         $.get('/Administration/Problems/ByContest/' + contestId, function (data) {
             response = data;
         }).then(function () {
-            var urlContestName = convertContestnameToUrlName(contestName);
+            var urlContestName = convertContestNameToUrlName(contestName);
             var escapedContestName = escapeSpecialSymbols(contestName);
             
             $('#status').hide();

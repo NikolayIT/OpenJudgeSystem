@@ -34,7 +34,7 @@
                 return;
             }
 
-            var mainContestCategories = this.cacheItems.GetMainContestCategoeries();
+            var mainContestCategories = this.cacheItems.GetMainContestCategories();
 
             viewResult.ViewBag.MainCategories = mainContestCategories;
         }

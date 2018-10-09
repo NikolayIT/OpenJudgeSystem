@@ -1,10 +1,12 @@
 ﻿function CategoryExpander() {
     'use strict';
 
-    var treeview;
-    var treeviewSelector;
-    var containerToFill;
-    var currentlySelectedId;
+    var treeview,
+        treeviewSelector,
+        containerToFill,
+        currentlySelectedId,
+        initialBreadCrumbHtml,
+        breadCrumb;
     var firstLoad = true;
 
     /* eslint consistent-this: 0 */
@@ -15,6 +17,7 @@
         treeviewSelector = treeViewSelector;
         containerToFill = containerToFillSelector;
         self = this;
+        breadCrumb = $('.breadcrumb');
     };
 
     function onDataBound() {
@@ -23,6 +26,7 @@
         }
 
         firstLoad = false;
+        initialBreadCrumbHtml = breadCrumb.html();
 
         if (window.location.hash) {
             var categoryId = getCategoryIdFromHash();
@@ -41,7 +45,7 @@
     }
 
     var categorySelected = function(e) {
-        containerToFill.html('');
+        containerToFill.empty();
         $('#contest-categories-loading-mask').show();
 
         var elementId;
@@ -66,6 +70,8 @@
             treeview.expand(elementNode);
         }
 
+        initializeCategoriesBreadCrumb(elementId);
+
         if (window.location.hash !== undefined && elementName) {
             window.location.hash = '!/List/ByCategory/' + elementId + '/' + elementName;
         }
@@ -77,9 +83,11 @@
     };
 
     var expandSubcategories = function (data) {
-        var selectedCategoryId = data.pop();
-        treeview.expandPath(data, function () {
-            self.select(selectedCategoryId);
+        var selectedCategory = data.pop();
+        var categoryIds = data.map(c => c.Id);
+
+        treeview.expandPath(categoryIds, function () {
+            self.select(selectedCategory.Id);
         });
     };
 
@@ -114,6 +122,33 @@
             treeview.select(element);
         }
     };
+
+    function initializeCategoriesBreadCrumb(categoryId) {
+        $.get('/Contests/List/GetParents/' + categoryId)
+            .then(function (data) {
+                breadCrumb.html(initialBreadCrumbHtml);
+
+                for (var i = 0; i < data.length; i++) {
+                    var category = data[i];
+
+                    var categoryNameAsUrl = convertContestNameToUrlName(category.Name);
+                    var categoryHref = '#!/List/ByCategory/' + category.Id + '/' + categoryNameAsUrl + '?nonTreeCall=true';
+
+                    var listItem = $('<li></li>');
+                    var listItemHtml;
+
+                    if (i < data.length - 1) {
+                        listItemHtml = $('<a href="' + categoryHref + ' ">' + category.Name + '</a>');
+                    } else {
+                        listItem.addClass('active');
+                        listItemHtml = category.Name;
+                    }
+
+                    listItem.html(listItemHtml);
+                    breadCrumb.append(listItem);
+                }
+            });
+    }
 
     var currentId = function() {
         return currentlySelectedId;
