@@ -26,8 +26,6 @@ namespace OJS.LocalWorker
                 var container = new SimpleInjectorContainer();
                 Bootstrap.Start(container);
 
-                ObjectFactory.InitializeServiceProvider(Bootstrap.Container);
-
                 var localWorkerService = new LocalWorkerService();
 
                 ServiceBase.Run(localWorkerService);
