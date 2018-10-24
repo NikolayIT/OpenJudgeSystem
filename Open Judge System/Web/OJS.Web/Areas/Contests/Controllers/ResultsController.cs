@@ -113,9 +113,8 @@
                 this.participantsData.ExistsByContestByUserAndIsOfficial(id, this.UserProfile.Id, official);
 
             var resultsAreVisible =
-                (official && contest.ResultsArePubliclyVisible) ||
+                (official && (contest.ResultsArePubliclyVisible || userIsParticipant)) ||
                 (!official && (contest.CanBePracticed || contest.CanBeCompeted)) ||
-                userIsParticipant ||
                 this.User.IsAdmin();
 
             if (!resultsAreVisible)
