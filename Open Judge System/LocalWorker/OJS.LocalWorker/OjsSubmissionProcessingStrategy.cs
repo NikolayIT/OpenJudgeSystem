@@ -125,7 +125,7 @@
             this.UpdateResults();
         }
 
-        protected override void ProcessRawExecutionResult(IExecutionResult<RawResult> rawExecutionResult)
+        protected override void ProcessOutputExecutionResult(IExecutionResult<OutputResult> outputExecutionResult)
         {
             throw new NotImplementedException();
         }
