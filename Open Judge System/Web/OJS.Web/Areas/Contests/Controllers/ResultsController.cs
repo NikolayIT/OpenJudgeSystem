@@ -109,10 +109,15 @@
 
             // If the results are not visible and the participant is not registered for the contest
             // then he is not authorized to view the results
-            if (!contest.ResultsArePubliclyVisible &&
-                official &&
-                !this.participantsData.ExistsByContestByUserAndIsOfficial(id, this.UserProfile.Id, official) &&
-                !this.User.IsAdmin())
+            var userIsParticipant =
+                this.participantsData.ExistsByContestByUserAndIsOfficial(id, this.UserProfile.Id, official);
+
+            var resultsAreVisible =
+                (official && (contest.ResultsArePubliclyVisible || userIsParticipant)) ||
+                (!official && (contest.CanBePracticed || contest.CanBeCompeted)) ||
+                this.User.IsAdmin();
+
+            if (!resultsAreVisible)
             {
                 throw new HttpException((int)HttpStatusCode.Forbidden, Resource.Contest_results_not_available);
             }
