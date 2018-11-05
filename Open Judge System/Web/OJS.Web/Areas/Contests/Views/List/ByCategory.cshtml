@@ -137,7 +137,7 @@
                             </td>
 
                             <td>
-                                @if (contest.PracticeParticipants > 0)
+                                @if (contest.PracticeParticipants > 0 && (contest.CanBePracticed || contest.CanBeCompeted))
                                 {
                                     <div class="results">
                                         <div class="glyphicon glyphicon-user" title="@Resource.Participant_count"></div>
