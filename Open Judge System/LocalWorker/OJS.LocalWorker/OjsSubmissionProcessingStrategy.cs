@@ -40,7 +40,7 @@
             this.submissionsForProcessingData = submissionsForProcessingData;
         }
 
-        public override ISubmission RetrieveSubmission()
+        public override IOjsSubmission RetrieveSubmission()
         {
             lock (this.SubmissionsForProcessing)
             {
@@ -85,7 +85,7 @@
             this.testRunsData.DeleteBySubmission(this.submission.Id);
         }
 
-        public override void OnError(ISubmission submissionModel)
+        public override void OnError(IOjsSubmission submissionModel)
         {
             this.submission.ProcessingComment = submissionModel.ProcessingComment;
 
@@ -287,7 +287,7 @@
             }
         }
 
-        private ISubmission GetSubmissionModel() => new SubmissionInputModel<TestsInputModel>
+        private IOjsSubmission GetSubmissionModel() => new OjsSubmission<TestsInputModel>()
         {
             Id = this.submission.Id,
             AdditionalCompilerArguments = this.submission.SubmissionType.AdditionalCompilerArguments,
@@ -297,7 +297,7 @@
             TimeLimit = this.submission.Problem.TimeLimit,
             MemoryLimit = this.submission.Problem.MemoryLimit,
             ExecutionStrategyType = this.submission.SubmissionType.ExecutionStrategyType,
-            ExecutionContextType = ExecutionContextType.Competitive,
+            ExecutionType = ExecutionType.TestsExecution,
             Input = new TestsInputModel
             {
                 TaskSkeleton = this.submission.Problem.SolutionSkeleton,
