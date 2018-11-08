@@ -24,9 +24,12 @@
 
         void Delete(IEnumerable<ParticipantScore> participantScores);
 
-        void AddBySubmissionByUsernameAndIsOfficial(Submission submission, string username, bool participantIsOfficial);
+        void AddBySubmissionByUsernameAndIsOfficial(Submission submission, string username, bool isOfficial);
 
-        void UpdateBySubmissionAndPoints(ParticipantScore existingScore, int submissionId, int submissionPoints);
+        void UpdateBySubmissionAndPoints(
+            ParticipantScore participantScore,
+            int? submissionId,
+            int submissionPoints);
 
         void RemoveSubmissionIdsBySubmissionIds(IEnumerable<int> submissionIds);
     }

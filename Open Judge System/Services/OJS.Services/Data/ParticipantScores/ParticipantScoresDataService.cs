@@ -124,7 +124,10 @@
             this.participantScores.SaveChanges();
         }
 
-        public void UpdateBySubmissionAndPoints(ParticipantScore participantScore, int submissionId, int submissionPoints)
+        public void UpdateBySubmissionAndPoints(
+            ParticipantScore participantScore,
+            int? submissionId,
+            int submissionPoints)
         {
             participantScore.SubmissionId = submissionId;
             participantScore.Points = submissionPoints;
