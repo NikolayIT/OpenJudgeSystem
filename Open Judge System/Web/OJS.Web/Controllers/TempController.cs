@@ -1,7 +1,6 @@
 ﻿namespace OJS.Web.Controllers
 {
     using System.Collections.Generic;
-    using System.Data.Entity;
     using System.Linq;
     using System.Text;
     using System.Web.Mvc;
@@ -10,16 +9,14 @@
 
     using MissingFeatures;
 
-    using OJS.Common.Helpers;
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Data.Repositories.Base;
+    using OJS.Services.Business.ParticipantScores;
     using OJS.Services.Business.Submissions.ArchivedSubmissions;
     using OJS.Services.Common.BackgroundJobs;
-    using OJS.Services.Data.ParticipantScores;
     using OJS.Services.Data.ProblemGroups;
-    using OJS.Services.Data.Submissions;
     using OJS.Services.Data.SubmissionsForProcessing;
     using OJS.Web.Common.Attributes;
     using OJS.Workers.Common.Helpers;
@@ -33,21 +30,18 @@
 
         private readonly IHangfireBackgroundJobService backgroundJobs;
         private readonly IProblemGroupsDataService problemGroupsData;
-        private readonly IParticipantScoresDataService participantScoresData;
-        private readonly ISubmissionsDataService submissionsData;
+        private readonly IParticipantScoresBusinessService participantScoresBusiness;
 
         public TempController(
             IOjsData data,
             IHangfireBackgroundJobService backgroundJobs,
             IProblemGroupsDataService problemGroupsData,
-            IParticipantScoresDataService participantScoresData,
-            ISubmissionsDataService submissionsData)
+            IParticipantScoresBusinessService participantScoresBusiness)
             : base(data)
         {
             this.backgroundJobs = backgroundJobs;
             this.problemGroupsData = problemGroupsData;
-            this.participantScoresData = participantScoresData;
-            this.submissionsData = submissionsData;
+            this.participantScoresBusiness = participantScoresBusiness;
         }
 
         public ActionResult RegisterJobForCleaningSubmissionsForProcessingTable()
@@ -143,48 +137,9 @@
 
         public ActionResult NormalizeSubmissionAndParticipantScorePoints()
         {
-            var updatedSubmissionsCount = 0;
-            var updatedParticipantScoresCount = 0;
+            this.participantScoresBusiness.NormalizeAllPointsThatExceedAllowedLimit();
 
-            using (var scope = TransactionsHelper.CreateTransactionScope())
-            {
-                var submissions = this.submissionsData
-                    .GetAll()
-                    .Include(s => s.Problem)
-                    .Where(s => s.Points > s.Problem.MaximumPoints)
-                    .ToList();
-
-                foreach (var submission in submissions)
-                {
-                    submission.Points = submission.Problem.MaximumPoints;
-
-                    this.submissionsData.Update(submission);
-
-                    updatedSubmissionsCount++;
-                }
-
-                var participantScores = this.participantScoresData
-                    .GetAll()
-                    .Include(ps => ps.Problem)
-                    .Where(ps => ps.Points > ps.Problem.MaximumPoints)
-                    .ToList();
-
-                foreach (var participantScore in participantScores)
-                {
-                    this.participantScoresData.UpdateBySubmissionAndPoints(
-                        participantScore,
-                        participantScore.SubmissionId,
-                        participantScore.Problem.MaximumPoints);
-
-                    updatedParticipantScoresCount++;
-                }
-
-                scope.Complete();
-            }
-
-            return this.Content($@"
-                <p>Number of updated Submissions: {updatedSubmissionsCount}</p>
-                <p>Number of updated Participant Scores: {updatedParticipantScoresCount}</p>");
+            return this.Content("Done!");
         }
     }
 }

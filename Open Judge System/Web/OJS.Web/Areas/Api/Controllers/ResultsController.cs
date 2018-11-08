@@ -8,6 +8,7 @@
     using OJS.Common.Models;
     using OJS.Data;
     using OJS.Data.Models;
+    using OJS.Services.Business.ParticipantScores;
     using OJS.Services.Data.Contests;
     using OJS.Services.Data.Participants;
     using OJS.Web.Areas.Api.Models;
@@ -24,15 +25,18 @@
         private readonly IOjsData data;
         private readonly IContestsDataService contestsData;
         private readonly IParticipantsDataService participantsData;
+        private readonly IParticipantScoresBusinessService participantScoresBusiness;
 
         public ResultsController(
             IOjsData data,
             IContestsDataService contestsData,
-            IParticipantsDataService participantsData)
+            IParticipantsDataService participantsData,
+            IParticipantScoresBusinessService participantScoresBusiness)
         {
             this.data = data;
             this.contestsData = contestsData;
             this.participantsData = participantsData;
+            this.participantScoresBusiness = participantScoresBusiness;
         }
 
         public ContentResult GetPointsByAnswer(string apiKey, int? contestId, string answer)
@@ -132,6 +136,9 @@
             {
                 return this.Json(new ErrorMessageViewModel(InvalidArgumentsMessage), JsonRequestBehavior.AllowGet);
             }
+
+            this.participantScoresBusiness
+                .NormalizePointsThatExceedAllowedLimitByContest(contestId.Value);
 
             var contestMaxPoints = (double)this.contestsData.GetMaxPointsForExportById(contestId.Value);
 

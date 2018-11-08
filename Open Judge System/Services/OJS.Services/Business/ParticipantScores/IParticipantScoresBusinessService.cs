@@ -5,5 +5,9 @@
     public interface IParticipantScoresBusinessService : IService
     {
         void RecalculateForParticipantByProblem(int participantId, int problemId);
+
+        void NormalizeAllPointsThatExceedAllowedLimit();
+
+        void NormalizePointsThatExceedAllowedLimitByContest(int contestId);
     }
 }
