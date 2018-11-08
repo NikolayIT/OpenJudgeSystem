@@ -51,20 +51,27 @@
             }
         }
 
-        public void NormalizeAllPointsThatExceedAllowedLimit()
+        public (int updatedSubmissionsCount, int updatedParticipantScoresCount) NormalizeAllPointsThatExceedAllowedLimit()
         {
+            int updatedSubmissionsCount,
+                updatedParticipantScoresCount;
+
             using (var scope = TransactionsHelper.CreateTransactionScope())
             {
-                this.InternalNormalizeSubmissionPoints();
-                this.InternalNormalizeParticipantScorePoints();
+                updatedSubmissionsCount = this.InternalNormalizeSubmissionPoints();
+                updatedParticipantScoresCount = this.InternalNormalizeParticipantScorePoints();
 
                 scope.Complete();
             }
+
+            return (updatedSubmissionsCount, updatedParticipantScoresCount);
         }
 
-        public void InternalNormalizeSubmissionPoints(
+        public int InternalNormalizeSubmissionPoints(
             Expression<Func<Submission, bool>> additionalFilter = null)
         {
+            var updatedSubmissionsCount = 0;
+
             var submissions = this.submissionsData
                 .GetAll()
                 .Include(s => s.Problem)
@@ -77,12 +84,18 @@
                 submission.Points = submission.Problem.MaximumPoints;
 
                 this.submissionsData.Update(submission);
+
+                updatedSubmissionsCount++;
             }
+
+            return updatedSubmissionsCount;
         }
 
-        public void InternalNormalizeParticipantScorePoints(
+        public int InternalNormalizeParticipantScorePoints(
             Expression<Func<ParticipantScore, bool>> additionalFilter = null)
         {
+            var updatedParticipantScoresCount = 0;
+
             var participantScores = this.participantScoresData
                 .GetAll()
                 .Include(ps => ps.Problem)
@@ -96,7 +109,11 @@
                     participantScore,
                     participantScore.SubmissionId,
                     participantScore.Problem.MaximumPoints);
+
+                updatedParticipantScoresCount++;
             }
+
+            return updatedParticipantScoresCount;
         }
     }
 }

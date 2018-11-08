@@ -137,9 +137,12 @@
 
         public ActionResult NormalizeSubmissionAndParticipantScorePoints()
         {
-            this.participantScoresBusiness.NormalizeAllPointsThatExceedAllowedLimit();
+            var (updatedSubmissionsCount, updatedParticipantScoresCount) =
+                this.participantScoresBusiness.NormalizeAllPointsThatExceedAllowedLimit();
 
-            return this.Content("Done!");
+            return this.Content($@"Done!
+                <p>Number of updated submission points: {updatedSubmissionsCount}</p>
+                <p>Number of updated participant score points: {updatedParticipantScoresCount}</p>");
         }
     }
 }

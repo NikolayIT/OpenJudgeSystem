@@ -6,7 +6,7 @@
     {
         void RecalculateForParticipantByProblem(int participantId, int problemId);
 
-        void NormalizeAllPointsThatExceedAllowedLimit();
+        (int updatedSubmissionsCount, int updatedParticipantScoresCount) NormalizeAllPointsThatExceedAllowedLimit();
 
         void NormalizePointsThatExceedAllowedLimitByContest(int contestId);
     }
