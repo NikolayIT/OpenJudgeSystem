@@ -29,6 +29,8 @@
 
         IQueryable<Submission> GetAllHavingPointsExceedingLimit();
 
+        IQueryable<Submission> GetAllHavingPointsExceedingLimitByContest(int contestId);
+
         IEnumerable<int> GetIdsByProblem(int problemId);
 
         bool IsOfficialById(int id);

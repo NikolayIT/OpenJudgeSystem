@@ -1,12 +1,9 @@
 ﻿namespace OJS.Services.Business.ParticipantScores
 {
-    using System;
     using System.Data.Entity;
     using System.Linq;
-    using System.Linq.Expressions;
 
     using OJS.Common.Helpers;
-    using OJS.Data.Models;
     using OJS.Services.Data.ParticipantScores;
     using OJS.Services.Data.Submissions;
 
@@ -41,11 +38,8 @@
         {
             using (var scope = TransactionsHelper.CreateTransactionScope())
             {
-                this.InternalNormalizeSubmissionPoints(s =>
-                    s.Problem.ProblemGroup.ContestId == contestId);
-
-                this.InternalNormalizeParticipantScorePoints(ps =>
-                    ps.Problem.ProblemGroup.ContestId == contestId);
+                this.InternalNormalizeSubmissionPoints(contestId);
+                this.InternalNormalizeParticipantScorePoints(contestId);
 
                 scope.Complete();
             }
@@ -67,16 +61,19 @@
             return (updatedSubmissionsCount, updatedParticipantScoresCount);
         }
 
-        public int InternalNormalizeSubmissionPoints(
-            Expression<Func<Submission, bool>> additionalFilter = null)
+        public int InternalNormalizeSubmissionPoints(int? contestId = null)
         {
             var updatedSubmissionsCount = 0;
 
-            var submissions = this.submissionsData
-                .GetAllHavingPointsExceedingLimit()
-                .Include(s => s.Problem)
-                .Where(additionalFilter ?? (_ => true))
-                .ToList();
+            var submissionsQuery = this.submissionsData.GetAllHavingPointsExceedingLimit();
+
+            if (contestId.HasValue)
+            {
+                submissionsQuery = this.submissionsData
+                    .GetAllHavingPointsExceedingLimitByContest(contestId.Value);
+            }
+
+            var submissions = submissionsQuery.Include(s => s.Problem).ToList();
 
             foreach (var submission in submissions)
             {
@@ -90,16 +87,19 @@
             return updatedSubmissionsCount;
         }
 
-        public int InternalNormalizeParticipantScorePoints(
-            Expression<Func<ParticipantScore, bool>> additionalFilter = null)
+        public int InternalNormalizeParticipantScorePoints(int? contestId = null)
         {
             var updatedParticipantScoresCount = 0;
 
-            var participantScores = this.participantScoresData
-                .GetAllHavingPointsExceedingLimit()
-                .Include(ps => ps.Problem)
-                .Where(additionalFilter ?? (_ => true))
-                .ToList();
+            var participantScoresQuery = this.participantScoresData.GetAllHavingPointsExceedingLimit();
+
+            if (contestId.HasValue)
+            {
+                participantScoresQuery = this.participantScoresData
+                    .GetAllHavingPointsExceedingLimitByContest(contestId.Value);
+            }
+
+            var participantScores = participantScoresQuery.Include(ps => ps.Problem).ToList();
 
             foreach (var participantScore in participantScores)
             {
