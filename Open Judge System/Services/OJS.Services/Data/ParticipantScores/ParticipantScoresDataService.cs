@@ -44,6 +44,10 @@
             this.GetAll()
                 .Where(ps => ps.ProblemId == problemId);
 
+        public IQueryable<ParticipantScore> GetAllHavingPointsExceedingLimit() =>
+            this.GetAll()
+                .Where(ps => ps.Points > ps.Problem.MaximumPoints);
+
         public void ResetBySubmission(Submission submission)
         {
             if (submission.ParticipantId == null || submission.ProblemId == null)

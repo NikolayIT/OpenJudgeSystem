@@ -73,9 +73,8 @@
             var updatedSubmissionsCount = 0;
 
             var submissions = this.submissionsData
-                .GetAll()
+                .GetAllHavingPointsExceedingLimit()
                 .Include(s => s.Problem)
-                .Where(s => s.Points > s.Problem.MaximumPoints)
                 .Where(additionalFilter ?? (_ => true))
                 .ToList();
 
@@ -97,9 +96,8 @@
             var updatedParticipantScoresCount = 0;
 
             var participantScores = this.participantScoresData
-                .GetAll()
+                .GetAllHavingPointsExceedingLimit()
                 .Include(ps => ps.Problem)
-                .Where(ps => ps.Points > ps.Problem.MaximumPoints)
                 .Where(additionalFilter ?? (_ => true))
                 .ToList();
 

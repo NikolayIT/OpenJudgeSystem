@@ -16,6 +16,8 @@
 
         IQueryable<ParticipantScore> GetAllByProblem(int problemId);
 
+        IQueryable<ParticipantScore> GetAllHavingPointsExceedingLimit();
+
         void ResetBySubmission(Submission submission);
 
         void DeleteAllByProblem(int problemId);

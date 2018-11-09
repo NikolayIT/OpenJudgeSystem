@@ -27,6 +27,8 @@
             DateTime createdBeforeDate,
             DateTime nonBestCreatedBeforeDate);
 
+        IQueryable<Submission> GetAllHavingPointsExceedingLimit();
+
         IEnumerable<int> GetIdsByProblem(int problemId);
 
         bool IsOfficialById(int id);
