@@ -4,6 +4,7 @@
     using System.Linq;
 
     using OJS.Common.Helpers;
+    using OJS.Data.Models;
     using OJS.Services.Data.ParticipantScores;
     using OJS.Services.Data.Submissions;
 
@@ -64,13 +65,16 @@
         public int InternalNormalizeSubmissionPoints(int? contestId = null)
         {
             var updatedSubmissionsCount = 0;
-
-            var submissionsQuery = this.submissionsData.GetAllHavingPointsExceedingLimit();
+            IQueryable<Submission> submissionsQuery;
 
             if (contestId.HasValue)
             {
                 submissionsQuery = this.submissionsData
                     .GetAllHavingPointsExceedingLimitByContest(contestId.Value);
+            }
+            else
+            {
+                submissionsQuery = this.submissionsData.GetAllHavingPointsExceedingLimit();
             }
 
             var submissions = submissionsQuery.Include(s => s.Problem).ToList();
@@ -90,13 +94,16 @@
         public int InternalNormalizeParticipantScorePoints(int? contestId = null)
         {
             var updatedParticipantScoresCount = 0;
-
-            var participantScoresQuery = this.participantScoresData.GetAllHavingPointsExceedingLimit();
+            IQueryable<ParticipantScore> participantScoresQuery;
 
             if (contestId.HasValue)
             {
                 participantScoresQuery = this.participantScoresData
                     .GetAllHavingPointsExceedingLimitByContest(contestId.Value);
+            }
+            else
+            {
+                participantScoresQuery = this.participantScoresData.GetAllHavingPointsExceedingLimit();
             }
 
             var participantScores = participantScoresQuery.Include(ps => ps.Problem).ToList();
