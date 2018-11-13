@@ -13,6 +13,7 @@
     using OJS.Data;
     using OJS.Data.Models;
     using OJS.Data.Repositories.Base;
+    using OJS.Services.Business.ParticipantScores;
     using OJS.Services.Business.Submissions.ArchivedSubmissions;
     using OJS.Services.Common.BackgroundJobs;
     using OJS.Services.Data.ProblemGroups;
@@ -29,15 +30,18 @@
 
         private readonly IHangfireBackgroundJobService backgroundJobs;
         private readonly IProblemGroupsDataService problemGroupsData;
+        private readonly IParticipantScoresBusinessService participantScoresBusiness;
 
         public TempController(
             IOjsData data,
             IHangfireBackgroundJobService backgroundJobs,
-            IProblemGroupsDataService problemGroupsData)
+            IProblemGroupsDataService problemGroupsData,
+            IParticipantScoresBusinessService participantScoresBusiness)
             : base(data)
         {
             this.backgroundJobs = backgroundJobs;
             this.problemGroupsData = problemGroupsData;
+            this.participantScoresBusiness = participantScoresBusiness;
         }
 
         public ActionResult RegisterJobForCleaningSubmissionsForProcessingTable()
@@ -129,6 +133,16 @@
 
             return this.Content($"Done! ProblemGroups set to deleted: {softDeleted}" +
                 $"<br/> ProblemGroups hard deleted: {hardDeleted}");
+        }
+
+        public ActionResult NormalizeSubmissionAndParticipantScorePoints()
+        {
+            var (updatedSubmissionsCount, updatedParticipantScoresCount) =
+                this.participantScoresBusiness.NormalizeAllPointsThatExceedAllowedLimit();
+
+            return this.Content($@"Done!
+                <p>Number of updated submission points: {updatedSubmissionsCount}</p>
+                <p>Number of updated participant score points: {updatedParticipantScoresCount}</p>");
         }
     }
 }
