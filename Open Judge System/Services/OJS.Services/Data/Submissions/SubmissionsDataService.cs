@@ -56,6 +56,14 @@
                     (s.CreatedOn < nonBestCreatedBeforeDate &&
                         s.Participant.Scores.All(ps => ps.SubmissionId != s.Id)));
 
+        public IQueryable<Submission> GetAllHavingPointsExceedingLimit() =>
+            this.GetAll()
+                .Where(s => s.Points > s.Problem.MaximumPoints);
+
+        public IQueryable<Submission> GetAllHavingPointsExceedingLimitByContest(int contestId) =>
+            this.GetAllHavingPointsExceedingLimit()
+                .Where(s => s.Problem.ProblemGroup.ContestId == contestId);
+
         public IEnumerable<int> GetIdsByProblem(int problemId) =>
             this.GetAllByProblem(problemId)
                 .Select(s => s.Id);

@@ -44,6 +44,14 @@
             this.GetAll()
                 .Where(ps => ps.ProblemId == problemId);
 
+        public IQueryable<ParticipantScore> GetAllHavingPointsExceedingLimit() =>
+            this.GetAll()
+                .Where(ps => ps.Points > ps.Problem.MaximumPoints);
+
+        public IQueryable<ParticipantScore> GetAllHavingPointsExceedingLimitByContest(int contestId) =>
+            this.GetAllHavingPointsExceedingLimit()
+                .Where(ps => ps.Problem.ProblemGroup.ContestId == contestId);
+
         public void ResetBySubmission(Submission submission)
         {
             if (submission.ParticipantId == null || submission.ProblemId == null)
@@ -124,7 +132,10 @@
             this.participantScores.SaveChanges();
         }
 
-        public void UpdateBySubmissionAndPoints(ParticipantScore participantScore, int submissionId, int submissionPoints)
+        public void UpdateBySubmissionAndPoints(
+            ParticipantScore participantScore,
+            int? submissionId,
+            int submissionPoints)
         {
             participantScore.SubmissionId = submissionId;
             participantScore.Points = submissionPoints;
