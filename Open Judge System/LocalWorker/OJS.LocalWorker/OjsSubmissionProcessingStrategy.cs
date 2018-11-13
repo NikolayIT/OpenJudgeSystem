@@ -125,11 +125,6 @@
             this.UpdateResults();
         }
 
-        protected override void ProcessOutputExecutionResult(IExecutionResult<OutputResult> outputExecutionResult)
-        {
-            throw new NotImplementedException();
-        }
-
         private void UpdateResults()
         {
             this.CalculatePointsForSubmission();
