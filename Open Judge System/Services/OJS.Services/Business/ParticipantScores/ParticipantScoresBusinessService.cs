@@ -1,6 +1,5 @@
 ﻿namespace OJS.Services.Business.ParticipantScores
 {
-    using System.Data.Entity;
     using System.Linq;
 
     using OJS.Common.Helpers;
@@ -77,16 +76,21 @@
                 submissionsQuery = this.submissionsData.GetAllHavingPointsExceedingLimit();
             }
 
-            var submissions = submissionsQuery.Include(s => s.Problem).ToList();
+            submissionsQuery
+                .Select(s => new
+                {
+                    Submission = s,
+                    ProblemMaxPoints = s.Problem.MaximumPoints
+                })
+                .ToList()
+                .ForEach(x =>
+                {
+                    x.Submission.Points = x.ProblemMaxPoints;
 
-            foreach (var submission in submissions)
-            {
-                submission.Points = submission.Problem.MaximumPoints;
+                    this.submissionsData.Update(x.Submission);
 
-                this.submissionsData.Update(submission);
-
-                updatedSubmissionsCount++;
-            }
+                    updatedSubmissionsCount++;
+                });
 
             return updatedSubmissionsCount;
         }
@@ -106,17 +110,22 @@
                 participantScoresQuery = this.participantScoresData.GetAllHavingPointsExceedingLimit();
             }
 
-            var participantScores = participantScoresQuery.Include(ps => ps.Problem).ToList();
+            participantScoresQuery
+                .Select(ps => new
+                {
+                    ParticipantScore = ps,
+                    ProblemMaxPoints = ps.Problem.MaximumPoints
+                })
+                .ToList()
+                .ForEach(x =>
+                {
+                    this.participantScoresData.UpdateBySubmissionAndPoints(
+                        x.ParticipantScore,
+                        x.ParticipantScore.SubmissionId,
+                        x.ProblemMaxPoints);
 
-            foreach (var participantScore in participantScores)
-            {
-                this.participantScoresData.UpdateBySubmissionAndPoints(
-                    participantScore,
-                    participantScore.SubmissionId,
-                    participantScore.Problem.MaximumPoints);
-
-                updatedParticipantScoresCount++;
-            }
+                    updatedParticipantScoresCount++;
+                });
 
             return updatedParticipantScoresCount;
         }
