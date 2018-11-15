@@ -21,6 +21,8 @@
 
         IQueryable<Problem> GetProblemsById(int id);
 
+        void Add(ProblemGroup problemGroup);
+
         bool IsFromContestByIdAndContest(int id, int contestId);
     }
 }
