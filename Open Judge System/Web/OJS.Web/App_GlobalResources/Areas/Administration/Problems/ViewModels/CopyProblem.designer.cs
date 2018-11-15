@@ -61,6 +61,15 @@ namespace Resources.Areas.Administration.Problems.ViewModels {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Search for the contest in which you want to copy all the problems.
+        /// </summary>
+        public static string Bulk_copy_contest_label {
+            get {
+                return ResourceManager.GetString("Bulk_copy_contest_label", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Search for the contest in which you want to copy the problem in.
         /// </summary>
         public static string Contest_label {

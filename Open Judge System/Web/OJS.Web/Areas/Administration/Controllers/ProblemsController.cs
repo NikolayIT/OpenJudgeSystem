@@ -788,6 +788,20 @@
                 this.contestsData.GetNameById(contestId.Value)));
         }
 
+        [AjaxOnly]
+        public ActionResult CopyAllPartial(int id) =>
+            this.PartialView("_CopyAllProblemsToAnotherContest", new CopyAllProblemsViewModel(id));
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CopyAll(CopyAllProblemsViewModel model)
+        {
+            return this.JsonSuccess(string.Format(
+                GlobalResource.Copy_problem_success_message,
+                this.contestsData.GetNameById(model.FromContestId),
+                this.contestsData.GetNameById(model.ContestId.Value)));
+        }
+
         private IEnumerable GetData(int id)
         {
             if (!this.CheckIfUserHasContestPermissions(id))
