@@ -62,6 +62,16 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Services\Problems\ProblemsBusiness.bg.Designer.cs">
+      <DependentUpon>ProblemsBusiness.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Services\Problems\ProblemsBusiness.Designer.cs">
+      <DependentUpon>ProblemsBusiness.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -84,6 +94,16 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ParticipantsBusiness.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Services.Participants</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Services\Problems\ProblemsBusiness.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemsBusiness.bg.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Services.Problems</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Services\Problems\ProblemsBusiness.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemsBusiness.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Services.Problems</CustomToolNamespace>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -168,4 +168,7 @@
   <data name="Tests_cannot_be_improrted" xml:space="preserve">
     <value>Тестовете не могат да бъдат качени: {0}</value>
   </data>
+  <data name="Copy_all_problems_success_message" xml:space="preserve">
+    <value>Успешно копирахте всички задачи от състезанието {0} в състезанието {1}</value>
+  </data>
 </root>

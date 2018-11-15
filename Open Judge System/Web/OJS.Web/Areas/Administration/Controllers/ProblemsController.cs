@@ -796,10 +796,38 @@
         [ValidateAntiForgeryToken]
         public ActionResult CopyAll(CopyAllProblemsViewModel model)
         {
+            if (!this.ModelState.IsValid)
+            {
+                return this.JsonValidation();
+            }
+
+            var fromContestId = model.FromContestId;
+            var toContestId = model.ContestId;
+
+            if (!toContestId.HasValue ||
+                !this.contestsData.ExistsById(toContestId.Value) ||
+                !this.contestsData.ExistsById(fromContestId))
+            {
+                return this.JsonError(GlobalResource.Invalid_contest);
+            }
+
+            if (!this.CheckIfUserHasContestPermissions(toContestId.Value))
+            {
+                return this.JsonError(GeneralResource.No_privileges_message);
+            }
+
+            var result = this.problemsBusiness
+                .CopyAllToContestBySourceAndDestinationContest(fromContestId, toContestId.Value);
+
+            if (result.IsError)
+            {
+                return this.JsonError(result.Error);
+            }
+
             return this.JsonSuccess(string.Format(
-                GlobalResource.Copy_problem_success_message,
-                this.contestsData.GetNameById(model.FromContestId),
-                this.contestsData.GetNameById(model.ContestId.Value)));
+                GlobalResource.Copy_all_problems_success_message,
+                this.contestsData.GetNameById(fromContestId),
+                this.contestsData.GetNameById(toContestId.Value)));
         }
 
         private IEnumerable GetData(int id)

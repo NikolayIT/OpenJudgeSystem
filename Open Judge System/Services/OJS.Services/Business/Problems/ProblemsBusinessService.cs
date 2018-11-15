@@ -18,13 +18,10 @@
     using OJS.Services.Data.TestRuns;
 
     using IsolationLevel = System.Transactions.IsolationLevel;
+    using Resource = Resources.Services.Problems.ProblemsBusiness;
 
     public class ProblemsBusinessService : IProblemsBusinessService
     {
-        // TODO: Add messages to resources
-        private const string CannotCopyProblemInActiveContestErrorMessage = "Cannot copy problems into Active Contest";
-        private const string CannotCopyProblemIntoTheSameContest = "Cannot copy problems into the same contest";
-
         private readonly IEfDeletableEntityRepository<Problem> problems;
         private readonly IContestsDataService contestsData;
         private readonly IParticipantScoresDataService participantScoresData;
@@ -134,15 +131,24 @@
 
             if (problem?.ProblemGroup.ContestId == contestId)
             {
-                return new ServiceResult(CannotCopyProblemIntoTheSameContest);
+                return new ServiceResult(Resource.Cannot_copy_problems_into_same_contest);
             }
 
             if (this.contestsData.IsActiveById(contestId))
             {
-                return new ServiceResult(CannotCopyProblemInActiveContestErrorMessage);
+                return new ServiceResult(Resource.Cannot_copy_problems_into_active_contest);
             }
 
             this.CopyToContest(problem, contestId, problemNewOrderBy, problemGroupId);
+
+            return ServiceResult.Success;
+        }
+
+        public ServiceResult CopyAllToContestBySourceAndDestinationContest(int fromContestId, int toContestId)
+        {
+            var sourceContest = this.contestsData.GetById(fromContestId);
+            
+            
 
             return ServiceResult.Success;
         }
