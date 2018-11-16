@@ -5,13 +5,18 @@
 
 @model OJS.Web.Areas.Administration.ViewModels.ProblemGroup.CopyAllProblemGroupsViewModel
 
+@{
+    const string loadingMaskContainerId = "copy-all-window-loading-mask";
+}
+
 @using (Ajax.BeginForm<ProblemGroupsController>(
     c => c.CopyAll((CopyAllProblemGroupsViewModel)null),
     FormMethod.Post,
     new AjaxOptions
     {
         OnSuccess = "onCopySuccess",
-        OnFailure = "onCopyFailure"
+        OnFailure = "onCopyFailure",
+        LoadingElementId = loadingMaskContainerId
     }))
 {
     @Html.AntiForgeryToken()
@@ -27,3 +32,5 @@
 
     <input class="k-button pull-right" type="submit" value="@SharedResource.Copy" />
 }
+
+@Html.Partial("_LoadingMask", loadingMaskContainerId)
