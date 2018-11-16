@@ -131,21 +131,22 @@
                 .Include(p => p.Resources)
                 .SingleOrDefault();
 
-            var problemNewOrderBy = problemGroupId.HasValue
-                ? this.problemsData.GetNewOrderByProblemGroup(problemGroupId.Value)
-                : this.problemsData.GetNewOrderByContest(contestId);
-
             if (problem?.ProblemGroup.ContestId == contestId)
             {
                 return new ServiceResult(Resource.Cannot_copy_problems_into_same_contest);
             }
 
+            if (!this.contestsData.ExistsById(contestId))
+            {
+                return new ServiceResult(string.Format(Resource.Contest_does_not_exists, contestId));
+            }
+
             if (this.contestsData.IsActiveById(contestId))
             {
                 return new ServiceResult(Resource.Cannot_copy_problems_into_active_contest);
-            }
-
-            this.CopyProblemToContest(problem, contestId, problemNewOrderBy, problemGroupId);
+            }            
+            
+            this.CopyProblemToContest(problem, contestId, problemGroupId);
 
             return ServiceResult.Success;
         }
@@ -161,22 +162,23 @@
 
             if (!this.contestsData.ExistsById(destinationContestId))
             {
-                return new ServiceResult("Contest does not exist");
-            }
+                return new ServiceResult(string.Format(Resource.Contest_does_not_exists, destinationContestId));
+            }            
 
             if (this.contestsData.IsActiveById(destinationContestId))
             {
                 return new ServiceResult(Resource.Cannot_copy_problems_into_active_contest);
             }
 
-            var sourceContest = this.contestsData
+            var sourceContestProblemGroups = this.contestsData
                 .GetByIdQuery(sourceContestId)
                 .AsNoTracking()
                 .Include(c => c.ProblemGroups.Select(pg => pg.Problems.Select(p => p.Tests)))
                 .Include(c => c.ProblemGroups.Select(pg => pg.Problems.Select(p => p.Resources)))
-                .SingleOrDefault();
+                .SingleOrDefault()
+                ?.ProblemGroups;
 
-            sourceContest?.ProblemGroups
+            sourceContestProblemGroups
                 .ForEach(pg => this.CopyProblemGroupToContest(pg, destinationContestId));
 
             return ServiceResult.Success;
@@ -193,23 +195,28 @@
             this.problemGroupsData.Add(problemGroup);
         }
 
-        private void CopyProblemToContest(Problem problem, int contestId, int newOrderBy, int? problemGroupId)
+        private void CopyProblemToContest(Problem problem, int contestId, int? problemGroupId)
         {
+            int orderBy;
+
             if (problemGroupId.HasValue)
             {
                 problem.ProblemGroup = null;
                 problem.ProblemGroupId = problemGroupId.Value;
+                orderBy = this.problemsData.GetNewOrderByProblemGroup(problemGroupId.Value);
             }
             else
             {
+                orderBy = this.problemsData.GetNewOrderByContest(contestId);
+
                 problem.ProblemGroup = new ProblemGroup
                 {
                     ContestId = contestId,
-                    OrderBy = newOrderBy
+                    OrderBy = orderBy
                 };
             }
 
-            problem.OrderBy = newOrderBy;
+            problem.OrderBy = orderBy;
             problem.SubmissionTypes = this.submissionTypesData.GetAllByProblem(problem.Id).ToList();
 
             this.problemsData.Add(problem);

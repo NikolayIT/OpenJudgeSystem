@@ -801,23 +801,23 @@
                 return this.JsonValidation();
             }
 
-            var fromContestId = model.FromContestId;
-            var toContestId = model.ContestId;
+            var sourceContestId = model.FromContestId;
+            var destinationContestId = model.ContestId;
 
-            if (!toContestId.HasValue ||
-                !this.contestsData.ExistsById(toContestId.Value) ||
-                !this.contestsData.ExistsById(fromContestId))
+            if (!destinationContestId.HasValue ||
+                !this.contestsData.ExistsById(destinationContestId.Value) ||
+                !this.contestsData.ExistsById(sourceContestId))
             {
                 return this.JsonError(GlobalResource.Invalid_contest);
             }
 
-            if (!this.CheckIfUserHasContestPermissions(toContestId.Value))
+            if (!this.CheckIfUserHasContestPermissions(destinationContestId.Value))
             {
                 return this.JsonError(GeneralResource.No_privileges_message);
             }
 
             var result = this.problemsBusiness
-                .CopyAllToContestBySourceAndDestinationContest(fromContestId, toContestId.Value);
+                .CopyAllToContestBySourceAndDestinationContest(sourceContestId, destinationContestId.Value);
 
             if (result.IsError)
             {
@@ -826,8 +826,8 @@
 
             return this.JsonSuccess(string.Format(
                 GlobalResource.Copy_all_problems_success_message,
-                this.contestsData.GetNameById(fromContestId),
-                this.contestsData.GetNameById(toContestId.Value)));
+                this.contestsData.GetNameById(sourceContestId),
+                this.contestsData.GetNameById(destinationContestId.Value)));
         }
 
         private IEnumerable GetData(int id)

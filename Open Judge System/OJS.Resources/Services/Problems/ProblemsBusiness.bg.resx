@@ -123,4 +123,7 @@
   <data name="Cannot_copy_problems_into_same_contest" xml:space="preserve">
     <value>Не може да копирате задачи в същото състезание</value>
   </data>
+  <data name="Contest_does_not_exists" xml:space="preserve">
+    <value>Състезание с ID {0} не съществува</value>
+  </data>
 </root>

@@ -77,5 +77,14 @@ namespace Resources.Services.Problems {
                 return ResourceManager.GetString("Cannot_copy_problems_into_same_contest", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contest with Id {0} does not exist.
+        /// </summary>
+        public static string Contest_does_not_exists {
+            get {
+                return ResourceManager.GetString("Contest_does_not_exists", resourceCulture);
+            }
+        }
     }
 }
