@@ -5,5 +5,9 @@
     public interface IProblemGroupsBusinessService : IService
     {
         ServiceResult DeleteById(int id);
+
+        ServiceResult CopyAllToContestBySourceAndDestinationContest(
+            int sourceContestId,
+            int destinationContestId);
     }
 }

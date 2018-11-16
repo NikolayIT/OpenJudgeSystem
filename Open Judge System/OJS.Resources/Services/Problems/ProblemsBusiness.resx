@@ -123,7 +123,4 @@
   <data name="Cannot_copy_problems_into_same_contest" xml:space="preserve">
     <value>Cannot copy problems into the same contest</value>
   </data>
-  <data name="Contest_does_not_exists" xml:space="preserve">
-    <value>Contest with Id {0} does not exist</value>
-  </data>
 </root>

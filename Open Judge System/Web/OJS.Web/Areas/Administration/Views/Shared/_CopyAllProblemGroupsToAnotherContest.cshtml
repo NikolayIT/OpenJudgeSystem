@@ -1,12 +1,12 @@
 ﻿@using OJS.Web.Areas.Administration.Controllers
-@using OJS.Web.Areas.Administration.ViewModels.Problem
+@using OJS.Web.Areas.Administration.ViewModels.ProblemGroup
 
 @using SharedResource = Resources.Areas.Administration.Shared.Views.Partials.Partials
 
-@model CopyAllProblemsViewModel
+@model OJS.Web.Areas.Administration.ViewModels.ProblemGroup.CopyAllProblemGroupsViewModel
 
-@using (Ajax.BeginForm<ProblemsController>(
-    c => c.CopyAll((CopyAllProblemsViewModel)null),
+@using (Ajax.BeginForm<ProblemGroupsController>(
+    c => c.CopyAll((CopyAllProblemGroupsViewModel)null),
     FormMethod.Post,
     new AjaxOptions
     {

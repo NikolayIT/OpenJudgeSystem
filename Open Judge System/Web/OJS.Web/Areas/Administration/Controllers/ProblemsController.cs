@@ -788,48 +788,6 @@
                 this.contestsData.GetNameById(contestId.Value)));
         }
 
-        [AjaxOnly]
-        public ActionResult CopyAllPartial(int id) =>
-            this.PartialView("_CopyAllProblemsToAnotherContest", new CopyAllProblemsViewModel(id));
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult CopyAll(CopyAllProblemsViewModel model)
-        {
-            if (!this.ModelState.IsValid)
-            {
-                return this.JsonValidation();
-            }
-
-            var sourceContestId = model.FromContestId;
-            var destinationContestId = model.ContestId;
-
-            if (!destinationContestId.HasValue ||
-                !this.contestsData.ExistsById(destinationContestId.Value) ||
-                !this.contestsData.ExistsById(sourceContestId))
-            {
-                return this.JsonError(GlobalResource.Invalid_contest);
-            }
-
-            if (!this.CheckIfUserHasContestPermissions(destinationContestId.Value))
-            {
-                return this.JsonError(GeneralResource.No_privileges_message);
-            }
-
-            var result = this.problemsBusiness
-                .CopyAllToContestBySourceAndDestinationContest(sourceContestId, destinationContestId.Value);
-
-            if (result.IsError)
-            {
-                return this.JsonError(result.Error);
-            }
-
-            return this.JsonSuccess(string.Format(
-                GlobalResource.Copy_all_problems_success_message,
-                this.contestsData.GetNameById(sourceContestId),
-                this.contestsData.GetNameById(destinationContestId.Value)));
-        }
-
         private IEnumerable GetData(int id)
         {
             if (!this.CheckIfUserHasContestPermissions(id))

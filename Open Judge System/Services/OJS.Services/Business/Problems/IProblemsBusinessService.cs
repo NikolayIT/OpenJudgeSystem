@@ -11,7 +11,5 @@
         void DeleteByContest(int contestId);
 
         ServiceResult CopyToContestByIdByContestAndProblemGroup(int id, int contestId, int? problemGroupId);
-
-        ServiceResult CopyAllToContestBySourceAndDestinationContest(int fromContestId, int toContestId);
     }
 }

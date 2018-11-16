@@ -62,6 +62,16 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Services\ProblemGroups\ProblemGroupsBusiness.bg.Designer.cs">
+      <DependentUpon>ProblemGroupsBusiness.bg.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Services\ProblemGroups\ProblemGroupsBusiness.Designer.cs">
+      <DependentUpon>ProblemGroupsBusiness.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Services\Problems\ProblemsBusiness.bg.Designer.cs">
       <DependentUpon>ProblemsBusiness.bg.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -94,6 +104,16 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ParticipantsBusiness.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources.Services.Participants</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Services\ProblemGroups\ProblemGroupsBusiness.bg.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemGroupsBusiness.bg.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Services.ProblemGroups</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Services\ProblemGroups\ProblemGroupsBusiness.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProblemGroupsBusiness.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.Services.ProblemGroups</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="Services\Problems\ProblemsBusiness.bg.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

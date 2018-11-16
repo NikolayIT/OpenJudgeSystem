@@ -168,7 +168,4 @@
   <data name="Tests_cannot_be_improrted" xml:space="preserve">
     <value>The tests cannot be imported: {0}</value>
   </data>
-  <data name="Copy_all_problems_success_message" xml:space="preserve">
-    <value>Successfully copied all problems from the contest "{0}" into the contest "{1}"</value>
-  </data>
 </root>

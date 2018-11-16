@@ -70,15 +70,6 @@ namespace Resources.Areas.Administration.Problems {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Successfully copied all problems from the contest &quot;{0}&quot; into the contest &quot;{1}&quot;.
-        /// </summary>
-        public static string Copy_all_problems_success_message {
-            get {
-                return ResourceManager.GetString("Copy_all_problems_success_message", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Successfully copied the problem &quot;{0}&quot; into the contest &quot;{1}&quot;.
         /// </summary>
         public static string Copy_problem_success_message {

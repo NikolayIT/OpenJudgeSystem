@@ -1,4 +1,4 @@
-﻿namespace OJS.Web.Areas.Administration.ViewModels.Problem
+﻿namespace OJS.Web.Areas.Administration.ViewModels.ProblemGroup
 {
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
@@ -10,14 +10,14 @@
 
     using Resource = Resources.Areas.Administration.Problems.ViewModels.CopyProblem;
 
-    public class CopyAllProblemsViewModel
+    public class CopyAllProblemGroupsViewModel
     {
         // Needed for binding the model to the action
-        public CopyAllProblemsViewModel()
+        public CopyAllProblemGroupsViewModel()
         {
         }
 
-        public CopyAllProblemsViewModel(int contestId) => this.FromContestId = contestId;
+        public CopyAllProblemGroupsViewModel(int contestId) => this.FromContestId = contestId;
 
         [Required]
         [HiddenInput(DisplayValue = false)]

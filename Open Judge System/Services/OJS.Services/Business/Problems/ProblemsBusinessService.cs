@@ -3,8 +3,6 @@
     using System.Data.Entity;
     using System.Linq;
 
-    using MissingFeatures;
-
     using OJS.Common.Helpers;
     using OJS.Data.Models;
     using OJS.Data.Repositories.Contracts;
@@ -12,7 +10,6 @@
     using OJS.Services.Common;
     using OJS.Services.Data.Contests;
     using OJS.Services.Data.ParticipantScores;
-    using OJS.Services.Data.ProblemGroups;
     using OJS.Services.Data.ProblemResources;
     using OJS.Services.Data.Problems;
     using OJS.Services.Data.Submissions;
@@ -22,6 +19,7 @@
 
     using IsolationLevel = System.Transactions.IsolationLevel;
     using Resource = Resources.Services.Problems.ProblemsBusiness;
+    using SharedResource = Resources.Contests.ContestsGeneral;
 
     public class ProblemsBusinessService : IProblemsBusinessService
     {
@@ -29,7 +27,6 @@
         private readonly IContestsDataService contestsData;
         private readonly IParticipantScoresDataService participantScoresData;
         private readonly IProblemsDataService problemsData;
-        private readonly IProblemGroupsDataService problemGroupsData;
         private readonly IProblemResourcesDataService problemResourcesData;
         private readonly ISubmissionsDataService submissionsData;
         private readonly ISubmissionsForProcessingDataService submissionsForProcessingData;
@@ -42,7 +39,6 @@
             IContestsDataService contestsData,
             IParticipantScoresDataService participantScoresData,
             IProblemsDataService problemsData,
-            IProblemGroupsDataService problemGroupsData,
             IProblemResourcesDataService problemResourcesData,
             ISubmissionsDataService submissionsData,
             ISubmissionsForProcessingDataService submissionsForProcessingData,
@@ -54,7 +50,6 @@
             this.contestsData = contestsData;
             this.participantScoresData = participantScoresData;
             this.problemsData = problemsData;
-            this.problemGroupsData = problemGroupsData;
             this.problemResourcesData = problemResourcesData;
             this.submissionsData = submissionsData;
             this.submissionsForProcessingData = submissionsForProcessingData;
@@ -138,7 +133,7 @@
 
             if (!this.contestsData.ExistsById(contestId))
             {
-                return new ServiceResult(string.Format(Resource.Contest_does_not_exists, contestId));
+                return new ServiceResult(SharedResource.Contest_not_found);
             }
 
             if (this.contestsData.IsActiveById(contestId))
@@ -151,59 +146,16 @@
             return ServiceResult.Success;
         }
 
-        public ServiceResult CopyAllToContestBySourceAndDestinationContest(
-            int sourceContestId,
-            int destinationContestId)
-        {
-            if (sourceContestId == destinationContestId)
-            {
-                return new ServiceResult(Resource.Cannot_copy_problems_into_same_contest);
-            }
-
-            if (!this.contestsData.ExistsById(destinationContestId))
-            {
-                return new ServiceResult(string.Format(Resource.Contest_does_not_exists, destinationContestId));
-            }            
-
-            if (this.contestsData.IsActiveById(destinationContestId))
-            {
-                return new ServiceResult(Resource.Cannot_copy_problems_into_active_contest);
-            }
-
-            var sourceContestProblemGroups = this.contestsData
-                .GetByIdQuery(sourceContestId)
-                .AsNoTracking()
-                .Include(c => c.ProblemGroups.Select(pg => pg.Problems.Select(p => p.Tests)))
-                .Include(c => c.ProblemGroups.Select(pg => pg.Problems.Select(p => p.Resources)))
-                .SingleOrDefault()
-                ?.ProblemGroups;
-
-            sourceContestProblemGroups
-                .ForEach(pg => this.CopyProblemGroupToContest(pg, destinationContestId));
-
-            return ServiceResult.Success;
-        }
-
-        private void CopyProblemGroupToContest(ProblemGroup problemGroup, int contestId)
-        {
-            problemGroup.Contest = null;
-            problemGroup.ContestId = contestId;
-
-            problemGroup.Problems
-                .ForEach(p => p.SubmissionTypes = this.submissionTypesData.GetAllByProblem(p.Id).ToList());
-
-            this.problemGroupsData.Add(problemGroup);
-        }
-
         private void CopyProblemToContest(Problem problem, int contestId, int? problemGroupId)
         {
             int orderBy;
 
             if (problemGroupId.HasValue)
             {
+                orderBy = this.problemsData.GetNewOrderByProblemGroup(problemGroupId.Value);
+
                 problem.ProblemGroup = null;
                 problem.ProblemGroupId = problemGroupId.Value;
-                orderBy = this.problemsData.GetNewOrderByProblemGroup(problemGroupId.Value);
             }
             else
             {

@@ -117,25 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Active_contest_cannot_add_problem_group" xml:space="preserve">
-    <value>Състезанието е активно и не може да добавяте групи от проблеми към него</value>
+  <data name="Cannot_copy_problem_groups_into_active_contest" xml:space="preserve">
+    <value>Не може да копирате групи от задачи в активно състезание</value>
   </data>
-  <data name="Active_contest_cannot_delete_problem_group" xml:space="preserve">
-    <value>Състезанието е активно и не може да изтривате групи от проблеми от него</value>
+  <data name="Cannot_copy_problem_groups_into_same_contest" xml:space="preserve">
+    <value>Не може да копирате групи от задачи в същото състезание</value>
   </data>
-  <data name="Can_create_only_in_online_contest" xml:space="preserve">
-    <value>Може да добавяте групи задачи само в състезание, което е от тип {0}.</value>
-  </data>
-  <data name="Can_edit_orderby_only_in_online_contest" xml:space="preserve">
-    <value>Може да променяте подредбата само на групи задачи от състезание, което е от тип {0}.</value>
-  </data>
-  <data name="Contest_does_not_exist" xml:space="preserve">
-    <value>Избраното състезание не съществува</value>
-  </data>
-  <data name="Contest_required" xml:space="preserve">
-    <value>Състезанието е задължително</value>
-  </data>
-  <data name="Copy_all_problem_groups_success_message" xml:space="preserve">
-    <value>Успешно копирахте всички групи задачи от състезанието "{0}" в състезанието "{1}"</value>
+  <data name="Cannot_delete_problem_group_with_problems" xml:space="preserve">
+    <value>Не може да изтриете група от задачи, в която има задачи</value>
   </data>
 </root>

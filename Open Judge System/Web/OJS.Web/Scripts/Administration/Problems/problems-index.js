@@ -162,10 +162,19 @@ function hideTheadFromGrid() {
 function prepareCopyWindow(id, name, isBulkCopy) {
     var copyWindowSelector = $('#copy-popup-window');
 
-    var titlePrefix = isBulkCopy ? 'Копиране на всички задачи от състезние' : 'Копиране на задача';
-    var actionName = isBulkCopy ? 'CopyAllPartial' : 'CopyPartial';
+    var titlePrefix, actionName, controllerName;
 
-    var url = '/Administration/Problems/' + actionName + '/' + id;
+    if (isBulkCopy) {
+        titlePrefix = 'Копиране на всички задачи от състезние';
+        actionName = 'CopyAllPartial';
+        controllerName = "ProblemGroups";
+    } else {
+        titlePrefix = 'Копиране на задача';
+        actionName = 'CopyPartial';
+        controllerName = "Problems";
+    }
+
+    var url = '/Administration/' + controllerName + '/' + actionName + '/' + id;
     var title = titlePrefix + ' ' + name;
 
     var copyPopUp = copyWindowSelector.data('kendoWindow');
