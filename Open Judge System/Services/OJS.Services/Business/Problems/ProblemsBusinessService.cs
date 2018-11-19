@@ -139,7 +139,7 @@
             if (this.contestsData.IsActiveById(contestId))
             {
                 return new ServiceResult(Resource.Cannot_copy_problems_into_active_contest);
-            }            
+            }
             
             this.CopyProblemToContest(problem, contestId, problemGroupId);
 
@@ -149,6 +149,11 @@
         private void CopyProblemToContest(Problem problem, int contestId, int? problemGroupId)
         {
             int orderBy;
+
+            if (problem == null)
+            {
+                return;
+            }
 
             if (problemGroupId.HasValue)
             {
