@@ -71,13 +71,12 @@
                 return new ServiceResult(Resource.Cannot_copy_problem_groups_into_active_contest);
             }
 
-            var sourceContestProblemGroups = this.contestsData
-                .GetByIdQuery(sourceContestId)
+            var sourceContestProblemGroups = this.problemGroupsData
+                .GetAllByContest(sourceContestId)
                 .AsNoTracking()
-                .Include(c => c.ProblemGroups.Select(pg => pg.Problems.Select(p => p.Tests)))
-                .Include(c => c.ProblemGroups.Select(pg => pg.Problems.Select(p => p.Resources)))
-                .SingleOrDefault()
-                ?.ProblemGroups;
+                .Include(pg => pg.Problems.Select(p => p.Tests))
+                .Include(pg => pg.Problems.Select(p => p.Resources))
+                .ToList();
 
             sourceContestProblemGroups
                 ?.ForEach(pg => this.CopyProblemGroupToContest(pg, destinationContestId));
