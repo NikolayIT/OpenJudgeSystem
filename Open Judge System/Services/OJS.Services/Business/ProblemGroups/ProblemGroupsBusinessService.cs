@@ -79,7 +79,7 @@
                 .ToList();
 
             sourceContestProblemGroups
-                ?.ForEach(pg => this.CopyProblemGroupToContest(pg, destinationContestId));
+                .ForEach(pg => this.CopyProblemGroupToContest(pg, destinationContestId));
 
             return ServiceResult.Success;
         }
