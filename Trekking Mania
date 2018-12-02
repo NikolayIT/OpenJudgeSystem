@@ -1,0 +1,42 @@
+5. Trekking Mania
+=======================================================================================================================
+using System;
+ 
+namespace Fifth
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int groups = int.Parse(Console.ReadLine());
+            int people = 0;
+            double musala = 0.0;
+            double monblan = 0.0;
+            double kilimanjaro = 0.0;
+            double k2 = 0.0;
+            double everest = 0.0;
+            for (int i = 0; i < groups; i++)
+            {
+                int members = int.Parse(Console.ReadLine());
+                people += members;
+                if (members <= 5)
+                {
+                    musala += members;
+                } else if (members > 5 && members <=12)
+                {
+                    monblan += members;
+                } else if(members > 12 && members <=25)
+                {
+                    kilimanjaro += members;
+                } else if(members > 25 && members <= 40)
+                {
+                    k2 += members;
+                } else if (members > 40)
+                {
+                    everest += members;
+                }
+            }
+            Console.WriteLine($"{musala/people*100:f2}%\n{monblan/people * 100:f2}%\n{kilimanjaro / people * 100:f2}%\n{k2 / people * 100:f2}%\n{everest / people * 100:f2}%");
+        }
+    }
+}
