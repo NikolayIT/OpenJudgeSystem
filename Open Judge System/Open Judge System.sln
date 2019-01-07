@@ -34,9 +34,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Tests.Common", "Tests\O
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{B0824D7E-8597-4CC2-AEB2-EED1CDBFD007}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Workers.Common", "Workers\OJS.Workers.Common\OJS.Workers.Common.csproj", "{7F714D0B-CE81-4DD7-B6B2-62080FE22CD8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OJS.Workers.Common", "Workers\OJS.Workers.Common\OJS.Workers.Common.csproj", "{7F714D0B-CE81-4DD7-B6B2-62080FE22CD8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Workers.Checkers", "Workers\OJS.Workers.Checkers\OJS.Workers.Checkers.csproj", "{93EC1D66-2CE1-4682-AC09-C8C40178A9AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OJS.Workers.Checkers", "Workers\OJS.Workers.Checkers\OJS.Workers.Checkers.csproj", "{93EC1D66-2CE1-4682-AC09-C8C40178A9AD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Common.Tests", "Tests\OJS.Common.Tests\OJS.Common.Tests.csproj", "{F4AD07BC-B932-4D09-82D8-9800C9260B33}"
 EndProject
@@ -46,9 +46,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Workers.Agent", "Worker
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Workers.Checkers.Tests", "Tests\OJS.Workers.Checkers.Tests\OJS.Workers.Checkers.Tests.csproj", "{73B7CEF9-1843-4EFB-B9BF-E2A0492613A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Workers.Executors", "Workers\OJS.Workers.Executors\OJS.Workers.Executors.csproj", "{CDA78D62-7210-45CA-B3E5-9F6A5DEA5734}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OJS.Workers.Executors", "Workers\OJS.Workers.Executors\OJS.Workers.Executors.csproj", "{CDA78D62-7210-45CA-B3E5-9F6A5DEA5734}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Workers.Compilers", "Workers\OJS.Workers.Compilers\OJS.Workers.Compilers.csproj", "{8570183B-9D7A-408D-9EA6-F86F59B05A10}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OJS.Workers.Compilers", "Workers\OJS.Workers.Compilers\OJS.Workers.Compilers.csproj", "{8570183B-9D7A-408D-9EA6-F86F59B05A10}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandboxExecutorProofOfConcept", "Tools\SandboxExecutorProofOfConcept\SandboxExecutorProofOfConcept.csproj", "{EB599E35-73C7-4FD7-BA38-BE6FB6E60C8E}"
 EndProject
@@ -69,7 +69,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Common", "OJS.Common\OJ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.LocalWorker", "LocalWorker\OJS.LocalWorker\OJS.LocalWorker.csproj", "{5D3361F8-F50B-415F-826A-724DCDAA4A89}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Workers.ExecutionStrategies", "Workers\OJS.Workers.ExecutionStrategies\OJS.Workers.ExecutionStrategies.csproj", "{69966098-E5B2-46CD-88E9-1F79B245ADE0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OJS.Workers.ExecutionStrategies", "Workers\OJS.Workers.ExecutionStrategies\OJS.Workers.ExecutionStrategies.csproj", "{69966098-E5B2-46CD-88E9-1F79B245ADE0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Workers.Compilers.Tests", "Tests\OJS.Workers.Compilers.Tests\OJS.Workers.Compilers.Tests.csproj", "{A6A4AB27-2B67-4E8D-BAA6-2FDBB8366CCE}"
 EndProject
@@ -97,7 +97,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Data.Archives", "Data\O
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.LocalWorkerMonitoring", "LocalWorker\OJS.LocalWorkerMonitoring\OJS.LocalWorkerMonitoring.csproj", "{91080721-1B4B-49E6-BB1B-3684268D12DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Workers.SubmissionProcessors", "Workers\OJS.Workers.SubmissionProcessors\OJS.Workers.SubmissionProcessors.csproj", "{6E2902A5-E47F-4888-953E-4F81467B40C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OJS.Workers.SubmissionProcessors", "Workers\OJS.Workers.SubmissionProcessors\OJS.Workers.SubmissionProcessors.csproj", "{6E2902A5-E47F-4888-953E-4F81467B40C7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OJS.Workers", "Workers\OJS.Workers\OJS.Workers.csproj", "{2CD6D71C-26BB-478B-8FF3-691A59B51D51}"
 EndProject
@@ -142,14 +142,14 @@ Global
 		{01CC0B02-529E-4D5F-B345-0B92F6920854}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7F714D0B-CE81-4DD7-B6B2-62080FE22CD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7F714D0B-CE81-4DD7-B6B2-62080FE22CD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7F714D0B-CE81-4DD7-B6B2-62080FE22CD8}.Dev|Any CPU.ActiveCfg = Dev|Any CPU
-		{7F714D0B-CE81-4DD7-B6B2-62080FE22CD8}.Dev|Any CPU.Build.0 = Dev|Any CPU
+		{7F714D0B-CE81-4DD7-B6B2-62080FE22CD8}.Dev|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F714D0B-CE81-4DD7-B6B2-62080FE22CD8}.Dev|Any CPU.Build.0 = Debug|Any CPU
 		{7F714D0B-CE81-4DD7-B6B2-62080FE22CD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F714D0B-CE81-4DD7-B6B2-62080FE22CD8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{93EC1D66-2CE1-4682-AC09-C8C40178A9AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{93EC1D66-2CE1-4682-AC09-C8C40178A9AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{93EC1D66-2CE1-4682-AC09-C8C40178A9AD}.Dev|Any CPU.ActiveCfg = Dev|Any CPU
-		{93EC1D66-2CE1-4682-AC09-C8C40178A9AD}.Dev|Any CPU.Build.0 = Dev|Any CPU
+		{93EC1D66-2CE1-4682-AC09-C8C40178A9AD}.Dev|Any CPU.ActiveCfg = Debug|Any CPU
+		{93EC1D66-2CE1-4682-AC09-C8C40178A9AD}.Dev|Any CPU.Build.0 = Debug|Any CPU
 		{93EC1D66-2CE1-4682-AC09-C8C40178A9AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93EC1D66-2CE1-4682-AC09-C8C40178A9AD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F4AD07BC-B932-4D09-82D8-9800C9260B33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -178,14 +178,14 @@ Global
 		{73B7CEF9-1843-4EFB-B9BF-E2A0492613A8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CDA78D62-7210-45CA-B3E5-9F6A5DEA5734}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CDA78D62-7210-45CA-B3E5-9F6A5DEA5734}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CDA78D62-7210-45CA-B3E5-9F6A5DEA5734}.Dev|Any CPU.ActiveCfg = Dev|Any CPU
-		{CDA78D62-7210-45CA-B3E5-9F6A5DEA5734}.Dev|Any CPU.Build.0 = Dev|Any CPU
+		{CDA78D62-7210-45CA-B3E5-9F6A5DEA5734}.Dev|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDA78D62-7210-45CA-B3E5-9F6A5DEA5734}.Dev|Any CPU.Build.0 = Debug|Any CPU
 		{CDA78D62-7210-45CA-B3E5-9F6A5DEA5734}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CDA78D62-7210-45CA-B3E5-9F6A5DEA5734}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8570183B-9D7A-408D-9EA6-F86F59B05A10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8570183B-9D7A-408D-9EA6-F86F59B05A10}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8570183B-9D7A-408D-9EA6-F86F59B05A10}.Dev|Any CPU.ActiveCfg = Dev|Any CPU
-		{8570183B-9D7A-408D-9EA6-F86F59B05A10}.Dev|Any CPU.Build.0 = Dev|Any CPU
+		{8570183B-9D7A-408D-9EA6-F86F59B05A10}.Dev|Any CPU.ActiveCfg = Debug|Any CPU
+		{8570183B-9D7A-408D-9EA6-F86F59B05A10}.Dev|Any CPU.Build.0 = Debug|Any CPU
 		{8570183B-9D7A-408D-9EA6-F86F59B05A10}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8570183B-9D7A-408D-9EA6-F86F59B05A10}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EB599E35-73C7-4FD7-BA38-BE6FB6E60C8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -226,8 +226,8 @@ Global
 		{5D3361F8-F50B-415F-826A-724DCDAA4A89}.Release|Any CPU.Build.0 = Release|Any CPU
 		{69966098-E5B2-46CD-88E9-1F79B245ADE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{69966098-E5B2-46CD-88E9-1F79B245ADE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{69966098-E5B2-46CD-88E9-1F79B245ADE0}.Dev|Any CPU.ActiveCfg = Dev|Any CPU
-		{69966098-E5B2-46CD-88E9-1F79B245ADE0}.Dev|Any CPU.Build.0 = Dev|Any CPU
+		{69966098-E5B2-46CD-88E9-1F79B245ADE0}.Dev|Any CPU.ActiveCfg = Debug|Any CPU
+		{69966098-E5B2-46CD-88E9-1F79B245ADE0}.Dev|Any CPU.Build.0 = Debug|Any CPU
 		{69966098-E5B2-46CD-88E9-1F79B245ADE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{69966098-E5B2-46CD-88E9-1F79B245ADE0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A6A4AB27-2B67-4E8D-BAA6-2FDBB8366CCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU

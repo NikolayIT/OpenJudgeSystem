@@ -1,6 +1,7 @@
 ﻿namespace OJS.Web
 {
-    using static OJS.Workers.Common.Helpers.SettingsHelper;
+    using System;
+    using System.Configuration;
 
     public static class Settings
     {
@@ -25,5 +26,25 @@
 
         public static int JavaCompilerProcessExitTimeOutMultiplier =>
             GetSettingOrDefault("JavaCompilerProcessExitTimeOutMultiplier", 1);
+
+        private static string GetSetting(string settingName)
+        {
+            if (ConfigurationManager.AppSettings[settingName] == null)
+            {
+                throw new Exception($"{settingName} setting not found in Web.config file!");
+            }
+
+            return ConfigurationManager.AppSettings[settingName];
+        }
+
+        private static T GetSettingOrDefault<T>(string settingName, T defaultValue)
+        {
+            if (ConfigurationManager.AppSettings[settingName] == null)
+            {
+                return defaultValue;
+            }
+
+            return (T)Convert.ChangeType(ConfigurationManager.AppSettings[settingName], typeof(T));
+        }
     }
 }
