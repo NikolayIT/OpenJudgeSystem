@@ -9,7 +9,9 @@
     using OJS.Services.Data.Submissions;
     using OJS.Services.Data.SubmissionsForProcessing;
     using OJS.Services.Data.TestRuns;
-    using OJS.Workers.ExecutionStrategies;
+    using OJS.Workers.Common;
+    using OJS.Workers.Common.Models;
+    using OJS.Workers.ExecutionStrategies.Models;
     using OJS.Workers.SubmissionProcessors;
     using OJS.Workers.SubmissionProcessors.Models;
 
@@ -19,7 +21,7 @@
         private readonly ITestRunsDataService testRunsData;
         private readonly IParticipantsDataService participantsData;
         private readonly IParticipantScoresDataService participantScoresData;
-        private readonly ISubmissionsForProcessingDataService submissionsForProccessingData;
+        private readonly ISubmissionsForProcessingDataService submissionsForProcessingData;
 
         private Submission submission;
         private SubmissionForProcessing submissionForProcessing;
@@ -29,22 +31,22 @@
             ITestRunsDataService testRunsData,
             IParticipantsDataService participantsData,
             IParticipantScoresDataService participantScoresData,
-            ISubmissionsForProcessingDataService submissionsForProccessingData)
+            ISubmissionsForProcessingDataService submissionsForProcessingData)
         {
             this.submissionsData = submissionsData;
             this.testRunsData = testRunsData;
             this.participantsData = participantsData;
             this.participantScoresData = participantScoresData;
-            this.submissionsForProccessingData = submissionsForProccessingData;
+            this.submissionsForProcessingData = submissionsForProcessingData;
         }
 
-        public override SubmissionModel RetrieveSubmission()
+        public override IOjsSubmission RetrieveSubmission()
         {
             lock (this.SubmissionsForProcessing)
             {
                 if (this.SubmissionsForProcessing.IsEmpty)
                 {
-                    this.submissionsForProccessingData
+                    this.submissionsForProcessingData
                         .GetAllUnprocessed()
                         .OrderBy(x => x.Id)
                         .Select(x => x.SubmissionId)
@@ -63,7 +65,7 @@
 
                 this.submission = this.submissionsData.GetById(submissionId);
 
-                this.submissionForProcessing = this.submissionsForProccessingData.GetBySubmission(submissionId);
+                this.submissionForProcessing = this.submissionsForProcessingData.GetBySubmission(submissionId);
 
                 if (this.submission == null || this.submissionForProcessing == null)
                 {
@@ -83,7 +85,14 @@
             this.testRunsData.DeleteBySubmission(this.submission.Id);
         }
 
-        public override void ProcessExecutionResult(ExecutionResult executionResult)
+        public override void OnError(IOjsSubmission submissionModel)
+        {
+            this.submission.ProcessingComment = submissionModel.ProcessingComment;
+
+            this.UpdateResults();
+        }
+
+        protected override void ProcessTestsExecutionResult(IExecutionResult<TestResult> executionResult)
         {
             this.submission.IsCompiledSuccessfully = executionResult.IsCompiledSuccessfully;
             this.submission.CompilerComment = executionResult.CompilerComment;
@@ -94,7 +103,7 @@
                 return;
             }
 
-            foreach (var testResult in executionResult.TestResults)
+            foreach (var testResult in executionResult.Results)
             {
                 var testRun = new TestRun
                 {
@@ -112,13 +121,6 @@
             }
 
             this.submissionsData.Update(this.submission);
-
-            this.UpdateResults();
-        }
-
-        public override void OnError(SubmissionModel submissionModel)
-        {
-            this.submission.ProcessingComment = submissionModel.ProcessingComment;
 
             this.UpdateResults();
         }
@@ -234,7 +236,7 @@
                 this.submissionForProcessing.Processing = false;
 
                 this.submissionsData.Update(this.submission);
-                this.submissionsForProccessingData.Update(this.submissionForProcessing);
+                this.submissionsForProcessingData.Update(this.submissionForProcessing);
             }
             catch (Exception ex)
             {
@@ -252,7 +254,7 @@
                 this.submissionForProcessing.Processed = false;
                 this.submissionForProcessing.Processing = true;
 
-                this.submissionsForProccessingData.Update(this.submissionForProcessing);
+                this.submissionsForProcessingData.Update(this.submissionForProcessing);
             }
             catch (Exception ex)
             {
@@ -280,31 +282,35 @@
             }
         }
 
-        private SubmissionModel GetSubmissionModel() => new SubmissionModel
+        private IOjsSubmission GetSubmissionModel() => new OjsSubmission<TestsInputModel>()
         {
             Id = this.submission.Id,
             AdditionalCompilerArguments = this.submission.SubmissionType.AdditionalCompilerArguments,
             AllowedFileExtensions = this.submission.SubmissionType.AllowedFileExtensions,
             FileContent = this.submission.Content,
             CompilerType = this.submission.SubmissionType.CompilerType,
-            TaskSkeleton = this.submission.Problem.SolutionSkeleton,
             TimeLimit = this.submission.Problem.TimeLimit,
             MemoryLimit = this.submission.Problem.MemoryLimit,
-            CheckerParameter = this.submission.Problem.Checker.Parameter,
-            CheckerAssemblyName = this.submission.Problem.Checker.DllFile,
-            CheckerTypeName = this.submission.Problem.Checker.ClassName,
             ExecutionStrategyType = this.submission.SubmissionType.ExecutionStrategyType,
-            Tests = this.submission.Problem.Tests
-                .AsQueryable()
-                .Select(t => new TestContext
-                {
-                    Id = t.Id,
-                    Input = t.InputDataAsString,
-                    Output = t.OutputDataAsString,
-                    IsTrialTest = t.IsTrialTest,
-                    OrderBy = t.OrderBy
-                })
-                .ToList()
+            ExecutionType = ExecutionType.TestsExecution,
+            Input = new TestsInputModel
+            {
+                TaskSkeleton = this.submission.Problem.SolutionSkeleton,
+                CheckerParameter = this.submission.Problem.Checker.Parameter,
+                CheckerAssemblyName = this.submission.Problem.Checker.DllFile,
+                CheckerTypeName = this.submission.Problem.Checker.ClassName,
+                Tests = this.submission.Problem.Tests
+                    .AsQueryable()
+                    .Select(t => new TestContext
+                    {
+                        Id = t.Id,
+                        Input = t.InputDataAsString,
+                        Output = t.OutputDataAsString,
+                        IsTrialTest = t.IsTrialTest,
+                        OrderBy = t.OrderBy
+                    })
+                    .ToList()
+            }
         };
     }
 }
