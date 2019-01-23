@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Resources.Areas.Administration.ProblemGroups {
+namespace Resources.Services.ProblemGroups {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Resources.Areas.Administration.ProblemGroups {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class ProblemGroupsControllers {
+    public class ProblemGroupsBusiness {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal ProblemGroupsControllers() {
+        internal ProblemGroupsBusiness() {
         }
         
         /// <summary>
@@ -39,8 +39,7 @@ namespace Resources.Areas.Administration.ProblemGroups {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OJS.Web.App_GlobalResources.Areas.Administration.ProblemGroups.ProblemGroupsContr" +
-                            "ollers", typeof(ProblemGroupsControllers).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OJS.Resources.Services.ProblemGroups.ProblemGroupsBusiness", typeof(ProblemGroupsBusiness).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -62,65 +61,29 @@ namespace Resources.Areas.Administration.ProblemGroups {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The contest is аctive and you cannot add problem groups.
+        ///   Looks up a localized string similar to Cannot copy problem group into an active contest.
         /// </summary>
-        public static string Active_contest_cannot_add_problem_group {
+        public static string Cannot_copy_problem_groups_into_active_contest {
             get {
-                return ResourceManager.GetString("Active_contest_cannot_add_problem_group", resourceCulture);
+                return ResourceManager.GetString("Cannot_copy_problem_groups_into_active_contest", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The contest is аctive and you cannot delete problem groups.
+        ///   Looks up a localized string similar to Cannot copy problem groups into the same contest.
         /// </summary>
-        public static string Active_contest_cannot_delete_problem_group {
+        public static string Cannot_copy_problem_groups_into_same_contest {
             get {
-                return ResourceManager.GetString("Active_contest_cannot_delete_problem_group", resourceCulture);
+                return ResourceManager.GetString("Cannot_copy_problem_groups_into_same_contest", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You can create problem groups only in a contest which is of type {0}..
+        ///   Looks up a localized string similar to Cannot delete problem group with problems.
         /// </summary>
-        public static string Can_create_only_in_online_contest {
+        public static string Cannot_delete_problem_group_with_problems {
             get {
-                return ResourceManager.GetString("Can_create_only_in_online_contest", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to You can edit problem groups order only in a contest which is of type {0}..
-        /// </summary>
-        public static string Can_edit_orderby_only_in_online_contest {
-            get {
-                return ResourceManager.GetString("Can_edit_orderby_only_in_online_contest", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The selected contest does not exist.
-        /// </summary>
-        public static string Contest_does_not_exist {
-            get {
-                return ResourceManager.GetString("Contest_does_not_exist", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Contest is required.
-        /// </summary>
-        public static string Contest_required {
-            get {
-                return ResourceManager.GetString("Contest_required", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Successfully copied all problem groups from the contest &quot;{0}&quot; into the contest &quot;{1}&quot;.
-        /// </summary>
-        public static string Copy_all_problem_groups_success_message {
-            get {
-                return ResourceManager.GetString("Copy_all_problem_groups_success_message", resourceCulture);
+                return ResourceManager.GetString("Cannot_delete_problem_group_with_problems", resourceCulture);
             }
         }
     }

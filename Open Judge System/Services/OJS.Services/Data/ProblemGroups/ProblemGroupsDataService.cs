@@ -37,6 +37,13 @@
                 .SelectMany(eg => eg.Problems)
                 .Where(p => !p.IsDeleted);
 
+        public void Add(ProblemGroup problemGroup)
+        {
+            this.problemGroups.Add(problemGroup);
+
+            this.problemGroups.SaveChanges();
+        }
+
         public bool IsFromContestByIdAndContest(int id, int contestId) =>
             this.GetByIdQuery(id)
                 .Any(pg => pg.ContestId == contestId);

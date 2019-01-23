@@ -4,7 +4,6 @@
     using System.Data.Entity;
     using System.Linq;
     using System.Web.Mvc;
-    using System.Web.Mvc.Expressions;
 
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
@@ -18,6 +17,8 @@
     using OJS.Services.Data.Contests;
     using OJS.Services.Data.ProblemGroups;
     using OJS.Web.Areas.Administration.Controllers.Common;
+    using OJS.Web.Areas.Administration.ViewModels.ProblemGroup;
+    using OJS.Web.Common.Attributes;
     using OJS.Web.Common.Extensions;
     using OJS.Web.ViewModels.Common;
 
@@ -168,6 +169,48 @@
                 .Select(DetailViewModelType.FromProblem);
 
             return this.Json(problems.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+        }
+
+        [AjaxOnly]
+        public ActionResult CopyAllPartial(int id) =>
+            this.PartialView("_CopyAllProblemGroupsToAnotherContest", new CopyAllProblemGroupsViewModel(id));
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CopyAll(CopyAllProblemGroupsViewModel model)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return this.JsonValidation();
+            }
+
+            var sourceContestId = model.FromContestId;
+            var destinationContestId = model.ContestId;
+
+            if (!destinationContestId.HasValue ||
+                !this.contestsData.ExistsById(destinationContestId.Value) ||
+                !this.contestsData.ExistsById(sourceContestId))
+            {
+                return this.JsonError(Resource.Contest_does_not_exist);
+            }
+
+            if (!this.CheckIfUserHasContestPermissions(destinationContestId.Value))
+            {
+                return this.JsonError(GeneralResource.No_privileges_message);
+            }
+
+            var result = this.problemGroupsBusiness
+                .CopyAllToContestBySourceAndDestinationContest(sourceContestId, destinationContestId.Value);
+
+            if (result.IsError)
+            {
+                return this.JsonError(result.Error);
+            }
+
+            return this.JsonSuccess(string.Format(
+                Resource.Copy_all_problem_groups_success_message,
+                this.contestsData.GetNameById(sourceContestId),
+                this.contestsData.GetNameById(destinationContestId.Value)));
         }
 
         private bool IsModelAndContestValid(ViewModelType model)

@@ -55,6 +55,8 @@ function initializeGrid(contestId) {
                     '" class="btn btn-sm btn-primary">Добавяне</a>' +
                     '<a href="/Administration/Problems/DeleteAll/' + contestId +
                     '" class="btn btn-sm btn-primary">Изтриване на всички</a>' +
+                    '<a data-role="button" onclick="prepareCopyWindow(' + contestId + ', \'' + escapedContestName + '\', true)' +
+                    '" class="btn btn-sm btn-primary">Копиране на всички</a>' +
                     '<a href="/Administration/Problems/ExportToExcel?contestId=' + contestId +
                     '" id="export" class="btn btn-sm btn-primary">Експорт към Excel</a>' +
                     '<a href="/Contests/' + sendSubmissionsActionName + '/Index/' + contestId +
@@ -157,10 +159,23 @@ function hideTheadFromGrid() {
     });
 }
 
-function prepareCopyWindow(problemId, problemName) {
+function prepareCopyWindow(id, name, isBulkCopy) {
     var copyWindowSelector = $('#copy-popup-window');
-    var title = 'Копиране на задача ' + problemName;
-    var url = '/Administration/Problems/CopyPartial/' + problemId;
+
+    var titlePrefix, actionName, controllerName;
+
+    if (isBulkCopy) {
+        titlePrefix = 'Копиране на всички задачи от състезние';
+        actionName = 'CopyAllPartial';
+        controllerName = "ProblemGroups";
+    } else {
+        titlePrefix = 'Копиране на задача';
+        actionName = 'CopyPartial';
+        controllerName = "Problems";
+    }
+
+    var url = '/Administration/' + controllerName + '/' + actionName + '/' + id;
+    var title = titlePrefix + ' ' + name;
 
     var copyPopUp = copyWindowSelector.data('kendoWindow');
 

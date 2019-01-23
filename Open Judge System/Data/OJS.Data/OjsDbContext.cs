@@ -176,6 +176,7 @@
                     if (!entity.PreserveCreatedOn)
                     {
                         entity.CreatedOn = DateTime.Now;
+                        entity.ModifiedOn = null;
                     }
                 }
                 else

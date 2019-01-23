@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Resources.Areas.Administration.Problems.ViewModels {
+namespace Resources.Services.Problems {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Resources.Areas.Administration.Problems.ViewModels {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class CopyProblem {
+    public class ProblemsBusiness {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal CopyProblem() {
+        internal ProblemsBusiness() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Resources.Areas.Administration.Problems.ViewModels {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OJS.Web.App_GlobalResources.Areas.Administration.Problems.ViewModels.CopyProblem", typeof(CopyProblem).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OJS.Resources.Services.Problems.ProblemsBusiness", typeof(ProblemsBusiness).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,47 +61,20 @@ namespace Resources.Areas.Administration.Problems.ViewModels {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search for the contest in which you want to copy all the problems.
+        ///   Looks up a localized string similar to Cannot copy problems into an active contest.
         /// </summary>
-        public static string Bulk_copy_contest_label {
+        public static string Cannot_copy_problems_into_active_contest {
             get {
-                return ResourceManager.GetString("Bulk_copy_contest_label", resourceCulture);
+                return ResourceManager.GetString("Cannot_copy_problems_into_active_contest", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search for the contest in which you want to copy the problem in.
+        ///   Looks up a localized string similar to Cannot copy problems into the same contest.
         /// </summary>
-        public static string Contest_label {
+        public static string Cannot_copy_problems_into_same_contest {
             get {
-                return ResourceManager.GetString("Contest_label", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Contest is required.
-        /// </summary>
-        public static string Contest_required {
-            get {
-                return ResourceManager.GetString("Contest_required", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Problem group:.
-        /// </summary>
-        public static string Problem_group_label {
-            get {
-                return ResourceManager.GetString("Problem_group_label", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Copy into a new problem group.
-        /// </summary>
-        public static string Problem_group_placeholder {
-            get {
-                return ResourceManager.GetString("Problem_group_placeholder", resourceCulture);
+                return ResourceManager.GetString("Cannot_copy_problems_into_same_contest", resourceCulture);
             }
         }
     }

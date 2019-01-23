@@ -111,7 +111,8 @@
                 "~/Content/css/common/loading-mask.css"));
 
             bundles.Add(new StyleBundle("~/Content/administration/problems/index").Include(
-                "~/Content/css/administration/problems/problems-index.css"));
+                "~/Content/css/administration/problems/problems-index.css",
+                "~/Content/css/common/loading-mask.css"));
 
             bundles.Add(new StyleBundle("~/Content/administration/examGroups/index").Include(
                 "~/Content/css/administration/administration-styles.css",

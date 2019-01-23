@@ -1774,6 +1774,7 @@
     <Compile Include="Areas\Administration\ViewModels\Participant\ParticipantAnswerViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Participant\UserViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\ProblemGroup\ProblemGroupAdministrationViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\ProblemGroup\CopyAllProblemGroupsViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Problem\CopyProblemViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Problem\DeleteProblemViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Problem\ProblemAdministrationViewModel.cs" />
@@ -2533,6 +2534,7 @@
     <Content Include="Areas\Administration\Views\Contests\EditorTemplates\UsersSimpleComboBox.cshtml" />
     <Content Include="Areas\Administration\Views\Contests\_ChangeParticipationEndTimeByUser.cshtml" />
     <Content Include="Areas\Administration\Views\Contests\_ChangeParticipationEndTimeByTimeInterval.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\_CopyAllProblemGroupsToAnotherContest.cshtml" />
     <None Include="Properties\PublishProfiles\Dev Suls Judge System.pubxml" />
     <None Include="Properties\PublishProfiles\File System.pubxml" />
     <None Include="Properties\PublishProfiles\Suls Judge System.pubxml" />

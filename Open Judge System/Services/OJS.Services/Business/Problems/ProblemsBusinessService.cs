@@ -18,13 +18,11 @@
     using OJS.Services.Data.TestRuns;
 
     using IsolationLevel = System.Transactions.IsolationLevel;
+    using Resource = Resources.Services.Problems.ProblemsBusiness;
+    using SharedResource = Resources.Contests.ContestsGeneral;
 
     public class ProblemsBusinessService : IProblemsBusinessService
     {
-        // TODO: Add messages to resources
-        private const string CannotCopyProblemInActiveContestErrorMessage = "Cannot copy problems into Active Contest";
-        private const string CannotCopyProblemIntoTheSameContest = "Cannot copy problems into the same contest";
-
         private readonly IEfDeletableEntityRepository<Problem> problems;
         private readonly IContestsDataService contestsData;
         private readonly IParticipantScoresDataService participantScoresData;
@@ -128,43 +126,54 @@
                 .Include(p => p.Resources)
                 .SingleOrDefault();
 
-            var problemNewOrderBy = problemGroupId.HasValue
-                ? this.problemsData.GetNewOrderByProblemGroup(problemGroupId.Value)
-                : this.problemsData.GetNewOrderByContest(contestId);
-
             if (problem?.ProblemGroup.ContestId == contestId)
             {
-                return new ServiceResult(CannotCopyProblemIntoTheSameContest);
+                return new ServiceResult(Resource.Cannot_copy_problems_into_same_contest);
+            }
+
+            if (!this.contestsData.ExistsById(contestId))
+            {
+                return new ServiceResult(SharedResource.Contest_not_found);
             }
 
             if (this.contestsData.IsActiveById(contestId))
             {
-                return new ServiceResult(CannotCopyProblemInActiveContestErrorMessage);
+                return new ServiceResult(Resource.Cannot_copy_problems_into_active_contest);
             }
-
-            this.CopyToContest(problem, contestId, problemNewOrderBy, problemGroupId);
+            
+            this.CopyProblemToContest(problem, contestId, problemGroupId);
 
             return ServiceResult.Success;
         }
 
-        private void CopyToContest(Problem problem, int contestId, int newOrderBy, int? problemGroupId)
+        private void CopyProblemToContest(Problem problem, int contestId, int? problemGroupId)
         {
+            int orderBy;
+
+            if (problem == null)
+            {
+                return;
+            }
+
             if (problemGroupId.HasValue)
             {
+                orderBy = this.problemsData.GetNewOrderByProblemGroup(problemGroupId.Value);
+
                 problem.ProblemGroup = null;
                 problem.ProblemGroupId = problemGroupId.Value;
             }
             else
             {
+                orderBy = this.problemsData.GetNewOrderByContest(contestId);
+
                 problem.ProblemGroup = new ProblemGroup
                 {
                     ContestId = contestId,
-                    OrderBy = newOrderBy
+                    OrderBy = orderBy
                 };
             }
 
-            problem.ModifiedOn = null;
-            problem.OrderBy = newOrderBy;
+            problem.OrderBy = orderBy;
             problem.SubmissionTypes = this.submissionTypesData.GetAllByProblem(problem.Id).ToList();
 
             this.problemsData.Add(problem);
