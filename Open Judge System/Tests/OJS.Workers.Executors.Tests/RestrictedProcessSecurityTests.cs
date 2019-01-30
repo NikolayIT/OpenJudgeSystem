@@ -26,8 +26,11 @@ class Program
 }";
             var exePath = this.CreateExe("RestrictedProcessShouldNotBeAbleToCreateFiles.exe", CreateFileSourceCode);
 
-            var process = new RestrictedProcessExecutor();
-            var result = process.Execute(exePath, string.Empty, 1000, 32 * 1024 * 1024);
+            var result = this.RestrictedProcess.Execute(
+                exePath,
+                string.Empty,
+                DefaultTimeLimit * 10,
+                DefaultMemoryLimit);
 
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Type == ProcessExecutionResultType.RunTimeError, "No exception is thrown!");
@@ -52,8 +55,11 @@ class Program
             Clipboard.SetText("clipboard test");
             var exePath = this.CreateExe("RestrictedProcessShouldNotBeAbleToReadClipboard.exe", ReadClipboardSourceCode);
 
-            var process = new RestrictedProcessExecutor();
-            var result = process.Execute(exePath, string.Empty, 1500, 32 * 1024 * 1024);
+            var result = this.RestrictedProcess.Execute(
+                exePath,
+                string.Empty,
+                DefaultTimeLimit * 15,
+                DefaultMemoryLimit);
 
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Type == ProcessExecutionResultType.RunTimeError, "No exception is thrown!");
@@ -73,8 +79,11 @@ class Program
 }";
             var exePath = this.CreateExe("RestrictedProcessShouldNotBeAbleToWriteToClipboard.exe", WriteToClipboardSourceCode);
 
-            var process = new RestrictedProcessExecutor();
-            var result = process.Execute(exePath, string.Empty, 1500, 32 * 1024 * 1024);
+            var result = this.RestrictedProcess.Execute(
+                exePath,
+                string.Empty,
+                DefaultTimeLimit * 15,
+                DefaultMemoryLimit);
 
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Type == ProcessExecutionResultType.RunTimeError, "No exception is thrown!");
@@ -96,8 +105,11 @@ class Program
             var notepadsBefore = Process.GetProcessesByName("notepad.exe").Count();
             var exePath = this.CreateExe("RestrictedProcessShouldNotBeAbleToStartProcess.exe", StartNotepadProcessSourceCode);
 
-            var process = new RestrictedProcessExecutor();
-            var result = process.Execute(exePath, string.Empty, 1500, 32 * 1024 * 1024);
+            var result = this.RestrictedProcess.Execute(
+                exePath,
+                string.Empty,
+                DefaultTimeLimit * 15,
+                DefaultMemoryLimit);
 
             var notepadsAfter = Process.GetProcessesByName("notepad.exe").Count();
 
