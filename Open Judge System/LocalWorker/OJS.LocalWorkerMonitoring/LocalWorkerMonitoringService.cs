@@ -6,10 +6,10 @@
 
     using log4net;
 
+    using OJS.Common.Helpers;
+    using OJS.Common.Models;
     using OJS.Services.Common.Emails;
     using OJS.Workers.Common;
-    using OJS.Workers.Common.Helpers;
-    using OJS.Workers.Common.Models;
 
     internal class LocalWorkerMonitoringService : ServiceBase
     {
