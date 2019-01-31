@@ -135,4 +135,7 @@
   <data name="Contest_required" xml:space="preserve">
     <value>Contest is required</value>
   </data>
+  <data name="Copy_all_problem_groups_success_message" xml:space="preserve">
+    <value>Successfully copied all problem groups from the contest "{0}" into the contest "{1}"</value>
+  </data>
 </root>

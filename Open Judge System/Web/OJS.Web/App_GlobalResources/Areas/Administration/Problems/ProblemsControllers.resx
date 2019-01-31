@@ -160,7 +160,7 @@
     <value>The contest is active and problems cannot be deleted!</value>
   </data>
   <data name="Copy_problem_success_message" xml:space="preserve">
-    <value>Successfully copied the problem {0} into the contest {1}</value>
+    <value>Successfully copied the problem "{0}" into the contest "{1}"</value>
   </data>
   <data name="Invalid_problem_group" xml:space="preserve">
     <value>Invalid problem group</value>
