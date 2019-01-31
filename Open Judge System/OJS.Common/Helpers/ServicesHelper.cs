@@ -60,14 +60,14 @@
             }
         }
 
-        public static ServiceState GetServiceState(string servicename)
+        public static ServiceState GetServiceState(string serviceName)
         {
-            if (!ServiceIsInstalled(servicename))
+            if (!ServiceIsInstalled(serviceName))
             {
                 return ServiceState.NotFound;
             }
 
-            using (var serviceController = new ServiceController(servicename))
+            using (var serviceController = new ServiceController(serviceName))
             {
                 return ConvertStatusToServiceState(serviceController.Status);
             }
