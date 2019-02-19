@@ -9,6 +9,7 @@
 
     using OJS.Common.Extensions;
     using OJS.Workers.Executors;
+    using OJS.Workers.Executors.Implementations;
     using OJS.Workers.Executors.Process;
 
     internal class SandboxExecutorProofOfConceptProgram
@@ -62,7 +63,7 @@
 
         private static void StartRestrictedProcess(string applicationPath, string textToWrite, int timeLimit, int memoryLimit)
         {
-            var restrictedProcessExecutor = new RestrictedProcessExecutor();
+            var restrictedProcessExecutor = CreateRestrictedProcessExecutor();
             Console.WriteLine("-------------------- Starting RestrictedProcess... --------------------");
             var result = restrictedProcessExecutor.Execute(applicationPath, textToWrite, timeLimit, memoryLimit);
             Console.WriteLine("------------ Process output: {0} symbols. First 2048 symbols: ------------ ", result.ReceivedOutput.Length);
@@ -84,5 +85,9 @@
             Console.WriteLine(ProcessInfoFormat, "Memory:", string.Format("{0:0.00}MB", result.MemoryUsed / 1024.0 / 1024.0));
             Console.WriteLine(new string('-', 79));
         }
+
+        private static OJS.Workers.Common.IExecutor CreateRestrictedProcessExecutor() =>
+            new ProcessExecutorFactory(new TasksService())
+                .CreateProcessExecutor(0, 0, ProcessExecutorType.Restricted);
     }
 }

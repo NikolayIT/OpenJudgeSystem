@@ -96,10 +96,13 @@
     <Compile Include="Extensions\ServiceProviderExtensions.cs" />
     <Compile Include="Extensions\TimeSpanExtensions.cs" />
     <Compile Include="GlobalConstants.cs" />
+    <Compile Include="Helpers\EncryptionHelper.cs" />
+    <Compile Include="Helpers\ServicesHelper.cs" />
     <Compile Include="MailSender.cs" />
     <Compile Include="Models\ContestQuestionType.cs" />
     <Compile Include="Models\ContestType.cs" />
     <Compile Include="Models\ProblemGroupType.cs" />
+    <Compile Include="Models\ServiceState.cs" />
     <Compile Include="Models\SubmissionStatus.cs" />
     <Compile Include="Models\SystemRole.cs" />
     <Compile Include="Models\ProblemResourceType.cs" />
