@@ -78,7 +78,7 @@
             {
                 return this.PartialView(contestCategory);
             }
- 
+
             return this.View(contestCategory);
         }
 
@@ -138,6 +138,6 @@
             }
 
             return contestCategory;
-        }   
+        }
     }
 }
