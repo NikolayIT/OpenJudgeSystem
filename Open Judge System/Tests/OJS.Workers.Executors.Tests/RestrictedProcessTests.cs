@@ -48,8 +48,11 @@ class Program
 }";
             var exePath = this.CreateExe("RestrictedProcessShouldStopProgramAfterTimeIsEnded.exe", TimeLimitSourceCode);
 
-            var process = new RestrictedProcessExecutor();
-            var result = process.Execute(exePath, string.Empty, 100, 32 * 1024 * 1024);
+            var result = this.RestrictedProcess.Execute(
+                exePath,
+                string.Empty,
+                DefaultTimeLimit,
+                DefaultMemoryLimit);
 
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Type == ProcessExecutionResultType.TimeLimit);
@@ -61,8 +64,12 @@ class Program
             var exePath = this.CreateExe("RestrictedProcessShouldSendInputDataToProcess.exe", ReadInputAndThenOutputSourceCode);
 
             const string InputData = "SomeInputData!!@#$%^&*(\n";
-            var process = new RestrictedProcessExecutor();
-            var result = process.Execute(exePath, InputData, 2000, 32 * 1024 * 1024);
+
+            var result = this.RestrictedProcess.Execute(
+                exePath,
+                InputData,
+                DefaultTimeLimit * 20,
+                DefaultMemoryLimit);
 
             Assert.IsNotNull(result);
             Assert.AreEqual(InputData.Trim(), result.ReceivedOutput.Trim());
@@ -74,8 +81,12 @@ class Program
             var exePath = this.CreateExe("RestrictedProcessShouldWorkWithCyrillic.exe", ReadInputAndThenOutputSourceCode);
 
             const string InputData = "Николай\n";
-            var process = new RestrictedProcessExecutor();
-            var result = process.Execute(exePath, InputData, 2000, 32 * 1024 * 1024);
+
+            var result = this.RestrictedProcess.Execute(
+                exePath,
+                InputData,
+                DefaultTimeLimit * 20,
+                DefaultMemoryLimit);
 
             Assert.IsNotNull(result);
             Assert.AreEqual(InputData.Trim(), result.ReceivedOutput.Trim());
@@ -96,8 +107,16 @@ class Program
             var exePath = this.CreateExe("RestrictedProcessShouldOutputProperLengthForCyrillicText.exe", ReadInputAndThenOutputTheLengthSourceCode);
 
             const string InputData = "Николай\n";
-            var process = new RestrictedProcessExecutor();
-            var result = process.Execute(exePath, InputData, 2000, 32 * 1024 * 1024);
+
+            var result = this.RestrictedProcess.Execute(
+                exePath,
+                InputData,
+                DefaultTimeLimit * 20,
+                DefaultMemoryLimit,
+                null,
+                null,
+                false,
+                useSystemEncoding: true);
 
             Assert.IsNotNull(result);
             Assert.AreEqual("7", result.ReceivedOutput.Trim());
@@ -118,8 +137,16 @@ class Program
             var exePath = this.CreateExe("RestrictedProcessShouldReceiveCyrillicText.exe", ReadInputAndThenCheckTheTextToContainCyrillicLettersSourceCode);
 
             const string InputData = "абвгдежзийклмнопрстуфхцчшщъьюя\n";
-            var process = new RestrictedProcessExecutor();
-            var result = process.Execute(exePath, InputData, 2000, 32 * 1024 * 1024);
+
+            var result = this.RestrictedProcess.Execute(
+                exePath,
+                InputData,
+                DefaultTimeLimit * 20,
+                DefaultMemoryLimit,
+                null,
+                null,
+                false,
+                useSystemEncoding: true);
 
             Assert.IsNotNull(result);
             Assert.AreEqual("True", result.ReceivedOutput.Trim());
@@ -138,8 +165,11 @@ class Program
 }";
             var exePath = this.CreateExe("RestrictedProcessShouldNotBlockWhenEnterEndlessLoop.exe", EndlessLoopSourceCode);
 
-            var process = new RestrictedProcessExecutor();
-            var result = process.Execute(exePath, string.Empty, 50, 32 * 1024 * 1024);
+            var result = this.RestrictedProcess.Execute(
+                exePath,
+                string.Empty,
+                DefaultTimeLimit / 2,
+                DefaultMemoryLimit);
 
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Type == ProcessExecutionResultType.TimeLimit);
@@ -159,8 +189,11 @@ class Program
 }";
             var exePath = this.CreateExe("RestrictedProcessShouldStandardErrorContentShouldContainExceptions.exe", ThrowExceptionSourceCode);
 
-            var process = new RestrictedProcessExecutor();
-            var result = process.Execute(exePath, string.Empty, 500, 32 * 1024 * 1024);
+            var result = this.RestrictedProcess.Execute(
+                exePath,
+                string.Empty,
+                DefaultTimeLimit * 5,
+                DefaultMemoryLimit);
 
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Type == ProcessExecutionResultType.RunTimeError, "No exception is thrown!");
@@ -172,8 +205,11 @@ class Program
         {
             var exePath = this.CreateExe("RestrictedProcessShouldReturnCorrectAmountOfUsedMemory.exe", Consuming50MbOfMemorySourceCode);
 
-            var process = new RestrictedProcessExecutor();
-            var result = process.Execute(exePath, string.Empty, 5000, 100 * 1024 * 1024);
+            var result = this.RestrictedProcess.Execute(
+                exePath,
+                string.Empty,
+                DefaultTimeLimit * 50,
+                DefaultMemoryLimit);
 
             Console.WriteLine(result.MemoryUsed);
 
@@ -186,8 +222,11 @@ class Program
         {
             var exePath = this.CreateExe("RestrictedProcessShouldReturnMemoryLimitWhenNeeded.exe", Consuming50MbOfMemorySourceCode);
 
-            var process = new RestrictedProcessExecutor();
-            var result = process.Execute(exePath, string.Empty, 5000, 30 * 1024 * 1024);
+            var result = this.RestrictedProcess.Execute(
+                exePath,
+                string.Empty,
+                DefaultTimeLimit * 50,
+                DefaultMemoryLimit);
 
             Console.WriteLine(result.MemoryUsed);
 

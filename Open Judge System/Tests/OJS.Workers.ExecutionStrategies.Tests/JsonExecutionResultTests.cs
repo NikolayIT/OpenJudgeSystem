@@ -2,6 +2,8 @@
 {
     using NUnit.Framework;
 
+    using OJS.Workers.ExecutionStrategies.Models;
+
     [TestFixture]
     public class JsonExecutionResultTests
     {
