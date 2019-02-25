@@ -8,6 +8,8 @@
 
         public static string CSharpCompilerPath => GetSetting("CSharpCompilerPath");
 
+        public static string DotNetCompilerPath => GetSetting("DotNetCompilerPath");
+
         public static string DotNetDisassemblerPath => GetSetting("DotNetDisassemblerPath");
 
         public static string JavaCompilerPath => GetSetting("JavaCompilerPath");
