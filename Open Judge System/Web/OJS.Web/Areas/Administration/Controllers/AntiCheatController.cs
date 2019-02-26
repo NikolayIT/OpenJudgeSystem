@@ -201,10 +201,17 @@
                     result.CompilerPath = Settings.CSharpCompilerPath;
                     result.DisassemblerPath = Settings.DotNetDisassemblerPath;
                     break;
+
+                case PlagiarismDetectorType.CSharpDotNetCoreCompileDisassemble:
+                    result.CompilerPath = Settings.DotNetCompilerPath;
+                    result.DisassemblerPath = Settings.DotNetDisassemblerPath;
+                    break;
+
                 case PlagiarismDetectorType.JavaCompileDisassemble:
                     result.CompilerPath = Settings.JavaCompilerPath;
                     result.DisassemblerPath = Settings.JavaDisassemblerPath;
                     break;
+
                 case PlagiarismDetectorType.PlainText:
                     break;
             }
