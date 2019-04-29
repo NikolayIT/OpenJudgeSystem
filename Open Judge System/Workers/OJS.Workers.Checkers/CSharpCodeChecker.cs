@@ -59,7 +59,7 @@
             var compilerParameters = new CompilerParameters { GenerateInMemory = true, };
             compilerParameters.ReferencedAssemblies.Add("System.dll");
             compilerParameters.ReferencedAssemblies.Add("System.Core.dll");
-            compilerParameters.ReferencedAssemblies.Add("OJS.Workers.Common.dll");
+            compilerParameters.ReferencedAssemblies.Add(AppDomain.CurrentDomain.BaseDirectory + "OJS.Workers.Common.dll");
             var compilerResults = codeProvider.CompileAssemblyFromSource(compilerParameters, parameter);
             if (compilerResults.Errors.HasErrors)
             {

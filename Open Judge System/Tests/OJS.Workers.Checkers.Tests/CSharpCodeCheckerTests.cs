@@ -8,39 +8,53 @@
     public class CSharpCodeCheckerTests
     {
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void CallingCheckMethodBeforeSetParameterShouldThrowAnException()
         {
+            // Arrange
             var checker = new CSharpCodeChecker();
-            checker.Check(string.Empty, string.Empty, string.Empty, false);
+            string expectedErrorMessage = "Please call SetParameter first with non-null string.";
+
+            // Act
+            var exception = Assert.Throws<InvalidOperationException>(() => checker.Check(string.Empty, string.Empty, string.Empty, false));
+
+            // Assert
+            Assert.AreEqual(expectedErrorMessage, exception.Message);
         }
 
         [Test]
-        [ExpectedException(typeof(Exception))]
         public void SetParameterThrowsExceptionWhenGivenInvalidCode()
         {
+            // Arrange
             var checker = new CSharpCodeChecker();
-            checker.SetParameter(@".");
+
+            // Act and Assert
+            Assert.Throws<Exception>(() => checker.SetParameter(@"."));
         }
 
         [Test]
-        [ExpectedException(typeof(Exception))]
         public void SetParameterThrowsExceptionWhenNotGivenICheckerImplementation()
         {
+            // Arragne
             var checker = new CSharpCodeChecker();
-            checker.SetParameter(@"public class MyChecker { }");
+            string expectedErrorMessage = "Implementation of OJS.Workers.Common.IChecker not found!";
+
+            // Act
+            var exception = Assert.Throws<Exception>(() => checker.SetParameter(@"public class MyChecker { }"));
+
+            // Assert
+            Assert.AreEqual(expectedErrorMessage, exception.Message);
         }
 
         [Test]
-        [ExpectedException(typeof(Exception))]
         public void SetParameterThrowsExceptionWhenGivenMoreThanOneICheckerImplementation()
         {
+            // Arrange
             var checker = new CSharpCodeChecker();
-            checker.SetParameter(@"
+            var SetParameter = @"
                 using OJS.Workers.Common;
                 public class MyChecker1 : IChecker
                 {
-                    public CheckerResult Check(string inputData, string receivedOutput, string expectedOutput)
+                    public CheckerResult Check(string inputData, string receivedOutput, string expectedOutput, bool isTrialTest)
                     {
                         return new CheckerResult
                                     {
@@ -55,7 +69,7 @@
                 }
                 public class MyChecker2 : IChecker
                 {
-                    public CheckerResult Check(string inputData, string receivedOutput, string expectedOutput)
+                    public CheckerResult Check(string inputData, string receivedOutput, string expectedOutput, bool isTrialTest)
                     {
                         return new CheckerResult
                                     {
@@ -67,7 +81,15 @@
                     public void SetParameter(string parameter)
                     {
                     }
-                }");
+                }";
+
+            string expectedErrorMessage = "More than one implementation of OJS.Workers.Common.IChecker was found!";
+
+            // Act
+            var exception = Assert.Throws<Exception>(() => checker.SetParameter(SetParameter), "Hola", null);
+
+            // Assert
+            Assert.AreEqual(expectedErrorMessage, exception.Message);
         }
 
         [Test]
