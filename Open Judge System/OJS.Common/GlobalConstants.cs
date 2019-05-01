@@ -101,5 +101,8 @@
 
         public const int TestInputMinLength = 1;
         public const int TestOutputMinLength = 1;
+
+        // Submission
+        public const string ContentAsStringErrorMessage = "This is a binary file (not a text submission).";
     }
 }
