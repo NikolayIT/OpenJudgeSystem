@@ -3,6 +3,7 @@
     using System;
     using System.Diagnostics;
     using System.Linq;
+    using System.Threading;
     using System.Windows.Forms;
 
     using NUnit.Framework;
@@ -34,7 +35,7 @@ class Program
         }
 
         [Test]
-        [STAThread]
+        [Apartment(ApartmentState.STA)]
         public void RestrictedProcessShouldNotBeAbleToReadClipboard()
         {
             const string ReadClipboardSourceCode = @"using System;
