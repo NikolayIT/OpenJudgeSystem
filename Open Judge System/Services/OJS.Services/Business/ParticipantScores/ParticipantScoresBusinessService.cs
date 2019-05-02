@@ -3,7 +3,6 @@
     using System.Linq;
 
     using OJS.Common.Helpers;
-    using OJS.Data.Models;
     using OJS.Services.Data.ParticipantScores;
     using OJS.Services.Data.Submissions;
 
@@ -34,53 +33,24 @@
             }
         }
 
-        public void NormalizePointsThatExceedAllowedLimitByContest(int contestId)
+        public void NormalizeAllPointsThatExceedAllowedLimit()
         {
-            using (var scope = TransactionsHelper.CreateTransactionScope())
+            using (var scope = TransactionsHelper.CreateLongRunningTransactionScope())
             {
-                this.InternalNormalizeSubmissionPoints(contestId);
-                this.InternalNormalizeParticipantScorePoints(contestId);
+                this.NormalizeSubmissionPoints();
+                this.NormalizeParticipantScorePoints();
 
                 scope.Complete();
             }
         }
 
-        public (int updatedSubmissionsCount, int updatedParticipantScoresCount) NormalizeAllPointsThatExceedAllowedLimit()
-        {
-            int updatedSubmissionsCount,
-                updatedParticipantScoresCount;
-
-            using (var scope = TransactionsHelper.CreateTransactionScope())
-            {
-                updatedSubmissionsCount = this.InternalNormalizeSubmissionPoints();
-                updatedParticipantScoresCount = this.InternalNormalizeParticipantScorePoints();
-
-                scope.Complete();
-            }
-
-            return (updatedSubmissionsCount, updatedParticipantScoresCount);
-        }
-
-        public int InternalNormalizeSubmissionPoints(int? contestId = null)
-        {
-            var updatedSubmissionsCount = 0;
-            IQueryable<Submission> submissionsQuery;
-
-            if (contestId.HasValue)
-            {
-                submissionsQuery = this.submissionsData
-                    .GetAllHavingPointsExceedingLimitByContest(contestId.Value);
-            }
-            else
-            {
-                submissionsQuery = this.submissionsData.GetAllHavingPointsExceedingLimit();
-            }
-
-            submissionsQuery
+        public void NormalizeSubmissionPoints() =>
+            this.submissionsData
+                .GetAllHavingPointsExceedingLimit()
                 .Select(s => new
                 {
                     Submission = s,
-                    ProblemMaxPoints = s.Problem.MaximumPoints
+                    ProblemMaxPoints = s.Problem.MaximumPoints,
                 })
                 .ToList()
                 .ForEach(x =>
@@ -88,29 +58,11 @@
                     x.Submission.Points = x.ProblemMaxPoints;
 
                     this.submissionsData.Update(x.Submission);
-
-                    updatedSubmissionsCount++;
                 });
 
-            return updatedSubmissionsCount;
-        }
-
-        public int InternalNormalizeParticipantScorePoints(int? contestId = null)
-        {
-            var updatedParticipantScoresCount = 0;
-            IQueryable<ParticipantScore> participantScoresQuery;
-
-            if (contestId.HasValue)
-            {
-                participantScoresQuery = this.participantScoresData
-                    .GetAllHavingPointsExceedingLimitByContest(contestId.Value);
-            }
-            else
-            {
-                participantScoresQuery = this.participantScoresData.GetAllHavingPointsExceedingLimit();
-            }
-
-            participantScoresQuery
+        public void NormalizeParticipantScorePoints() =>
+            this.participantScoresData
+                .GetAllHavingPointsExceedingLimit()
                 .Select(ps => new
                 {
                     ParticipantScore = ps,
@@ -118,16 +70,9 @@
                 })
                 .ToList()
                 .ForEach(x =>
-                {
                     this.participantScoresData.UpdateBySubmissionAndPoints(
                         x.ParticipantScore,
                         x.ParticipantScore.SubmissionId,
-                        x.ProblemMaxPoints);
-
-                    updatedParticipantScoresCount++;
-                });
-
-            return updatedParticipantScoresCount;
-        }
+                        x.ProblemMaxPoints));
     }
 }

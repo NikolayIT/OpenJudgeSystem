@@ -1,12 +1,13 @@
 ﻿namespace OJS.Web.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
     using System.Web.Mvc;
 
     using EntityFramework.Extensions;
-
+    using Hangfire;
     using MissingFeatures;
 
     using OJS.Common.Models;
@@ -24,24 +25,17 @@
     [AuthorizeRoles(SystemRole.Administrator)]
     public class TempController : BaseController
     {
-        private const string CleanSubmissionsForProcessingTableCronExpression = "0 0 * * *";
-        private const string DeleteLeftOverFoldersInTempFolderCronExpression = "0 1 * * *";
-        private const string ArchiveOldSubmissionsCronExpression = "30 1 * * MON";
-
         private readonly IHangfireBackgroundJobService backgroundJobs;
         private readonly IProblemGroupsDataService problemGroupsData;
-        private readonly IParticipantScoresBusinessService participantScoresBusiness;
 
         public TempController(
             IOjsData data,
             IHangfireBackgroundJobService backgroundJobs,
-            IProblemGroupsDataService problemGroupsData,
-            IParticipantScoresBusinessService participantScoresBusiness)
+            IProblemGroupsDataService problemGroupsData)
             : base(data)
         {
             this.backgroundJobs = backgroundJobs;
             this.problemGroupsData = problemGroupsData;
-            this.participantScoresBusiness = participantScoresBusiness;
         }
 
         public ActionResult RegisterJobForCleaningSubmissionsForProcessingTable()
@@ -49,7 +43,7 @@
             this.backgroundJobs.AddOrUpdateRecurringJob<ISubmissionsForProcessingDataService>(
                 "CleanSubmissionsForProcessingTable",
                 s => s.Clean(),
-                CleanSubmissionsForProcessingTableCronExpression);
+                Cron.Daily());
 
             return null;
         }
@@ -59,7 +53,7 @@
             this.backgroundJobs.AddOrUpdateRecurringJob(
                 "DeleteLeftOverFoldersInTempFolder",
                 () => DirectoryHelpers.DeleteExecutionStrategyWorkingDirectories(),
-                DeleteLeftOverFoldersInTempFolderCronExpression);
+                Cron.Daily(1));
 
             return null;
         }
@@ -69,7 +63,17 @@
             this.backgroundJobs.AddOrUpdateRecurringJob<IArchivedSubmissionsBusinessService>(
                 "ArchiveOldSubmissions",
                 s => s.ArchiveOldSubmissions(null),
-                ArchiveOldSubmissionsCronExpression);
+                Cron.Weekly(DayOfWeek.Monday, 1, 30));
+
+            return null;
+        }
+
+        public ActionResult RegisterJobForNormalizingSubmissionAndParticipantScorePoints()
+        {
+            this.backgroundJobs.AddOrUpdateRecurringJob<IParticipantScoresBusinessService>(
+                "NormalizePointsExceedingMaxPointsForProblem",
+                x => x.NormalizeAllPointsThatExceedAllowedLimit(),
+                Cron.Daily(2));
 
             return null;
         }
@@ -133,16 +137,6 @@
 
             return this.Content($"Done! ProblemGroups set to deleted: {softDeleted}" +
                 $"<br/> ProblemGroups hard deleted: {hardDeleted}");
-        }
-
-        public ActionResult NormalizeSubmissionAndParticipantScorePoints()
-        {
-            var (updatedSubmissionsCount, updatedParticipantScoresCount) =
-                this.participantScoresBusiness.NormalizeAllPointsThatExceedAllowedLimit();
-
-            return this.Content($@"Done!
-                <p>Number of updated submission points: {updatedSubmissionsCount}</p>
-                <p>Number of updated participant score points: {updatedParticipantScoresCount}</p>");
         }
     }
 }
