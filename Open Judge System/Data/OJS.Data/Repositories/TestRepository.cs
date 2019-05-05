@@ -17,8 +17,13 @@
         public override void Delete(int id)
         {
             // TODO: Evaluate if this is the best solution
-            var test = this.Context.DbContext.ChangeTracker.Entries<Test>().FirstOrDefault(t => t.Property(pr => pr.Id).CurrentValue == id).Entity ?? new Test { Id = id };
-            this.Context.Entry(test).State = EntityState.Deleted;
+            var testToDelete = this.Context.DbContext.ChangeTracker.Entries<Test>().FirstOrDefault(t => t.Property(pr => pr.Id).CurrentValue == id);
+
+            if (testToDelete != null)
+            {
+                var test = testToDelete.Entity;
+                this.Context.Entry(test).State = EntityState.Deleted;
+            }
         }
     }
 }
