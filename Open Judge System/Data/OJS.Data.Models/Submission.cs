@@ -61,7 +61,7 @@
             {
                 if (this.IsBinaryFile)
                 {
-                    throw new InvalidOperationException("This is a binary file (not a text submission).");
+                    throw new InvalidOperationException(GlobalConstants.ContentAsStringErrorMessage);
                 }
 
                 return this.Content.Decompress();
@@ -71,7 +71,7 @@
             {
                 if (this.IsBinaryFile)
                 {
-                    throw new InvalidOperationException("This is a binary file (not a text submission).");
+                    throw new InvalidOperationException(GlobalConstants.ContentAsStringErrorMessage);
                 }
 
                 this.Content = value.Compress();
