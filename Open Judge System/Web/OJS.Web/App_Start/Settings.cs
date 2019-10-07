@@ -27,5 +27,17 @@
 
         public static int JavaCompilerProcessExitTimeOutMultiplier =>
             GetSettingOrDefault("JavaCompilerProcessExitTimeOutMultiplier", 1);
+
+        public static int ThrottleLimitPerSecond => GetIntSetting("ThrottleLimitPerSecond");
+
+        public static int ThrottleLimitPerMinute => GetIntSetting("ThrottleLimitPerMinute");
+
+        public static int ThrottleLimitPerHour => GetIntSetting("ThrottleLimitPerHour");
+
+        public static int ThrottleLimitPerDay => GetIntSetting("ThrottleLimitPerDay");
+
+        public static string[] ThrottleIpWhitelist => GetSetting("ThrottleIpWhitelist").Split(',');
+
+        private static int GetIntSetting(string settingName) => int.Parse(GetSetting(settingName));
     }
 }
