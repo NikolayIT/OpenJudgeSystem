@@ -1859,6 +1859,7 @@
     <Compile Include="Infrastructure\Filters\ClearContestCategoryCacheFilter.cs" />
     <Compile Include="Infrastructure\Filters\ClearMovedContestCategoryCacheFilter.cs" />
     <Compile Include="Infrastructure\Filters\Contracts\IActionFilter.cs" />
+    <Compile Include="Infrastructure\Filters\HttpThrottleFilter.cs" />
     <Compile Include="Infrastructure\Filters\LogAccessFilter.cs" />
     <Compile Include="Infrastructure\Filters\PopulateMainContestCategoriesIntoViewBagFilter.cs" />
     <Compile Include="Infrastructure\Filters\ValidateRemoteDataApiKeyFilter.cs" />
