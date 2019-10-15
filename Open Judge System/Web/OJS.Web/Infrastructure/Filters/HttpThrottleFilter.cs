@@ -1,7 +1,10 @@
 ﻿namespace Suls.Web.Common.Filters
 {
     using System.Linq;
-
+    using System.Net;
+    using System.Web.Mvc;
+    using System.Web.Routing;
+    
     using MvcThrottle;
 
     public class HttpThrottleFilter : ThrottlingFilter
@@ -11,15 +14,24 @@
             int limitPerMinutre,
             int limitPerHour,
             int limitPerDay,
-            string[] whiteListRange) =>
-            new ThrottlingFilter()
+            string[] whiteListRange)
+        {
+            this.Policy = new ThrottlePolicy(limitPerSecond, limitPerMinutre, limitPerHour, limitPerDay)
             {
-                Policy = new ThrottlePolicy(limitPerSecond, limitPerMinutre, limitPerHour, limitPerDay)
-                {
-                    IpThrottling = true,
-                    IpWhitelist = whiteListRange.ToList(),
-                },
-                Repository = new CacheRepository(),
+                IpThrottling = true,
+                IpWhitelist = whiteListRange.ToList(),
+            };
+            this.Repository = new CacheRepository();
+        }
+
+        protected override ActionResult QuotaExceededResult(
+            RequestContext filterContext,
+            string message,
+            HttpStatusCode responseCode,
+            string requestId)
+            => new ViewResult
+            {
+                ViewName = "RequestLimit",
             };
     }
 }
