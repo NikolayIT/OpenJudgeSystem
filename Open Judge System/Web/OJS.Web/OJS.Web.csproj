@@ -3454,6 +3454,7 @@
     <Content Include="Areas\Administration\Views\Problems\RetestConfirmation.cshtml" />
     <Content Include="Views\Shared\_LoadingMask.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\NumericTextBox.cshtml" />
+    <Content Include="Views\Shared\RequestLimit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -31,7 +31,7 @@
             string requestId)
             => new ViewResult
             {
-                ViewName = "RequestLimit",
+                ViewName = "ExceededRequestQuota",
             };
     }
 }
