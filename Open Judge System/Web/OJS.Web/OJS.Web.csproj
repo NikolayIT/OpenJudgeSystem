@@ -175,6 +175,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\MissingFeatures.NET.1.1\lib\MissingFeatures.dll</HintPath>
     </Reference>
+    <Reference Include="MvcThrottle, Version=2.1.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MvcThrottle.2.1.3\lib\net45\MvcThrottle.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -1856,6 +1859,7 @@
     <Compile Include="Infrastructure\Filters\ClearContestCategoryCacheFilter.cs" />
     <Compile Include="Infrastructure\Filters\ClearMovedContestCategoryCacheFilter.cs" />
     <Compile Include="Infrastructure\Filters\Contracts\IActionFilter.cs" />
+    <Compile Include="Infrastructure\Filters\HttpThrottleFilter.cs" />
     <Compile Include="Infrastructure\Filters\LogAccessFilter.cs" />
     <Compile Include="Infrastructure\Filters\PopulateMainContestCategoriesIntoViewBagFilter.cs" />
     <Compile Include="Infrastructure\Filters\ValidateRemoteDataApiKeyFilter.cs" />
@@ -3450,6 +3454,7 @@
     <Content Include="Areas\Administration\Views\Problems\RetestConfirmation.cshtml" />
     <Content Include="Views\Shared\_LoadingMask.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\NumericTextBox.cshtml" />
+    <Content Include="Views\Shared\ExceededRequestQuota.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

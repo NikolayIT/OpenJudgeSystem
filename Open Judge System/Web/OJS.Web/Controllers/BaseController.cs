@@ -11,6 +11,8 @@
     using System.Web.Routing;
     using System.Web.Script.Serialization;
 
+    using MvcThrottle;
+
     using OJS.Common;
     using OJS.Data;
     using OJS.Data.Models;
@@ -21,6 +23,7 @@
 
     // TODO: handle setting ViewBag data throught the help of this attribute
     // [PopulateMainContestCategoriesIntoViewBag]
+    [EnableThrottling]
     public class BaseController : Controller
     {
         public BaseController(IOjsData data) => this.Data = data;
