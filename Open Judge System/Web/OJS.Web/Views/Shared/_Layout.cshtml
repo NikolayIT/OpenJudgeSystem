@@ -53,7 +53,7 @@
                             <strong class="caret"></strong>
                         </a>
                         <ul class="dropdown-menu">
-                            @foreach (CategoryMenuItemViewModel category in ViewBag.MainCategories)
+                            @foreach (CategoryMenuItemViewModel category in ViewBag.MainCategories ?? Enumerable.Empty<object>())
                             {
                                 <li><a href="@($"/Contests/#!/List/ByCategory/{category.Id}/{category.NameUrl}")">@category.Name</a></li>
                             }

@@ -30,7 +30,7 @@
         <div class="col-md-5">
             <h2>@Resource.Contest_categories</h2>
             <div id="top-level-contest-categories" class="list-group">
-                @foreach (CategoryMenuItemViewModel category in ViewBag.MainCategories)
+                @foreach (CategoryMenuItemViewModel category in ViewBag.MainCategories ?? Enumerable.Empty<object>())
                 {
                     <a class="list-group-item" href="@($"/Contests/#!/List/ByCategory/{category.Id}/{category.NameUrl}")">@category.Name</a>
                 }
