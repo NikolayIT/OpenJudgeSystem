@@ -16,6 +16,7 @@
     using OJS.Services.Business.ParticipantScores;
     using OJS.Services.Business.Submissions.ArchivedSubmissions;
     using OJS.Services.Common.BackgroundJobs;
+    using OJS.Services.Data.Participants;
     using OJS.Services.Data.ProblemGroups;
     using OJS.Services.Data.SubmissionsForProcessing;
     using OJS.Web.Common.Attributes;
@@ -31,17 +32,20 @@
         private readonly IHangfireBackgroundJobService backgroundJobs;
         private readonly IProblemGroupsDataService problemGroupsData;
         private readonly IParticipantScoresBusinessService participantScoresBusiness;
+        private readonly IParticipantsDataService participantsData;
 
         public TempController(
             IOjsData data,
             IHangfireBackgroundJobService backgroundJobs,
             IProblemGroupsDataService problemGroupsData,
-            IParticipantScoresBusinessService participantScoresBusiness)
+            IParticipantScoresBusinessService participantScoresBusiness,
+            IParticipantsDataService participantsData)
             : base(data)
         {
             this.backgroundJobs = backgroundJobs;
             this.problemGroupsData = problemGroupsData;
             this.participantScoresBusiness = participantScoresBusiness;
+            this.participantsData = participantsData;
         }
 
         public ActionResult RegisterJobForCleaningSubmissionsForProcessingTable()
@@ -143,6 +147,19 @@
             return this.Content($@"Done!
                 <p>Number of updated submission points: {updatedSubmissionsCount}</p>
                 <p>Number of updated participant score points: {updatedParticipantScoresCount}</p>");
+        }
+
+        public ActionResult DeleteDuplicatedParticipantsInSameContest()
+        {
+            var deletedParticipantsCount = this.participantsData
+                .GetAll()
+                .GroupBy(p => new { p.UserId, p.IsOfficial, p.ContestId })
+                .Where(gr => gr.Count() > 1)
+                .SelectMany(gr => gr)
+                .Where(p => !p.Scores.Any())
+                .Delete();
+
+            return this.Content($"Done! Deleted Participants count: {deletedParticipantsCount}");
         }
     }
 }
