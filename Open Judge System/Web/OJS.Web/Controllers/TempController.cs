@@ -216,7 +216,7 @@
                     });
 
                 this.Data.Users.Update(
-                    user => user.UserName == userName,
+                    u => u.UserName == userName,
                     _ => new UserProfile
                     {
                         Id = correctUserId,
