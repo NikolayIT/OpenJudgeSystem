@@ -181,11 +181,18 @@
                 return this.Content("Cannot get user info from SoftUni Platform");
             }
 
+            var correctUserId = userInfoResponse.Data.Id;
+
             var user = this.Data.Users.GetByUsername(userName);
 
             if (user == null)
             {
                 return this.Content($"Cannot find user with UserName: \"{userName}\" in the database");
+            }
+
+            if (user.Id == correctUserId)
+            {
+                return this.Content($"User \"{userName}\" has same UserId: {user.Id} as in Softuni Platform");
             }
 
             var tempUserIdToStoreParticipants = this.Data.Users.GetByUsername("gogo4ds")?.Id;
@@ -199,28 +206,29 @@
 
             var participantIdsForUser = participantsForUser.Select(x => x.Id).ToList();
 
-            var correctUserId = userInfoResponse.Data.Id;
-
             using (var scope = TransactionsHelper.CreateTransactionScope())
             {
                 this.participantsData.Update(
                     participantsForUser,
-                    participant => new Participant
+                    _ => new Participant
                     {
                         UserId = tempUserIdToStoreParticipants,
                     });
 
                 this.Data.Users.Update(
-                    profile => profile.UserName == userName,
+                    user => user.UserName == userName,
                     _ => new UserProfile
-                {
-                    Id = correctUserId,
-                });
+                    {
+                        Id = correctUserId,
+                    });
+
+                participantsForUser = this.participantsData
+                    .GetAll()
+                    .Where(p => participantIdsForUser.Contains(p.Id));
 
                 this.participantsData.Update(
-                    this.participantsData.GetAll()
-                        .Where(p => participantIdsForUser.Contains(p.Id)),
-                    participant => new Participant
+                    participantsForUser,
+                    _ => new Participant
                     {
                         UserId = correctUserId,
                     });
