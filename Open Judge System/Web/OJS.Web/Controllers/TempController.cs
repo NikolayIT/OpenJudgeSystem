@@ -178,7 +178,7 @@
 
             if (!userInfoResponse.IsSuccess || userInfoResponse.Data == null)
             {
-                return this.Content("Cannot get user info from SoftUni Platform");
+                return this.Content($"Cannot get user info from SoftUni Platform for user \"{userName}\"");
             }
 
             var correctUserId = userInfoResponse.Data.Id;
@@ -192,7 +192,7 @@
 
             if (user.Id == correctUserId)
             {
-                return this.Content($"User \"{userName}\" has same UserId: {user.Id} as in Softuni Platform");
+                return this.Content($"User \"{userName}\" has the same Id as in SoftUni Platform");
             }
 
             var tempUserIdToStoreParticipants = this.Data.Users.GetByUsername("gogo4ds")?.Id;
