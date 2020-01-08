@@ -105,8 +105,11 @@
                 __RequestVerificationToken
             },
             success: function (response) {
-                alert("Submission is now being retested.");
-            }
+                $("#Submissions").data("kendoGrid").dataSource.read();
+            },
+            error: function() {
+                alert('Failed to retest task');
+                }
         })
 
     }
