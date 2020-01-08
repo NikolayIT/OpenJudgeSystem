@@ -1,9 +1,19 @@
 ﻿@model OJS.Web.ViewModels.Account.LoginViewModel
+@using OJS.Web;
+
 
 @using Resource = Resources.Account.Views.Login
 
 @{
     ViewBag.Title = Resource.Log_in;
+}
+
+@{
+    var langCookieName = System.Globalization.CultureInfo.CurrentUICulture.Name != GlobalConstants.BulgarianCultureInfoName
+        ? GlobalConstants.EnglishCultureCookieValue
+        : GlobalConstants.BulgarianCultureCookieValue;
+
+    var externalRegisterFullAddress = $"{string.Format(UrlConstants.ExternalRegisterUrlFormat, Settings.SulsPlatformBaseUrl)}?lang={langCookieName}";
 }
 
 <ol class="breadcrumb">
@@ -51,7 +61,7 @@
                     </div>
                 </div>
                 <p>
-                    @Html.ActionLink(Resource.Register, "Register") @Resource.If_not_already_registered
+                    <a href="@externalRegisterFullAddress">@Resource.Register</a> @Resource.If_not_already_registered
                 </p>
                 <p>
                     @Html.ActionLink(Resource.Forgotten_password, "ForgottenPassword")
