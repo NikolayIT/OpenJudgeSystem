@@ -107,9 +107,9 @@
             success: function (response) {
                 $("#Submissions").data("kendoGrid").dataSource.read();
             },
-            error: function() {
-                alert('Failed to retest task');
-                }
+            error: function(response) {
+                alert('Failed to retest submission:' + response);
+            }
         })
 
     }
