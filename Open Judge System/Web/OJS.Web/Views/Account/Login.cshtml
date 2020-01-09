@@ -16,7 +16,7 @@
 <div class="row">
     <div class="col-md-8">
         <section id="loginForm">
-            @using (Html.BeginForm("Login", "Account", new { ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            @using (Html.BeginForm("Login", "Account", new { ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "formId" }))
             {
                 @Html.AntiForgeryToken()
                 <h4>@Resource.Login_using_username_and_password</h4>
@@ -67,4 +67,10 @@
 </div>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(function () {
+            var loginForm = document.getElementById("formId");
+            loginForm.action = loginForm.action + window.location.hash;
+        })
+    </script>
 }
