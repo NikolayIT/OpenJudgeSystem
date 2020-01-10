@@ -1,5 +1,6 @@
 ﻿@model OJS.Web.ViewModels.Account.LoginViewModel
 @using OJS.Web;
+@using System.Globalization;
 
 
 @using Resource = Resources.Account.Views.Login
@@ -9,7 +10,7 @@
 }
 
 @{
-    var langCookieName = System.Globalization.CultureInfo.CurrentUICulture.Name != GlobalConstants.BulgarianCultureInfoName
+    var langCookieName = CultureInfo.CurrentUICulture.Name != GlobalConstants.BulgarianCultureInfoName
         ? GlobalConstants.EnglishCultureCookieValue
         : GlobalConstants.BulgarianCultureCookieValue;
 
