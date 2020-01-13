@@ -69,8 +69,11 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script>
         $(function () {
-            var loginForm = document.getElementById("formId");
-            loginForm.action = loginForm.action + window.location.hash;
+            var loginFormSection = document.getElementById("loginForm");
+            var loginForms = loginFormSection.getElementsByTagName("form");
+            for (form of loginForms) {
+                form.action = form.action + window.location.hash;
+            }
         })
     </script>
 }
