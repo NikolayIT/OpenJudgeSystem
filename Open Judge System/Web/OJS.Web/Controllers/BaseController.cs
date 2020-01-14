@@ -88,6 +88,10 @@
 
                 if (exception != null)
                 {
+                    this.Response.Clear();
+                    this.Response.TrySkipIisCustomErrors = true;
+                    this.Response.AddHeader("content-type", "application/json");
+                    this.Response.Write(exception.Message);
                     this.Response.StatusCode = exception.GetHttpCode();
                     this.Response.StatusDescription = exception.Message;
                 }
