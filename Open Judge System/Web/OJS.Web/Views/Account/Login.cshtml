@@ -1,6 +1,7 @@
-﻿@model OJS.Web.ViewModels.Account.LoginViewModel
+﻿@using System.Globalization;
+
+@model OJS.Web.ViewModels.Account.LoginViewModel
 @using OJS.Web;
-@using System.Globalization;
 
 
 @using Resource = Resources.Account.Views.Login
@@ -14,7 +15,8 @@
         ? GlobalConstants.EnglishCultureCookieValue
         : GlobalConstants.BulgarianCultureCookieValue;
 
-    var externalRegisterFullAddress = $"{string.Format(UrlConstants.ExternalRegisterUrlFormat, Settings.SulsPlatformBaseUrl)}?lang={langCookieName}";
+    var externalRegisterFullAddress = 
+        $"{string.Format(UrlConstants.ExternalRegisterUrlFormat, Settings.SulsPlatformBaseUrl)}?lang={langCookieName}";
 }
 
 <ol class="breadcrumb">
