@@ -21,6 +21,8 @@
     using OJS.Web.Common;
     using OJS.Web.Common.Extensions;
 
+    using static OJS.Common.GlobalConstants;
+
     // TODO: handle setting ViewBag data throught the help of this attribute
     // [PopulateMainContestCategoriesIntoViewBag]
     [EnableThrottling]
