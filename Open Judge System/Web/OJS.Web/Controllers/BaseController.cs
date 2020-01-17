@@ -21,6 +21,8 @@
     using OJS.Web.Common;
     using OJS.Web.Common.Extensions;
 
+    using static OJS.Common.GlobalConstants;
+
     // TODO: handle setting ViewBag data throught the help of this attribute
     // [PopulateMainContestCategoriesIntoViewBag]
     [EnableThrottling]
@@ -90,7 +92,7 @@
                 {
                     this.Response.Clear();
                     this.Response.TrySkipIisCustomErrors = true;
-                    this.Response.AddHeader("content-type", "application/json");
+                    this.Response.AddHeader("content-type", JsonMimeType);
                     this.Response.Write(exception.Message);
                     this.Response.StatusCode = exception.GetHttpCode();
                     this.Response.StatusDescription = exception.Message;
