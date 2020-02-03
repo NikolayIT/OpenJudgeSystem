@@ -44,7 +44,7 @@
             }
         }
 
-        public void NormalizeSubmissionPoints() =>
+        private void NormalizeSubmissionPoints() =>
             this.submissionsData
                 .GetAllHavingPointsExceedingLimit()
                 .Select(s => new
@@ -60,7 +60,7 @@
                     this.submissionsData.Update(x.Submission);
                 });
 
-        public void NormalizeParticipantScorePoints() =>
+        private void NormalizeParticipantScorePoints() =>
             this.participantScoresData
                 .GetAllHavingPointsExceedingLimit()
                 .Select(ps => new
