@@ -10,6 +10,7 @@
     using EntityFramework.Extensions;
     using Hangfire;
     using MissingFeatures;
+
     using OJS.Common;
     using OJS.Common.Helpers;
     using OJS.Common.Models;
@@ -32,23 +33,19 @@
     {
         private readonly IHangfireBackgroundJobService backgroundJobs;
         private readonly IProblemGroupsDataService problemGroupsData;
-        private readonly IParticipantScoresBusinessService participantScoresBusiness;
         private readonly IParticipantsDataService participantsData;
         private readonly IHttpRequesterService httpRequester;
 
         public TempController(
             IOjsData data,
             IHangfireBackgroundJobService backgroundJobs,
-            IProblemGroupsDataService problemGroupsData)
             IProblemGroupsDataService problemGroupsData,
-            IParticipantScoresBusinessService participantScoresBusiness,
             IParticipantsDataService participantsData,
             IHttpRequesterService httpRequester)
             : base(data)
         {
             this.backgroundJobs = backgroundJobs;
             this.problemGroupsData = problemGroupsData;
-            this.participantScoresBusiness = participantScoresBusiness;
             this.participantsData = participantsData;
             this.httpRequester = httpRequester;
         }
