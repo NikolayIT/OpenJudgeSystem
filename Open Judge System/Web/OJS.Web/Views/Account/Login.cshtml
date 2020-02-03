@@ -1,9 +1,22 @@
-﻿@model OJS.Web.ViewModels.Account.LoginViewModel
+﻿@using System.Globalization;
+
+@model OJS.Web.ViewModels.Account.LoginViewModel
+@using OJS.Web;
+
 
 @using Resource = Resources.Account.Views.Login
 
 @{
     ViewBag.Title = Resource.Log_in;
+}
+
+@{
+    var langCookieName = CultureInfo.CurrentUICulture.Name != GlobalConstants.BulgarianCultureInfoName
+        ? GlobalConstants.EnglishCultureCookieValue
+        : GlobalConstants.BulgarianCultureCookieValue;
+
+    var externalRegisterFullAddress = 
+        $"{string.Format(UrlConstants.ExternalRegisterUrlFormat, Settings.SulsPlatformBaseUrl)}?lang={langCookieName}";
 }
 
 <ol class="breadcrumb">
@@ -51,7 +64,7 @@
                     </div>
                 </div>
                 <p>
-                    @Html.ActionLink(Resource.Register, "Register") @Resource.If_not_already_registered
+                    <a href="@externalRegisterFullAddress">@Resource.Register</a> @Resource.If_not_already_registered
                 </p>
                 <p>
                     @Html.ActionLink(Resource.Forgotten_password, "ForgottenPassword")
@@ -67,4 +80,13 @@
 </div>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(function () {
+            var loginFormSection = document.getElementById("loginForm");
+            var loginForms = loginFormSection.getElementsByTagName("form");
+            for (form of loginForms) {
+                form.action = form.action + window.location.hash;
+            }
+        })
+    </script>
 }
