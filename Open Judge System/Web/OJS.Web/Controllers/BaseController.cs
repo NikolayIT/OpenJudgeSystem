@@ -25,7 +25,7 @@
 
     // TODO: handle setting ViewBag data throught the help of this attribute
     // [PopulateMainContestCategoriesIntoViewBag]
-    [EnableThrottling]
+    // [EnableThrottling]
     public class BaseController : Controller
     {
         public BaseController(IOjsData data) => this.Data = data;
