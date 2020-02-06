@@ -217,16 +217,19 @@
                         Id = correctUserId,
                     });
 
-                participantsForUser = this.participantsData
-                    .GetAll()
-                    .Where(p => participantIdsForUser.Contains(p.Id));
+                if (participantIdsForUser.Any())
+                {
+                    participantsForUser = this.participantsData
+                        .GetAll()
+                        .Where(p => participantIdsForUser.Contains(p.Id));
 
-                this.participantsData.Update(
-                    participantsForUser,
-                    _ => new Participant
-                    {
-                        UserId = correctUserId,
-                    });
+                    this.participantsData.Update(
+                        participantsForUser,
+                        _ => new Participant
+                        {
+                            UserId = correctUserId,
+                        });
+                }
 
                 scope.Complete();
             }
