@@ -121,7 +121,7 @@
                                 var form = $("#problem_@Model.ProblemId");
                                 var fileUpload = $("#FileUploadInputFields_@Model.ProblemId");
                                 var codeArea = $("#SourceCodeInputFields_@Model.ProblemId");
-                                
+
                                 function submitHandler() {
                                     var size = parseFloat("@(Model.FileSizeLimit)") * 1024;
                                     var extensions = dataItem.AllowedFileExtensions.split(',');
@@ -181,20 +181,19 @@
     </div>
 
     @{
-        string participantRowTemplate;
+        var pointsOverMaxPointsPlaceholder = "#:Result# / #:MaximumPoints#";
 
         if (Model.UserHasAdminRights)
         {
-            participantRowTemplate = "#= ParticipantName === '" + User.Identity.Name + "' ? \"<tr class='success'>\" : \"<tr>\"#" +
-                "<td><a href='/Users/#:ParticipantName#' target='_blank'>#:ParticipantName#</a></td>" +
-                "<td><a href='" + Url.Action("View", "Submissions") + "/#:SubmissionId#' target='_blank'>#:Result# / #:MaximumPoints#</a></td></tr>";
+            var pointsWithLinkPlaceholder = $"<a href='{Url.Action("View", "Submissions")}/#:SubmissionId#' target='_blank'>{pointsOverMaxPointsPlaceholder}</a>";
+
+            pointsOverMaxPointsPlaceholder =
+                $"# if (SubmissionId) {{ # {pointsWithLinkPlaceholder} # }} else {{ # {pointsOverMaxPointsPlaceholder} # }} #";
         }
-        else
-        {
-            participantRowTemplate = "#= ParticipantName === '" + User.Identity.Name + "' ? \"<tr class='success'>\" : \"<tr>\"#" +
-                "<td><a href='/Users/#:ParticipantName#' target='_blank'>#:ParticipantName#</a></td>" +
-                "<td>#:Result# / #:MaximumPoints#</td></tr>";
-        }
+
+        var participantRowTemplate = $"#= ParticipantName === '{User.Identity.Name}' ? \"<tr class='success'>\" : \"<tr>\"#" +
+            "<td><a href='/Users/#:ParticipantName#' target='_blank'>#:ParticipantName#</a></td>" +
+            $"<td>{pointsOverMaxPointsPlaceholder}</td></tr>";
     }
 
     @if (Model.ShowResults)
