@@ -273,6 +273,16 @@
                 },
                 new SubmissionType
                 {
+                    Name = "Python project (unittest unit tests)",
+                    CompilerType = CompilerType.None,
+                    AdditionalCompilerArguments = string.Empty,
+                    ExecutionStrategyType = ExecutionStrategyType.PythonProjectTests,
+                    IsSelectedByDefault = false,
+                    AllowedFileExtensions = "zip",
+                    AllowBinaryFilesUpload = true,
+                },
+                new SubmissionType
+                {
                     Name = "PHP code (CGI)",
                     CompilerType = CompilerType.None,
                     AdditionalCompilerArguments = string.Empty,
