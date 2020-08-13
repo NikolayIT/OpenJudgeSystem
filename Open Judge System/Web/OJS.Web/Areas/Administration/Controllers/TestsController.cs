@@ -174,7 +174,8 @@
                 ProblemId = id,
                 IsTrialTest = test.Type == TestType.Trial,
                 OrderBy = test.OrderBy,
-                IsOpenTest = test.Type == TestType.Open
+                IsOpenTest = test.Type == TestType.Open,
+                HideInput = test.HideInput,
             });
 
             if (test.RetestProblem)
@@ -252,6 +253,7 @@
                 existingTest.OrderBy = test.OrderBy;
                 existingTest.IsTrialTest = test.Type == TestType.Trial;
                 existingTest.IsOpenTest = test.Type == TestType.Open;
+                existingTest.HideInput = test.HideInput;
 
                 this.testsData.Update(existingTest);
 

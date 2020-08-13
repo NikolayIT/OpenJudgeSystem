@@ -18,6 +18,7 @@
                     IsOpenTest = test.Test.IsOpenTest ||
                                 (test.Submission.Problem.ProblemGroup.Contest.AutoChangeTestsFeedbackVisibility &&
                                 !test.Submission.Participant.IsOfficial),
+                    HideInput = test.Test.HideInput,
                     CheckerComment = test.CheckerComment,
                     ExpectedOutputFragment = test.ExpectedOutputFragment,
                     UserOutputFragment = test.UserOutputFragment,
@@ -35,6 +36,8 @@
         public bool IsTrialTest { get; set; }
 
         public bool IsOpenTest { get; set; }
+
+        public bool HideInput { get; set; }
 
         public int Order { get; set; }
 

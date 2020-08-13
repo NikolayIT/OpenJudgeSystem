@@ -182,10 +182,9 @@ else
             <div>@Resource.Zero_tests_not_included_in_result</div>
         }
 
-        var displayShowInputButton = testResult.IsTrialTest ||
-            testResult.IsOpenTest ||
-            Model.UserHasAdminPermission ||
-            Model.ShowDetailedFeedback;
+        var displayShowInputButton =
+            (!testResult.HideInput || Model.UserHasAdminPermission) &&
+            (testResult.IsTrialTest || testResult.IsOpenTest || Model.ShowDetailedFeedback);
 
         var displayExecutionComment = !string.IsNullOrWhiteSpace(testResult.ExecutionComment) &&
             (testResult.IsTrialTest ||

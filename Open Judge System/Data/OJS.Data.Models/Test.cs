@@ -46,6 +46,8 @@
 
         public bool IsOpenTest { get; set; }
 
+        public bool HideInput { get; set; }
+
         public int OrderBy { get; set; }
 
         public virtual ICollection<TestRun> TestRuns { get; set; } = new HashSet<TestRun>();

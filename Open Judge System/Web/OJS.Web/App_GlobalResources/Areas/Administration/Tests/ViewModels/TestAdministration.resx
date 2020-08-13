@@ -162,4 +162,7 @@
   <data name="Retest_problem" xml:space="preserve">
     <value>Retest Problem</value>
   </data>
+  <data name="Hide_input" xml:space="preserve">
+    <value>Hide Input</value>
+  </data>
 </root>

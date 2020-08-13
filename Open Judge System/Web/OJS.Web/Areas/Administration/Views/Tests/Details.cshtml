@@ -52,7 +52,14 @@
     <div class="panel-body bordered-content editor-label">
         @Model.OrderBy
     </div>
-    <br />    
+    <br />
+    <div class="editor-label">
+        @Html.LabelFor(m => m.HideInput)
+    </div>
+    <div class="panel-body bordered-content editor-label">
+        @Model.HideInput
+    </div>
+    <br />
     <div id="test-runs-grid">
 
     </div>

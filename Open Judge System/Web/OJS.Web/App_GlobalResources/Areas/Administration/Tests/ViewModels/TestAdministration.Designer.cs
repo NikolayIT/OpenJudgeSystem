@@ -71,6 +71,15 @@ namespace Resources.Areas.Administration.Tests.ViewModels {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hide Input.
+        /// </summary>
+        public static string Hide_input {
+            get {
+                return ResourceManager.GetString("Hide_input", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Input.
         /// </summary>
         public static string Input {

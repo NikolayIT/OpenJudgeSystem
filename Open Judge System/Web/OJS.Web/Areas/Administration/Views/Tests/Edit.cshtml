@@ -52,6 +52,10 @@
                 @Html.CheckBoxFor(m => m.RetestProblem)
                 @Html.LabelFor(m => m.RetestProblem)
             </div>
+            <div class="top-buffer-lg">
+                @Html.CheckBoxFor(m => m.HideInput)
+                @Html.LabelFor(m => m.HideInput)
+            </div>
             <br />
             <button type="submit" class="btn btn-primary">@Resource.Edit</button>
             <a href="@(Url.Action<TestsController>(c => c.Problem(Model.ProblemId)))" class="btn btn-primary">@Resource.Back</a>
