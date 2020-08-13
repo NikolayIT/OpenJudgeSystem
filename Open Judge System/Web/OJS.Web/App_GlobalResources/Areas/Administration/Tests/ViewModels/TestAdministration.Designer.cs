@@ -71,7 +71,7 @@ namespace Resources.Areas.Administration.Tests.ViewModels {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hide Input.
+        ///   Looks up a localized string similar to Hide Input (for open and trial tests).
         /// </summary>
         public static string Hide_input {
             get {

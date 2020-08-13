@@ -163,6 +163,6 @@
     <value>Retest Problem</value>
   </data>
   <data name="Hide_input" xml:space="preserve">
-    <value>Hide Input</value>
+    <value>Hide Input (for open and trial tests)</value>
   </data>
 </root>
