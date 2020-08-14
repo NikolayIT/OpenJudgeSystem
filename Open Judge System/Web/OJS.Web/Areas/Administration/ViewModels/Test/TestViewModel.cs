@@ -26,6 +26,7 @@
                 OutputData = test.OutputData,
                 OrderBy = test.OrderBy,
                 ProblemId = test.Problem.Id,
+                HideInput = test.HideInput,
                 ProblemName = test.Problem.Name,
                 TestRunsCount = test.TestRuns.Count,
                 Type = test.IsTrialTest
@@ -148,6 +149,9 @@
 
         [Display(Name = nameof(Resource.Retest_problem), ResourceType = typeof(Resource))]
         public bool RetestProblem { get; set; }
+
+        [Display(Name = nameof(Resource.Hide_input), ResourceType = typeof(Resource))]
+        public bool HideInput { get; set; }
 
         [Display(Name = nameof(Resource.Trial_test_name), ResourceType = typeof(Resource))]
         public string TrialTestName =>

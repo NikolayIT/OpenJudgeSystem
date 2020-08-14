@@ -164,4 +164,7 @@
   <data name="Retest_problem" xml:space="preserve">
     <value>Ретестване на задачата</value>
   </data>
+  <data name="Hide_input" xml:space="preserve">
+    <value>Скрий входа (за отворени и нулеви тестове)</value>
+  </data>
 </root>
