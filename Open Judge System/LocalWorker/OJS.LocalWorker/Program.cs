@@ -1,4 +1,6 @@
-﻿[assembly: log4net.Config.XmlConfigurator(Watch = true)]
+﻿using System.Threading;
+
+[assembly: log4net.Config.XmlConfigurator(Watch = true)]
 
 namespace OJS.LocalWorker
 {
@@ -18,6 +20,7 @@ namespace OJS.LocalWorker
         {
             try
             {
+                Thread.Sleep(10000);
                 // Explicitly set App.config file location to prevent confusion
                 // ReSharper disable once AssignNullToNotNullAttribute
                 Environment.CurrentDirectory = Path.GetDirectoryName(typeof(Program).Assembly.Location);
