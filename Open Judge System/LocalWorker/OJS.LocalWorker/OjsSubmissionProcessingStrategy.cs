@@ -291,6 +291,7 @@
             MemoryLimit = this.submission.Problem.MemoryLimit,
             ExecutionStrategyType = this.submission.SubmissionType.ExecutionStrategyType,
             ExecutionType = ExecutionType.TestsExecution,
+            MaxPoints = this.submission.Problem.MaximumPoints,
             Input = new TestsInputModel
             {
                 TaskSkeleton = this.submission.Problem.SolutionSkeleton,
