@@ -72,8 +72,6 @@
                     this.Logger.Error($"Cannot retrieve submission #{submissionId} from database");
                     return null;
                 }
-
-                this.SetSubmissionToProcessing();
             }
 
             return this.GetSubmissionModel();
@@ -90,6 +88,24 @@
             this.submission.ProcessingComment = submissionModel.ProcessingComment;
 
             this.UpdateResults();
+        }
+
+        public override void SetSubmissionToProcessing()
+        {
+            try
+            {
+                this.submissionForProcessing.Processed = false;
+                this.submissionForProcessing.Processing = true;
+
+                this.submissionsForProcessingData.Update(this.submissionForProcessing);
+            }
+            catch (Exception ex)
+            {
+                this.Logger.ErrorFormat(
+                    "Unable to set submission #{0} to processing! Exception: {1}",
+                    this.submission.Id,
+                    ex);
+            }
         }
 
         protected override void ProcessTestsExecutionResult(IExecutionResult<TestResult> executionResult)
@@ -247,24 +263,6 @@
             }
         }
 
-        private void SetSubmissionToProcessing()
-        {
-            try
-            {
-                this.submissionForProcessing.Processed = false;
-                this.submissionForProcessing.Processing = true;
-
-                this.submissionsForProcessingData.Update(this.submissionForProcessing);
-            }
-            catch (Exception ex)
-            {
-                this.Logger.ErrorFormat(
-                    "Unable to set submission #{0} to processing! Exception: {1}",
-                    this.submission.Id,
-                    ex);
-            }
-        }
-
         private void CacheTestRuns()
         {
             try
@@ -293,6 +291,7 @@
             MemoryLimit = this.submission.Problem.MemoryLimit,
             ExecutionStrategyType = this.submission.SubmissionType.ExecutionStrategyType,
             ExecutionType = ExecutionType.TestsExecution,
+            MaxPoints = this.submission.Problem.MaximumPoints,
             Input = new TestsInputModel
             {
                 TaskSkeleton = this.submission.Problem.SolutionSkeleton,

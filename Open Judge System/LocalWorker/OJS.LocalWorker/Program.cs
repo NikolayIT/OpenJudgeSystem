@@ -1,4 +1,6 @@
-﻿[assembly: log4net.Config.XmlConfigurator(Watch = true)]
+﻿using System.Threading;
+
+[assembly: log4net.Config.XmlConfigurator(Watch = true)]
 
 namespace OJS.LocalWorker
 {
