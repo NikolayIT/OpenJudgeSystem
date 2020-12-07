@@ -116,7 +116,7 @@
             bool includeDateInFileName = false)
         {
             var fileNameWithoutExtension =
-                includeDateInFileName ? $"{problem.Name}-{submission.CreatedOn.ToString("dd-MM-yyyy HH:mm:ss")}" : problem.Name;
+                includeDateInFileName ? $"{problem.Name}-{submission.CreatedOn:dd-MM-yyyy HH:mm:ss:fff}" : problem.Name;
 
             var fileName =
                 $"{fileNameWithoutExtension}.{submission.FileExtension ?? submission.SubmissionType.FileNameExtension}"
