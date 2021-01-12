@@ -22,6 +22,7 @@ namespace OJS.LocalWorker
             {
                 // Explicitly set App.config file location to prevent confusion
                 // ReSharper disable once AssignNullToNotNullAttribute
+                Thread.Sleep(10000);
                 Environment.CurrentDirectory = Path.GetDirectoryName(typeof(Program).Assembly.Location);
                 AppDomain.CurrentDomain.SetData("APP_CONFIG_FILE", "OJS.LocalWorker.exe.config");
 

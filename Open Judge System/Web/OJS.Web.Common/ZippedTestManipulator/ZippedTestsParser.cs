@@ -294,7 +294,7 @@
 
                 foreach (var entry in inputEntries)
                 {
-                    inputAsText.Append(Constants.ClassDelimiter);
+                    inputAsText.Append(Constants.ClassDelimiterWin);
                     inputAsText.AppendLine($"//{entry.FileName}");
                     inputAsText.AppendLine(ExtractFileFromStream(entry));
                 }

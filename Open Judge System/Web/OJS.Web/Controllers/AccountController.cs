@@ -52,34 +52,11 @@
                 return this.View(model);
             }
 
-            ExternalUserInfoModel externalUser;
-
-            var result = await this.httpRequester.GetAsync<ExternalUserInfoModel>(
-                new { model.UserName },
-                string.Format(UrlConstants.GetUserInfoByUsernameApiFormat, Settings.SulsPlatformBaseUrl),
-                Settings.ApiKey);
-
-            if (result.IsSuccess)
+            var user = await this.UserManager.FindAsync(model.UserName, model.Password);
+            if (user != null)
             {
-                externalUser = result.Data;
-            }
-            else
-            {
-                this.TempData.AddInfoMessage(Resources.Account.AccountControllers.Inactive_login_system);
-                return this.RedirectToHome();
-            }
-
-            if (externalUser != null)
-            {
-                var userEntity = externalUser.Entity;
-                this.AddOrUpdateUser(userEntity);
-
-                var user = await this.UserManager.FindAsync(model.UserName, model.Password);
-                if (user != null)
-                {
-                    await this.SignInAsync(userEntity, model.RememberMe);
-                    return this.RedirectToLocal(returnUrl);
-                }
+                await this.SignInAsync(user, model.RememberMe);
+                return this.RedirectToLocal(returnUrl);
             }
 
             this.ModelState.AddModelError(
@@ -88,7 +65,7 @@
 
             return this.View(model);
         }
-
+    
         [AllowAnonymous]
         public ActionResult Register() => this.RedirectToExternalSystemMessage();
 
