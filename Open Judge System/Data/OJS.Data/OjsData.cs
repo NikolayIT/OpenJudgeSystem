@@ -29,7 +29,7 @@
 
         public IContestsRepository Contests => (ContestsRepository)this.GetRepository<Contest>();
 
-        public IDeletableEntityRepository<Problem> Problems => this.GetDeletableEntityRepository<Problem>();
+        public IProblemsRepository Problems => (ProblemsRepository)this.GetRepository<Problem>();
 
         public ITestRepository Tests => (TestRepository)this.GetRepository<Test>();
 
@@ -109,6 +109,11 @@
                 if (typeof(T).IsAssignableFrom(typeof(Contest)))
                 {
                     type = typeof(ContestsRepository);
+                }
+
+                if (typeof(T).IsAssignableFrom(typeof(Problem)))
+                {
+                    type = typeof(ProblemsRepository);
                 }
 
                 if (typeof(T).IsAssignableFrom(typeof(Submission)))

@@ -374,11 +374,32 @@
                 return this.RedirectToAction(GlobalConstants.Index);
             }
 
+            var orExpressionProblemIds = ExpressionBuilder.BuildOrExpression<Problem, int>(contest.Problems.Select(p => p.Id), p => p.Id);
+
+            var problems = this.Data.Problems.AllIncludesSubmissionsTestsAndResources(orExpressionProblemIds);
+
             // TODO: check for N + 1
-            foreach (var problem in contest.Problems.ToList())
+            foreach (var problem in problems.ToList())
             {
-                // TODO: Add cascading deletion of submissions, tests, resources
                 this.Data.Problems.Delete(problem.Id);
+
+                var tests = problem.Tests;
+                foreach (var test in tests)
+                {
+                    this.Data.Tests.Delete(test.Id);
+                }
+
+                var submissions = problem.Submissions;
+                foreach (var submission in submissions)
+                {
+                    this.Data.Submissions.Delete(submission.Id);
+                }
+
+                var resources = problem.Resources;
+                foreach (var resource in resources)
+                {
+                    this.Data.Resources.Delete(resource.Id);
+                }
             }
 
             this.Data.SaveChanges();
