@@ -108,6 +108,23 @@
             }
         }
 
+        public override void ReleaseSubmission()
+        {
+            try
+            {
+                this.submissionForProcessing.Processed = false;
+                this.submissionForProcessing.Processing = false;
+                this.submissionsForProcessingData.Update(this.submissionForProcessing);
+            }
+            catch (Exception ex)
+            {
+                this.Logger.ErrorFormat(
+                    "Unable to release submission #{0}! Exception: {1}",
+                    this.submission.Id,
+                    ex);
+            }
+        }
+
         protected override void ProcessTestsExecutionResult(IExecutionResult<TestResult> executionResult)
         {
             this.submission.IsCompiledSuccessfully = executionResult.IsCompiledSuccessfully;
