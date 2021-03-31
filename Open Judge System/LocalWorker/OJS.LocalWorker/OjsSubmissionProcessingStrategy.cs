@@ -72,6 +72,8 @@
                     this.Logger.Error($"Cannot retrieve submission #{submissionId} from database");
                     return null;
                 }
+
+                this.SetSubmissionToProcessing();
             }
 
             return this.GetSubmissionModel();
