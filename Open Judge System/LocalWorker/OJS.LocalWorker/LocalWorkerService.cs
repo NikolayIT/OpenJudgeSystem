@@ -10,13 +10,19 @@
 
     internal class LocalWorkerService : LocalWorkerServiceBase<int>
     {
+        private readonly string[] configSectionNamesForEncryption =
+        {
+            Constants.AppSettingsConfigSectionName,
+            Constants.ConnectionStringsConfigSectionName,
+        };
+
         protected override IDependencyContainer GetDependencyContainer() => Bootstrap.Container;
 
         protected override void BeforeStartingThreads()
         {
             try
             {
-                EncryptionHelper.EncryptAppConfigSections(Constants.AppSettingsConfigSectionName);
+                EncryptionHelper.EncryptAppConfigSections(this.configSectionNamesForEncryption);
             }
             catch (Exception ex)
             {
@@ -57,7 +63,7 @@
         {
             try
             {
-                EncryptionHelper.DecryptAppConfigSections(Constants.AppSettingsConfigSectionName);
+                EncryptionHelper.DecryptAppConfigSections(this.configSectionNamesForEncryption);
             }
             catch (Exception ex)
             {
