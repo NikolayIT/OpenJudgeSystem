@@ -12,7 +12,7 @@
     {
         IContestsRepository Contests { get; }
 
-        IDeletableEntityRepository<Problem> Problems { get; }
+        IProblemsRepository Problems { get; }
 
         ITestRepository Tests { get; }
 
